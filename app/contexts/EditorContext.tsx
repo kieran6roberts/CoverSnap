@@ -1,16 +1,19 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
+import { colorTypeOptions } from '~/consts';
 
 type EditorState = {
   primaryTitle: string;
   secondaryTitle: string;
-  background: string;
+  backgroundColor: string;
+  colorFormat: (typeof colorTypeOptions)[number];
 };
 
 type EditorContextType = {
   state: EditorState;
   setPrimaryTitle: (title: string) => void;
   setSecondaryTitle: (title: string) => void;
-  setBackground: (background: string) => void;
+  setBackgroundColor: (background: string) => void;
+  setColorFormat: (format: (typeof colorTypeOptions)[number]) => void;
 };
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
@@ -19,7 +22,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<EditorState>({
     primaryTitle: 'Best practises for Remix state management',
     secondaryTitle: '',
-    background: '#ffffff'
+    backgroundColor: '#333333',
+    colorFormat: 'hex'
   });
 
   const setPrimaryTitle = (title: string) => {
@@ -30,8 +34,12 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, secondaryTitle: title }));
   };
 
-  const setBackground = (background: string) => {
-    setState((prev) => ({ ...prev, background }));
+  const setBackgroundColor = (background: string) => {
+    setState((prev) => ({ ...prev, backgroundColor: background }));
+  };
+
+  const setColorFormat = (format: (typeof colorTypeOptions)[number]) => {
+    setState((prev) => ({ ...prev, colorFormat: format }));
   };
 
   return (
@@ -40,7 +48,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         state,
         setPrimaryTitle,
         setSecondaryTitle,
-        setBackground
+        setBackgroundColor,
+        setColorFormat
       }}
     >
       {children}

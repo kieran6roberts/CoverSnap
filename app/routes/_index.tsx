@@ -4,6 +4,8 @@ import { Container, Title, Text, Flex, Anchor, Stack, Button, Box } from '@manti
 import { StarSolid } from 'iconoir-react';
 import { Link } from '@remix-run/react';
 import { BrandLogo } from '~/components/BrandLogo';
+import { Footer } from '~/components/Layout/Footer';
+import { GITHUB_URL, PORTFOLIO_URL } from '~/consts';
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,9 +16,6 @@ export const meta: MetaFunction = () => {
     }
   ];
 };
-
-const GITHUB_URL = 'https://github.com/kieran6roberts/CoverSnap';
-const PORTFOLIO_URL = 'https://kieranroberts.dev';
 
 export default function Index() {
   return (
@@ -63,18 +62,7 @@ export default function Index() {
           </Stack>
         </main>
       </Container>
-      <Box component="footer" w="100%" py="lg">
-        <Container size="xl">
-          <Stack gap="xs" justify="center" align="center">
-            <Text ta="center" size="sm">
-              CoverSnap on{' '}
-              <Anchor href={GITHUB_URL} underline="always" target="_blank">
-                GitHub
-              </Anchor>
-            </Text>
-          </Stack>
-        </Container>
-      </Box>
+      <Footer />
     </Stack>
   );
 }

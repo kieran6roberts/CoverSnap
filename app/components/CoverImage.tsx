@@ -1,14 +1,16 @@
-import { Box, Title, Text } from '@mantine/core';
+import { Box, Title } from '@mantine/core';
 import classes from './CoverImage.module.css';
 import { useEditor } from '../contexts/EditorContext';
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
-  const { state } = useEditor();
-  const hasSecondaryTitle = state.secondaryTitle.length > 0;
+  const {
+    state: { primaryTitle, secondaryTitle, backgroundColor }
+  } = useEditor();
+  const hasSecondaryTitle = secondaryTitle.length > 0;
 
   return (
     <Box className={classes.coverContainer}>
-      <Box ref={imageNodeRef} className={classes.cover} variant="filled" p="md" bg="var(--mantine-color-gray-8)">
+      <Box ref={imageNodeRef} className={classes.cover} variant="filled" p="md" style={{ backgroundColor }}>
         <Title
           order={2}
           className={classes.title}
@@ -17,7 +19,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
           ta="center"
           lineClamp={3}
         >
-          {state.primaryTitle ?? ''}
+          {primaryTitle ?? ''}
         </Title>
         <Title
           mt={hasSecondaryTitle ? 'md' : 0}
@@ -28,7 +30,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
           ta="center"
           lineClamp={3}
         >
-          {state.secondaryTitle ?? ''}
+          {secondaryTitle ?? ''}
         </Title>
       </Box>
     </Box>

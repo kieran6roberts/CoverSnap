@@ -13,7 +13,8 @@ export function DrawerTextSection() {
         onChange={(e) => setPrimaryTitle(e.target.value)}
         placeholder="HTTP Security Headers and how to..."
         error={state.primaryTitle.length > 60 ? 'Maximum 60 characters' : null}
-        description="Tip: Use the key search words from your article in the title"
+        label="Cover Title"
+        description="Maximum 60 characters"
         rightSection={hasPrimaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setPrimaryTitle('')} />}
         maxLength={60}
       />
@@ -21,7 +22,8 @@ export function DrawerTextSection() {
         value={state.secondaryTitle}
         onChange={(e) => setSecondaryTitle(e.target.value)}
         placeholder="Let's dive into the world..."
-        description="Keep the characters short and sweet"
+        label="Cover Subtitle"
+        description="Maximum 80 characters"
         error={state.secondaryTitle.length > 80 ? 'Maximum 80 characters' : null}
         rightSection={
           hasSecondaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setSecondaryTitle('')} />

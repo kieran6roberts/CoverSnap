@@ -1,15 +1,26 @@
 import { DownloadCircle } from 'iconoir-react';
 import { Flex, Anchor, Box, Button, ActionIcon } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link, MetaFunction } from '@remix-run/react';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
 
 import { BrandLogo } from '~/components/BrandLogo';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
-import { EditorDrawer } from '~/components/EditorDrawer';
+import { EditorDrawer } from '~/components/DrawerEditing/EditorDrawer';
 import { CoverImage } from '~/components/CoverImage';
-import { EditorProvider } from '../contexts/EditorContext';
+import { EditorProvider } from '~/contexts/EditorContext';
+import { Footer } from '~/components/Layout/Footer';
 import { saveDomNodeAsImage } from '~/utils/domToNode';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'CoverSnap | Create Cover Image' },
+    {
+      name: 'description',
+      content: 'Use the editing tools to build your cover image and download it when you are ready.'
+    }
+  ];
+};
 
 export default function Create() {
   const coverImageNodeRef = useRef<HTMLDivElement>(null);
@@ -68,6 +79,7 @@ export default function Create() {
           </Flex>
         </EditorProvider>
       </main>
+      <Footer />
     </>
   );
 }

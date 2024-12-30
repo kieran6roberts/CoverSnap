@@ -40,6 +40,16 @@ const theme = createTheme({
       defaultProps: {
         radius: 'md'
       }
+    },
+    TextInput: {
+      defaultProps: {
+        radius: 'md'
+      }
+    },
+    ColorInput: {
+      defaultProps: {
+        radius: 'md'
+      }
     }
   },
   defaultRadius: 'md',
