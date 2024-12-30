@@ -14,17 +14,17 @@ export function ColorSchemeToggle() {
     {
       value: LIGHT_THEME,
       label: 'Light',
-      leftSection: <SunLight width={16} height={16} color="var(--mantine-color-text)" />
+      leftSection: <SunLight width={18} height={18} color="var(--mantine-color-text)" />
     },
     {
       value: DARK_THEME,
       label: 'Dark',
-      leftSection: <HalfMoon width={16} height={16} color="var(--mantine-color-text)" />
+      leftSection: <HalfMoon width={18} height={18} color="var(--mantine-color-text)" />
     },
     {
       value: AUTO_THEME,
       label: 'Auto',
-      leftSection: <Settings width={16} height={16} color="var(--mantine-color-text)" />
+      leftSection: <Settings width={18} height={18} color="var(--mantine-color-text)" />
     }
   ];
 
@@ -38,6 +38,7 @@ export function ColorSchemeToggle() {
       size="sm"
       w={120}
       variant="filled"
+      radius="xl"
       value={colorScheme}
       onChange={(value) => setColorScheme(value as 'light' | 'dark' | 'auto')}
       allowDeselect={false}

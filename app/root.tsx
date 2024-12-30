@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
+import { Toaster } from 'react-hot-toast';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -57,6 +58,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <MantineProvider theme={theme}>{children}</MantineProvider>
         <ScrollRestoration />
         <Scripts />
+        <Toaster />
       </body>
     </html>
   );

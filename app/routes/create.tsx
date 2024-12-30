@@ -1,13 +1,30 @@
-import { BrandLogo } from '~/components/BrandLogo';
-
-import { Flex, Anchor, Box } from '@mantine/core';
+import { DownloadCircle } from 'iconoir-react';
+import { Flex, Anchor, Box, Button } from '@mantine/core';
 import { Link } from '@remix-run/react';
+import { useRef } from 'react';
+import toast from 'react-hot-toast';
+
+import { BrandLogo } from '~/components/BrandLogo';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { EditorDrawer } from '~/components/EditorDrawer';
 import { CoverImage } from '~/components/CoverImage';
 import { EditorProvider } from '../contexts/EditorContext';
+import { saveDomNodeAsImage } from '~/utils/domToNode';
 
 export default function Create() {
+  const coverImageNodeRef = useRef<HTMLDivElement>(null);
+
+  const onDownload = async () => {
+    if (coverImageNodeRef.current) {
+      const isSuccess = await saveDomNodeAsImage(coverImageNodeRef.current);
+      if (isSuccess) {
+        toast.success('Cover image downloaded successfully.');
+      } else {
+        toast.error('Failed to download cover image.');
+      }
+    }
+  };
+
   return (
     <>
       <Box
@@ -22,7 +39,12 @@ export default function Create() {
           <Anchor size="sm" w={150} fw={500} variant="text" component={Link} to="/">
             <BrandLogo />
           </Anchor>
-          <ColorSchemeToggle />
+          <Flex gap="xs">
+            <ColorSchemeToggle />
+            <Button onClick={onDownload} rightSection={<DownloadCircle />}>
+              Download Image
+            </Button>
+          </Flex>
         </Flex>
       </Box>
       <main>
@@ -34,7 +56,7 @@ export default function Create() {
               <EditorDrawer />
             </Box>
 
-            <CoverImage />
+            <CoverImage imageNodeRef={coverImageNodeRef} />
             {/* <CoverList /> */}
 
             {/* Editor Drawer for mobile */}
