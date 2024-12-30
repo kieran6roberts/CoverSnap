@@ -16,12 +16,11 @@ export default function Create() {
 
   const onDownload = async () => {
     if (coverImageNodeRef.current) {
-      const isSuccess = await saveDomNodeAsImage(coverImageNodeRef.current);
-      if (isSuccess) {
-        toast.success('Cover image downloaded successfully.');
-      } else {
-        toast.error('Failed to download cover image.');
-      }
+      toast.promise(saveDomNodeAsImage(coverImageNodeRef.current), {
+        loading: 'Loading',
+        success: 'Cover image downloaded successfully.',
+        error: 'Failed to download cover image.'
+      });
     }
   };
 

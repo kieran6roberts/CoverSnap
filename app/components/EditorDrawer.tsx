@@ -46,7 +46,7 @@ export function EditorDrawer() {
 
   return (
     <Stack gap="md" className={classes.sidebar} p="md">
-      <Accordion defaultValue={['Text']} multiple variant="default">
+      <Accordion radius="md" defaultValue={['Text']} multiple variant="default">
         {items}
       </Accordion>
     </Stack>
