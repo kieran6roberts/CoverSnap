@@ -1,0 +1,37 @@
+.cover {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  width: min(calc(90vw - 360px), 900px);
+  aspect-ratio: 1.905 / 1;
+  border-radius: 12px;
+  border: 1px solid var(--mantine-color-default-border);
+  --title-size: clamp(24px, 5vw, 48px);
+  --subtitle-size: clamp(16px, 3vw, 32px);
+}
+
+.coverContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 400px;
+  padding: 2rem 0;
+  text-align: center;
+
+  @media (max-width: em(992px)) {
+    .cover {
+      width: min(90vw, 900px);
+    }
+  }
+}
+
+.title {
+  font-size: var(--title-size) !important;
+}
+
+.subtitle {
+  font-size: var(--subtitle-size) !important;
+}

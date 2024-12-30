@@ -21,7 +21,7 @@ const PORTFOLIO_URL = 'https://kieranroberts.dev';
 export default function Index() {
   return (
     <Stack h="100vh" justify="space-between">
-      <Box component="header" w="100%" py="md" bg="blue">
+      <Box component="header" w="100%" py="md" bg="blue" h={75}>
         <Container size="md">
           <Flex component="nav" justify="space-between" align="center">
             <Anchor size="sm" w={150} fw={500} variant="text" c="white" component={Link} to="/">
