@@ -1,5 +1,5 @@
 import { DownloadCircle } from 'iconoir-react';
-import { Flex, Anchor, Box, Button } from '@mantine/core';
+import { Flex, Anchor, Box, Button, ActionIcon } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
@@ -35,14 +35,17 @@ export default function Create() {
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor size="sm" w={150} fw={500} variant="text" component={Link} to="/">
+          <Anchor size="sm" w={125} fw={125} variant="text" component={Link} to="/" display="flex">
             <BrandLogo />
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
-            <Button onClick={onDownload} rightSection={<DownloadCircle />}>
+            <Button visibleFrom="md" onClick={onDownload} rightSection={<DownloadCircle />}>
               Download Image
             </Button>
+            <ActionIcon hiddenFrom="md" onClick={onDownload} variant="filled" size="lg">
+              <DownloadCircle />
+            </ActionIcon>
           </Flex>
         </Flex>
       </Box>

@@ -18,6 +18,8 @@ export const links: LinksFunction = () => [
 ];
 
 const theme = createTheme({
+  autoContrast: true,
+  luminanceThreshold: 0.3,
   components: {
     Text: {
       defaultProps: {
@@ -41,7 +43,7 @@ const theme = createTheme({
     }
   },
   defaultRadius: 'md',
-  primaryColor: 'blue'
+  primaryColor: 'violet'
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {

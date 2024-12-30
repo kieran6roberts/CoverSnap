@@ -1,30 +1,15 @@
 'use client';
 
-import { Text, Stack, Accordion, TextInput } from '@mantine/core';
+import { Text, Stack, Accordion } from '@mantine/core';
 import classes from './EditorDrawer.module.css';
-import { useEditor } from '../contexts/EditorContext';
+import { DrawerTextSection } from './DrawerTextSection';
 
 export function EditorDrawer() {
-  const { state, setPrimaryTitle, setSecondaryTitle } = useEditor();
-
   const editSections = [
     {
       title: 'Text',
       description: 'Edit the text options for your cover image',
-      content: () => (
-        <Stack>
-          <TextInput
-            label="Primary title"
-            value={state.primaryTitle}
-            onChange={(e) => setPrimaryTitle(e.target.value)}
-          />
-          <TextInput
-            label="Secondary title"
-            value={state.secondaryTitle}
-            onChange={(e) => setSecondaryTitle(e.target.value)}
-          />
-        </Stack>
-      )
+      content: () => <DrawerTextSection />
     }
     // {
     //   title: 'Background',
