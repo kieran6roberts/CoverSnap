@@ -6,12 +6,19 @@
   width: min(calc(90vw - 360px), 900px);
   aspect-ratio: 1.905 / 1;
   border-radius: 12px;
-  border: 1px solid var(--mantine-color-default-border);
-  --title-size: clamp(24px, 2vw, 48px);
+  margin: 1rem;
+  --title-size: clamp(24px, 4vw, 48px);
   --subtitle-size: clamp(16px, 3vw, 32px);
 }
 
-.coverContainer {
+.coverWrapper {
+  border: 1px dashed var(--mantine-color-default-border);
+  padding: 1rem 0;
+  border-radius: 12px;
+}
+
+.coverSection {
+  background-color: var(--mantine-color-gray-0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,6 +31,10 @@
       width: min(90vw, 900px);
     }
   }
+}
+
+[data-mantine-color-scheme='dark'] .coverSection {
+  background-color: var(--mantine-color-dark-8);
 }
 
 .title {

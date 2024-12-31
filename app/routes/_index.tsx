@@ -1,11 +1,11 @@
 import type { MetaFunction } from '@remix-run/node';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box } from '@mantine/core';
-import { StarSolid } from 'iconoir-react';
 import { Link } from '@remix-run/react';
 import { BrandLogo } from '~/components/BrandLogo';
 import { Footer } from '~/components/Layout/Footer';
-import { GITHUB_URL, PORTFOLIO_URL } from '~/consts';
+import { PORTFOLIO_URL } from '~/consts';
+import { GitHubStarButton } from '~/components/GitHubStarButton';
 
 export const meta: MetaFunction = () => {
   return [
@@ -46,18 +46,14 @@ export default function Index() {
               </Anchor>
             </Text>
             <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-              CoverSnap lets you generate good looking cover images for your blog posts in seconds. It's completely free
-              to use and if you like it, give it a star on GitHub. Enjoy!
+              CoverSnap lets you avoid getting stuck in design, and generate good looking cover images for your blog
+              posts in seconds. It's completely free to use and if you like it, give it a star on GitHub. Enjoy!
             </Text>
             <Flex justify="center" align="center" gap="md" mt="xl">
               <Button component={Link} to="/create" size="md" variant="filled">
                 Build for free
               </Button>
-              <Button component={Link} target="_blank" to={GITHUB_URL} size="md" variant="outline">
-                <Flex align="center" gap="xs">
-                  <StarSolid width={20} /> on GitHub
-                </Flex>
-              </Button>
+              <GitHubStarButton size="md" variant="outline" />
             </Flex>
           </Stack>
         </main>

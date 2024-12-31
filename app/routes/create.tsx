@@ -1,16 +1,15 @@
-import { DownloadCircle } from 'iconoir-react';
-import { Flex, Anchor, Box, Button, ActionIcon } from '@mantine/core';
+import { Flex, Anchor, Box, ActionIcon } from '@mantine/core';
 import { Link, MetaFunction } from '@remix-run/react';
 import { useRef } from 'react';
-import toast from 'react-hot-toast';
 
 import { BrandLogo } from '~/components/BrandLogo';
-import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { EditorDrawer } from '~/components/DrawerEditing/EditorDrawer';
 import { CoverImage } from '~/components/CoverImage';
 import { EditorProvider } from '~/contexts/EditorContext';
-import { Footer } from '~/components/Layout/Footer';
-import { saveDomNodeAsImage } from '~/utils/domToNode';
+
+import { GitHubStarButton } from '~/components/GitHubStarButton';
+import { ColorSchemeToggle } from '~/components/ThemeToggle';
+import { Github } from 'iconoir-react';
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,23 +24,13 @@ export const meta: MetaFunction = () => {
 export default function Create() {
   const coverImageNodeRef = useRef<HTMLDivElement>(null);
 
-  const onDownload = async () => {
-    if (coverImageNodeRef.current) {
-      toast.promise(saveDomNodeAsImage(coverImageNodeRef.current), {
-        loading: 'Loading',
-        success: 'Cover image downloaded successfully.',
-        error: 'Failed to download cover image.'
-      });
-    }
-  };
-
   return (
     <>
       <Box
         component="header"
         w="100%"
         py="md"
-        px="xl"
+        px="lg"
         h={75}
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
@@ -51,11 +40,9 @@ export default function Create() {
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
-            <Button visibleFrom="md" onClick={onDownload} rightSection={<DownloadCircle />}>
-              Download Image
-            </Button>
-            <ActionIcon hiddenFrom="md" onClick={onDownload} variant="filled" size="lg">
-              <DownloadCircle />
+            <GitHubStarButton visibleFrom="md" size="sm" variant="light" />
+            <ActionIcon hiddenFrom="md" variant="light" size="lg">
+              <Github />
             </ActionIcon>
           </Flex>
         </Flex>
@@ -79,7 +66,6 @@ export default function Create() {
           </Flex>
         </EditorProvider>
       </main>
-      <Footer />
     </>
   );
 }

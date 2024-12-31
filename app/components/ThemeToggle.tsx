@@ -38,7 +38,6 @@ export function ColorSchemeToggle() {
       size="sm"
       w={120}
       variant="filled"
-      radius="xl"
       value={colorScheme}
       onChange={(value) => setColorScheme(value as 'light' | 'dark' | 'auto')}
       allowDeselect={false}

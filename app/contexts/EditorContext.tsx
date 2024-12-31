@@ -14,17 +14,20 @@ type EditorContextType = {
   setSecondaryTitle: (title: string) => void;
   setBackgroundColor: (background: string) => void;
   setColorFormat: (format: (typeof colorTypeOptions)[number]) => void;
+  resetEditor: () => void;
 };
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
+const defaultState: EditorState = {
+  primaryTitle: 'Best practises for Remix state management',
+  secondaryTitle: '',
+  backgroundColor: '#333333',
+  colorFormat: 'hex'
+};
+
 export function EditorProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<EditorState>({
-    primaryTitle: 'Best practises for Remix state management',
-    secondaryTitle: '',
-    backgroundColor: '#333333',
-    colorFormat: 'hex'
-  });
+  const [state, setState] = useState<EditorState>(defaultState);
 
   const setPrimaryTitle = (title: string) => {
     setState((prev) => ({ ...prev, primaryTitle: title }));
@@ -42,6 +45,10 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, colorFormat: format }));
   };
 
+  const resetEditor = () => {
+    setState(defaultState);
+  };
+
   return (
     <EditorContext.Provider
       value={{
@@ -49,7 +56,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         setPrimaryTitle,
         setSecondaryTitle,
         setBackgroundColor,
-        setColorFormat
+        setColorFormat,
+        resetEditor
       }}
     >
       {children}

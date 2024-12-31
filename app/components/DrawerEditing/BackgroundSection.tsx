@@ -14,7 +14,7 @@ export function DrawerBackgroundSection() {
           format={state.colorFormat}
           label="Background color"
           description="Select a primary background color for the cover"
-          defaultValue={state.backgroundColor}
+          value={state.backgroundColor}
           onChangeEnd={(color) => {
             setBackgroundColor(color);
           }}
