@@ -7,11 +7,15 @@ import { GITHUB_URL } from '~/consts';
 export function GitHubStarButton({
   size = 'md',
   variant = 'filled',
-  visibleFrom
+  visibleFrom,
+  hiddenFrom,
+  isFullWidth = false
 }: {
   size?: 'sm' | 'md';
   variant?: 'filled' | 'outline' | 'light';
   visibleFrom?: 'md' | 'sm';
+  hiddenFrom?: 'md' | 'sm';
+  isFullWidth?: boolean;
 }) {
   return (
     <Button
@@ -20,7 +24,9 @@ export function GitHubStarButton({
       to={GITHUB_URL}
       size={size}
       variant={variant}
+      {...(isFullWidth ? { fullWidth: true } : {})}
       {...(visibleFrom ? { visibleFrom } : {})}
+      {...(hiddenFrom ? { hiddenFrom } : {})}
     >
       <Flex align="center" gap="xs">
         <Github width={20} /> Find us on GitHub
