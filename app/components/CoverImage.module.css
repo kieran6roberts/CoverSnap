@@ -18,6 +18,9 @@
 }
 
 .coverSection {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background-color: var(--mantine-color-gray-0);
   display: flex;
   justify-content: center;

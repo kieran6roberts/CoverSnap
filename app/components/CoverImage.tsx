@@ -54,12 +54,12 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             </Title>
           </Box>
           <Flex gap="xs" justify="center">
-            <Button onClick={onDownload} size="lg" rightSection={<Download width={24} height={24} />}>
+            <Button hiddenFrom="md" onClick={onDownload} size="xs" rightSection={<Download width={16} height={16} />}>
               Download Image
             </Button>
-            {/* <ActionIcon hiddenFrom="md" onClick={onDownload} variant="filled" size="lg">
-              <DownloadCircle />
-            </ActionIcon> */}
+            <Button visibleFrom="md" onClick={onDownload} size="lg" rightSection={<Download width={24} height={24} />}>
+              Download Image
+            </Button>
           </Flex>
         </Box>
       </Box>
