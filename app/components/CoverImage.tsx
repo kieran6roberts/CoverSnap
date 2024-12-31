@@ -1,4 +1,6 @@
-import { Box, Title, Text, Flex, Button } from '@mantine/core';
+import { Box, Title, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+
 import classes from './CoverImage.module.css';
 import { useEditor } from '../contexts/EditorContext';
 import { Download } from 'iconoir-react';
@@ -10,15 +12,21 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
   const {
     state: { primaryTitle, secondaryTitle, backgroundColor }
   } = useEditor();
-  const hasSecondaryTitle = secondaryTitle.length > 0;
+  const [visible, { open, close }] = useDisclosure(false);
 
   const [isDownloadSuccessModalOpen, setIsDownloadSuccessModalOpen] = useState(false);
 
+  const hasSecondaryTitle = secondaryTitle.length > 0;
+
   const onDownload = async () => {
+    open();
     if (imageNodeRef.current) {
       const result = await saveDomNodeAsImage(imageNodeRef.current);
       if (result.success) {
         setIsDownloadSuccessModalOpen(true);
+        setTimeout(() => {
+          close();
+        }, 500);
       }
     }
   };
@@ -55,10 +63,12 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
           </Box>
           <Flex gap="xs" justify="center">
             <Button hiddenFrom="md" onClick={onDownload} size="xs" rightSection={<Download width={16} height={16} />}>
-              Download Image
+              <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+              Download image
             </Button>
             <Button visibleFrom="md" onClick={onDownload} size="lg" rightSection={<Download width={24} height={24} />}>
-              Download Image
+              <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+              Download image
             </Button>
           </Flex>
         </Box>
