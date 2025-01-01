@@ -8,9 +8,12 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "lint": "eslint .",
+    "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "typecheck": "tsc",
+    "format": "pnpm lint && pnpm prettier:fix",
+    "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix"
   },
   "keywords": [],
   "author": "Kieran Roberts",

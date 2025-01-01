@@ -8,21 +8,21 @@ import importPlugin from 'eslint-plugin-import';
 
 export default [
   {
-    ignores: ['node_modules/**', 'build/**', '!**/.server/**', '!**/.client/**'],
+    ignores: ['node_modules/**', 'build/**', '!**/.server/**', '!**/.client/**']
   },
   {
     languageOptions: {
       globals: {
-        ...globals.browser,
+        ...globals.browser
       },
       ecmaVersion: 'latest',
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {
-          jsx: true,
-        },
-      },
-    },
+          jsx: true
+        }
+      }
+    }
   },
   // React config
   {
@@ -30,46 +30,46 @@ export default [
     plugins: {
       react,
       'jsx-a11y': jsxA11y,
-      'react-hooks': reactHooks,
+      'react-hooks': reactHooks
     },
     settings: {
       react: {
-        version: 'detect',
+        version: 'detect'
       },
       formComponents: ['Form'],
       linkComponents: [
         { name: 'Link', linkAttribute: 'to' },
-        { name: 'NavLink', linkAttribute: 'to' },
-      ],
+        { name: 'NavLink', linkAttribute: 'to' }
+      ]
     },
     rules: {
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.recommended.rules,
-      'react/no-unescaped-entities': 'off',
-    },
+      'react/no-unescaped-entities': 'off'
+    }
   },
   // TypeScript config
   {
     files: ['**/*.{ts,tsx}'],
     plugins: {
       '@typescript-eslint': typescript,
-      import: importPlugin,
+      import: importPlugin
     },
     languageOptions: {
-      parser: tsParser,
+      parser: tsParser
     },
     settings: {
       'import/internal-regex': '^~/',
       'import/resolver': {
         node: {
-          extensions: ['.ts', '.tsx'],
+          extensions: ['.ts', '.tsx']
         },
         typescript: {
-          alwaysTryTypes: true,
-        },
-      },
+          alwaysTryTypes: true
+        }
+      }
     },
     rules: {
       ...typescript.configs.recommended.rules,
@@ -77,21 +77,21 @@ export default [
       ...importPlugin.configs.typescript.rules,
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
+      quotes: ['error', 'single'],
+      semi: ['error', 'always'],
       'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
       'no-use-before-define': ['error'],
       'no-console': ['warn'],
-      'import/prefer-default-export': 'off',
-    },
+      'import/prefer-default-export': 'off'
+    }
   },
   // Node environment for config file
   {
     files: ['eslint.config.cjs'],
     languageOptions: {
       globals: {
-        ...globals.node,
-      },
-    },
-  },
+        ...globals.node
+      }
+    }
+  }
 ];
