@@ -1,40 +1,39 @@
 # CoverSnap
 
-- 📖 [Remix docs](https://remix.run/docs)
+CoverSnap is a free tool that helps you build a simple cover image for your blog articles. Publish your articles faster with a few simple clicks of the editing tools.
 
-## Development
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-Run the dev server:
+## Screenshots
 
-```shellscript
-npm run dev
-```
+![CoverSnap landing page](https://cdn.hashnode.com/res/hashnode/image/upload/v1735735722162/IYa4xp6j8.png?auto=format)
 
-## Deployment
+## Features
 
-First, build your app for production:
+- Cover image editing tools
+- Optimized cover image PNG download
+- Light/dark mode toggle
+- more to come...
 
-```sh
-npm run build
-```
+## Tech Stack
 
-Then run the app in production mode:
+- React
+- Remix
+- TypeScript
+- MantineUI
 
-```sh
-npm start
-```
+## Contributing
 
-Now you'll need to pick a host to deploy it to.
+Contributions are currently not open, but will be soon. Stay tuned.
 
-### DIY
+## Authors
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+[Kieran Roberts](https://www.github.com/kieran6roberts)
 
-Make sure to deploy the output of `npm run build`
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://kieranroberts.dev)
 
-- `build/server`
-- `build/client`
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kieran-roberts-00517b178/)
 
-## Styling
+## License
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)

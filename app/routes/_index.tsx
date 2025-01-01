@@ -46,11 +46,11 @@ export default function Index() {
               maw={{ base: 500, sm: 700 }}
               mx="auto"
             >
-              Publish your article{' '}
+              Publish articles{' '}
               <Mark fz="0.95em" style={{ zIndex: -1 }}>
                 faster
               </Mark>{' '}
-              without cover design block
+              without cover design mental block
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
