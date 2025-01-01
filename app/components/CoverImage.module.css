@@ -21,23 +21,27 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: var(--mantine-color-gray-1);
+  background-color: color-mix(in srgb, var(--mantine-color-gray-1) 75%, transparent);
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 1;
-  padding: 2rem 0;
+  padding: 0;
   text-align: center;
 
   @media (max-width: em(992px)) {
     .cover {
       width: min(90vw, 900px);
     }
+
+    .coverSection {
+      padding: 0;
+    }
   }
 }
 
 [data-mantine-color-scheme='dark'] .coverSection {
-  background-color: var(--mantine-color-dark-9);
+  background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
 }
 
 .title {

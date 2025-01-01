@@ -1,12 +1,19 @@
-import { Text, Accordion, Flex, Button, Box, ScrollArea } from '@mantine/core';
+import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay } from '@mantine/core';
+import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
+
 import classes from './EditorDrawer.module.css';
 import { DrawerTextSection } from '~/components/DrawerEditing/TextSection';
 import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSection';
 import { useEditor } from '~/contexts/EditorContext';
-import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon } from 'iconoir-react';
+import { useImageDownload } from '~/hooks/useImageDownload';
+import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
 
-export function EditorDrawer() {
+export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const { resetEditor } = useEditor();
+
+  const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
+    imageRef: imageNodeRef
+  });
 
   const editSections = [
     {
@@ -55,25 +62,51 @@ export function EditorDrawer() {
   ));
 
   return (
-    <Box component="aside" className={classes.sidebar} pos="relative">
-      <ScrollArea h="calc(100vh - 69px - 69px)">
-        <Accordion radius="md" multiple variant="default">
+    <>
+      <Box component="aside" className={classes.sidebar} pos="relative">
+        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 75px)">
+          <Accordion radius="md" multiple variant="default">
+            {items}
+          </Accordion>
+        </ScrollArea>
+        <Accordion hiddenFrom="md" radius="md" multiple variant="default">
           {items}
         </Accordion>
-      </ScrollArea>
-      <Flex
-        justify="flex-end"
-        bg="var(--mantine-color-body)"
-        pos="sticky"
-        bottom={0}
-        right={0}
-        p="md"
-        style={{ borderTop: '1px solid var(--mantine-color-default-border)', zIndex: 10 }}
-      >
-        <Button onClick={resetEditor} variant="light" color="var(--mantine-primary-color-4)">
-          Reset all
-        </Button>
-      </Flex>
-    </Box>
+        <Flex
+          justify={{ base: 'space-between', md: 'flex-end' }}
+          bg="var(--mantine-color-body)"
+          pos={{ base: 'fixed', md: 'sticky' }}
+          bottom={0}
+          right={0}
+          left={0}
+          p="md"
+          style={{ borderTop: '1px solid var(--mantine-color-default-border)', zIndex: 10 }}
+        >
+          <Button
+            hiddenFrom="md"
+            onClick={resetEditor}
+            variant="light"
+            size="xs"
+            color="var(--mantine-primary-color-4)"
+          >
+            Reset all
+          </Button>
+          <Button
+            visibleFrom="md"
+            onClick={resetEditor}
+            variant="light"
+            size="sm"
+            color="var(--mantine-primary-color-4)"
+          >
+            Reset all
+          </Button>
+          <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
+            <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+            Download image
+          </Button>
+        </Flex>
+      </Box>
+      {isSuccessModalOpen && <DownloadSuccessModal close={closeSuccessModal} />}
+    </>
   );
 }

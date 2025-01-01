@@ -103,7 +103,7 @@ export default function Create() {
             {/* Editor Drawer for desktop */}
 
             <Box visibleFrom="md">
-              <EditorDrawer />
+              <EditorDrawer imageNodeRef={coverImageNodeRef} />
             </Box>
 
             <CoverImage imageNodeRef={coverImageNodeRef} />
@@ -111,7 +111,7 @@ export default function Create() {
 
             {/* Editor Drawer for mobile */}
             <Box hiddenFrom="md">
-              <EditorDrawer />
+              <EditorDrawer imageNodeRef={coverImageNodeRef} />
             </Box>
           </Flex>
         </EditorProvider>
