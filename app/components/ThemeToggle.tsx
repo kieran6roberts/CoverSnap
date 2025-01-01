@@ -13,7 +13,7 @@ export function ColorSchemeToggle() {
     <ActionIcon
       onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
       variant="default"
-      size="xl"
+      size={36}
       aria-label="Toggle color scheme"
     >
       {computedColorScheme === LIGHT_THEME ? (
