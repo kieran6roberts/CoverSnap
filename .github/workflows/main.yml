@@ -13,14 +13,13 @@ concurrency:
 jobs:
   type-check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [18]
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -35,14 +34,13 @@ jobs:
 
   format:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [18]
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
