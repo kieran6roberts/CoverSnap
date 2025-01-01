@@ -1,6 +1,7 @@
 {
   "name": "cover-snap",
   "type": "module",
+  "packageManager": "pnpm@9.0.6",
   "version": "1.0.0",
   "description": "Cover Snap lets you easily generate good looking cover images for your blog posts.",
   "sideEffects": false,
