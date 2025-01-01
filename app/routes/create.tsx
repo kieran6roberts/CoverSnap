@@ -85,17 +85,7 @@ export default function Create() {
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor
-            size="sm"
-            w={125}
-            fz="1rem"
-            underline="always"
-            fw={500}
-            variant="text"
-            component={Link}
-            to="/"
-            display="flex"
-          >
+          <Anchor size="sm" fz="1rem" fw={500} variant="text" component={Link} to="/" display="flex">
             CoverSnap
           </Anchor>
           <Flex gap="xs">

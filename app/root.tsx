@@ -54,6 +54,11 @@ const theme = createTheme({
         radius: 'md'
       }
     },
+    ActionIcon: {
+      defaultProps: {
+        radius: 'md'
+      }
+    },
     Select: {
       defaultProps: {
         radius: 'md'
@@ -82,7 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>

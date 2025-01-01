@@ -1,17 +1,5 @@
 import type { MetaFunction } from '@remix-run/node';
-import {
-  Container,
-  Title,
-  Text,
-  Flex,
-  Anchor,
-  Stack,
-  Button,
-  Box,
-  Image,
-  useMantineColorScheme,
-  Mark
-} from '@mantine/core';
+import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
 import { Link } from '@remix-run/react';
 
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
@@ -30,26 +18,16 @@ export const meta: MetaFunction = () => {
 
 const heroImages = {
   light: '/public/hero-light.png',
-  dark: '/public/hero-dark.png',
-  auto: '/public/hero-light.png'
+  dark: '/public/hero-dark.png'
 } as const;
 
 export default function Index() {
-  const { colorScheme } = useMantineColorScheme();
   return (
     <>
       <Box component="header" w="100%" py="md">
         <Container size="lg">
           <Flex component="nav" justify="space-between" align="center">
-            <Anchor
-              size="sm"
-              w={60}
-              fz={{ base: '1.3rem', sm: '1.5rem' }}
-              fw={500}
-              variant="text"
-              component={Link}
-              to="/"
-            >
+            <Anchor size="sm" fz={{ base: '1.3rem', sm: '1.5rem' }} fw={500} variant="text" component={Link} to="/">
               CoverSnap
             </Anchor>
             <ColorSchemeToggle />
@@ -79,15 +57,7 @@ export default function Index() {
               CoverSnap can help you create great looking cover images for your blog posts in seconds using simple
               editing tools. It's completely free to use! Give it a star on GitHub if you found it useful. Enjoy.
             </Text>
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              justify="center"
-              align="center"
-              gap="md"
-              mt="xl"
-              // maw={350}
-              // mx="auto"
-            >
+            <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
               <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">
                 Build for free
               </Button>
@@ -111,7 +81,7 @@ export default function Index() {
             mt="xl"
             mb={{ base: 50, sm: 100 }}
           >
-            <Image src={heroImages[colorScheme]} alt="CoverSnap create page screenshot" radius="md" loading="eager" />
+            <Image src={heroImages['dark']} alt="CoverSnap create page screenshot" radius="md" loading="eager" />
           </Box>
         </Flex>
       </Container>

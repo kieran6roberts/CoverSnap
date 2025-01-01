@@ -8,7 +8,7 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
@@ -23,6 +23,7 @@
     "@remix-run/serve": "^2.15.2",
     "dom-to-image-more": "^3.5.0",
     "file-saver": "^2.0.5",
+    "globals": "^15.14.0",
     "iconoir-react": "^7.10.1",
     "isbot": "4",
     "react": "^18.3.1",

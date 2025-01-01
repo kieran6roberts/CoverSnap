@@ -32,8 +32,8 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
     fs.saveAs(blob, 'coverSnap-cover.png');
 
     return { success: true, blob };
-  } catch (error) {
-    console.error('oops, something went wrong!', error);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_error) {
     return { success: false, blob: null };
   }
 }
