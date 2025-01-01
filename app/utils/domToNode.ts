@@ -3,6 +3,8 @@ import fs from 'file-saver';
 
 const TARGET_WIDTH = 1600;
 const TARGET_HEIGHT = 840;
+const CONTAINER_MAX_WIDTH = 900;
+const SCALE_FACTOR = TARGET_WIDTH / CONTAINER_MAX_WIDTH;
 
 export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['current']) {
   if (!node) return { success: false, blob: null };
@@ -22,6 +24,17 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       transform: 'none',
       transformOrigin: 'top left'
     });
+
+    const titleElement = clone.querySelector('[class*="title"]');
+    const subtitleElement = clone.querySelector('[class*="subtitle"]');
+
+    if (titleElement instanceof HTMLElement) {
+      titleElement.style.fontSize = `${36 * SCALE_FACTOR}px`;
+    }
+
+    if (subtitleElement instanceof HTMLElement) {
+      subtitleElement.style.fontSize = `${24 * SCALE_FACTOR}px`;
+    }
 
     const blob = await domToImage.toBlob(clone, {
       height: targetHeight,
