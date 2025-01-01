@@ -21,7 +21,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: var(--mantine-color-gray-0);
+  background-color: var(--mantine-color-gray-1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,18 +37,24 @@
 }
 
 [data-mantine-color-scheme='dark'] .coverSection {
-  background-color: var(--mantine-color-dark-8);
+  background-color: var(--mantine-color-dark-9);
 }
 
 .title {
   font-size: var(--title-size) !important;
   white-space: pre-wrap;
   word-break: break-word;
+  font-weight: 600;
+  text-wrap: balance;
+  text-align: center;
 }
 
 .subtitle {
   font-size: var(--subtitle-size) !important;
   white-space: pre-wrap;
   word-break: break-word;
-  max-width: 75%;
+  line-clamp: 3;
+  font-weight: 500;
+  text-wrap: balance;
+  text-align: center;
 }

@@ -61,17 +61,25 @@ const theme = createTheme({
     },
     Select: {
       defaultProps: {
-        radius: 'md'
+        radius: 'md',
+        size: 'md'
       }
     },
     TextInput: {
       defaultProps: {
-        radius: 'md'
+        radius: 'md',
+        size: 'md'
       }
     },
     ColorInput: {
       defaultProps: {
-        radius: 'md'
+        radius: 'md',
+        size: 'md'
+      }
+    },
+    ScrollArea: {
+      defaultProps: {
+        scrollbarSize: 10
       }
     }
   },

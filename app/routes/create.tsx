@@ -85,8 +85,8 @@ export default function Create() {
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor size="sm" fz="1rem" fw={500} variant="text" component={Link} to="/" display="flex">
-            CoverSnap
+          <Anchor component={Link} to="/" display="flex" aria-label="CoverSnap logo">
+            <Image src="/favicon.ico" width={28} height={28} alt="CoverSnap logo" />
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />

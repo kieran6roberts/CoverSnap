@@ -1,4 +1,4 @@
-import { Box, Title, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
+import { Box, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import classes from './CoverImage.module.css';
@@ -10,13 +10,11 @@ import { DownloadSuccessModal } from './DownloadSuccessModal';
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
-    state: { primaryTitle, secondaryTitle, backgroundColor }
+    state: { primaryTitle, subTitle, primaryTitleColor, subTitleColor, backgroundColor }
   } = useEditor();
   const [visible, { open, close }] = useDisclosure(false);
 
   const [isDownloadSuccessModalOpen, setIsDownloadSuccessModalOpen] = useState(false);
-
-  const hasSecondaryTitle = secondaryTitle.length > 0;
 
   const onDownload = async () => {
     open();
@@ -39,27 +37,12 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             Download size is 1600 x 840
           </Text>
           <Box ref={imageNodeRef} className={classes.cover} variant="filled" style={{ backgroundColor }}>
-            <Title
-              order={2}
-              className={classes.title}
-              c="var(--mantine-color-white)"
-              textWrap="balance"
-              ta="center"
-              lineClamp={3}
-            >
+            <span className={classes.title} style={{ color: primaryTitleColor }}>
               {primaryTitle ?? ''}
-            </Title>
-            <Title
-              mt={hasSecondaryTitle ? 'md' : 0}
-              order={3}
-              className={classes.subtitle}
-              c="var(--mantine-color-white)"
-              textWrap="balance"
-              ta="center"
-              lineClamp={3}
-            >
-              {secondaryTitle ?? ''}
-            </Title>
+            </span>
+            <span className={classes.subtitle} style={{ color: subTitleColor }}>
+              {subTitle ?? ''}
+            </span>
           </Box>
           <Flex gap="xs" justify="center">
             <Button hiddenFrom="md" onClick={onDownload} size="xs" rightSection={<Download width={16} height={16} />}>

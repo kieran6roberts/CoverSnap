@@ -1,19 +1,20 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
-import { colorTypeOptions } from '~/consts';
 
 type EditorState = {
   primaryTitle: string;
-  secondaryTitle: string;
+  subTitle: string;
   backgroundColor: string;
-  colorFormat: (typeof colorTypeOptions)[number];
+  primaryTitleColor: string;
+  subTitleColor: string;
 };
 
 type EditorContextType = {
   state: EditorState;
   setPrimaryTitle: (title: string) => void;
-  setSecondaryTitle: (title: string) => void;
+  setSubTitle: (title: string) => void;
   setBackgroundColor: (background: string) => void;
-  setColorFormat: (format: (typeof colorTypeOptions)[number]) => void;
+  setPrimaryTitleColor: (color: string) => void;
+  setSubTitleColor: (color: string) => void;
   resetEditor: () => void;
 };
 
@@ -21,9 +22,10 @@ const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 const defaultState: EditorState = {
   primaryTitle: 'Best practises for Remix state management',
-  secondaryTitle: '',
+  subTitle: '',
   backgroundColor: '#333333',
-  colorFormat: 'hex'
+  primaryTitleColor: '#ffffff',
+  subTitleColor: '#ffffff'
 };
 
 export function EditorProvider({ children }: { children: ReactNode }) {
@@ -33,18 +35,21 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, primaryTitle: title }));
   };
 
-  const setSecondaryTitle = (title: string) => {
-    setState((prev) => ({ ...prev, secondaryTitle: title }));
+  const setSubTitle = (title: string) => {
+    setState((prev) => ({ ...prev, subTitle: title }));
   };
 
   const setBackgroundColor = (background: string) => {
     setState((prev) => ({ ...prev, backgroundColor: background }));
   };
 
-  const setColorFormat = (format: (typeof colorTypeOptions)[number]) => {
-    setState((prev) => ({ ...prev, colorFormat: format }));
+  const setPrimaryTitleColor = (color: string) => {
+    setState((prev) => ({ ...prev, primaryTitleColor: color }));
   };
 
+  const setSubTitleColor = (color: string) => {
+    setState((prev) => ({ ...prev, subTitleColor: color }));
+  };
   const resetEditor = () => {
     setState(defaultState);
   };
@@ -54,9 +59,10 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       value={{
         state,
         setPrimaryTitle,
-        setSecondaryTitle,
+        setSubTitle,
         setBackgroundColor,
-        setColorFormat,
+        setPrimaryTitleColor,
+        setSubTitleColor,
         resetEditor
       }}
     >
