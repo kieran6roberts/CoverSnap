@@ -47,7 +47,9 @@ export function EditorDrawer() {
         </Text>
       </Accordion.Control>
       <Accordion.Panel px="sm">
-        <Box pb={75}>{item.content()}</Box>
+        <Box pb={48} pt={24}>
+          {item.content()}
+        </Box>
       </Accordion.Panel>
     </Accordion.Item>
   ));
