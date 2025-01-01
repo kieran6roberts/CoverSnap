@@ -1,6 +1,7 @@
 {
   "name": "cover-snap",
   "type": "module",
+  "packageManager": "pnpm@9.0.6",
   "version": "1.0.0",
   "description": "Cover Snap lets you easily generate good looking cover images for your blog posts.",
   "sideEffects": false,
@@ -8,9 +9,12 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "lint": "eslint .",
+    "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "typecheck": "tsc",
+    "format": "pnpm lint && pnpm prettier:fix",
+    "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix"
   },
   "keywords": [],
   "author": "Kieran Roberts",
