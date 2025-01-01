@@ -1,12 +1,13 @@
 import { CloseButton, ColorInput, Divider, Flex, Select, Stack, TextInput } from '@mantine/core';
 
 import { useEditor } from '~/contexts/EditorContext';
-import { colorTypeOptions } from '~/consts';
+import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
 import { ColorType } from '~/types';
 import { useState } from 'react';
+import { updateCSSVariable } from '~/utils/styles';
 
 export function DrawerTextSection() {
-  const { state, setPrimaryTitle, setSubTitle, setPrimaryTitleColor, setSubTitleColor } = useEditor();
+  const { state, setPrimaryTitle, setSubTitle } = useEditor();
   const hasPrimaryTitle = state.primaryTitle.length > 0;
   const hasSubTitle = state.subTitle.length > 0;
 
@@ -32,10 +33,10 @@ export function DrawerTextSection() {
             format={primaryTitleColorFormat}
             label="Primary title color"
             description="Select a primary title color"
-            defaultValue={state.primaryTitleColor}
+            defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-color']}
             w="100%"
             onChangeEnd={(color) => {
-              setPrimaryTitleColor(color);
+              updateCSSVariable({ name: '--cover-title-color', value: color });
             }}
           />
           <Select
@@ -68,10 +69,10 @@ export function DrawerTextSection() {
             format={subTitleColorFormat}
             label="Subtitle color"
             description="Select a subtitle color"
-            defaultValue={state.subTitleColor}
+            defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-color']}
             w="100%"
             onChangeEnd={(color) => {
-              setSubTitleColor(color);
+              updateCSSVariable({ name: '--cover-subtitle-color', value: color });
             }}
           />
           <Select

@@ -8,7 +8,7 @@ import { useImageDownload } from '~/hooks/useImageDownload';
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
-    state: { primaryTitle, subTitle, primaryTitleColor, subTitleColor, backgroundColor }
+    state: { primaryTitle, subTitle }
   } = useEditor();
 
   const { isLoading, isSuccessModalOpen, closeSuccessModal, downloadImage } = useImageDownload({
@@ -22,13 +22,9 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
           <Text ta="center" size="sm" fw={500}>
             Download size is 1600 x 840
           </Text>
-          <Box ref={imageNodeRef} className={classes.cover} variant="filled" style={{ backgroundColor }}>
-            <span className={classes.title} style={{ color: primaryTitleColor }}>
-              {primaryTitle ?? ''}
-            </span>
-            <span className={classes.subtitle} style={{ color: subTitleColor }}>
-              {subTitle ?? ''}
-            </span>
+          <Box ref={imageNodeRef} className={classes.cover} variant="filled">
+            <span className={classes.title}>{primaryTitle ?? ''}</span>
+            <span className={classes.subtitle}>{subTitle ?? ''}</span>
           </Box>
           <Flex gap="xs" justify="center">
             <Button

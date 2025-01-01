@@ -1,12 +1,11 @@
 import { ColorInput, Stack, Flex, Select } from '@mantine/core';
-import { useEditor } from '~/contexts/EditorContext';
-import { colorTypeOptions } from '~/consts';
+import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
 import { useState } from 'react';
+import { updateCSSVariable } from '~/utils/styles';
 
 type ColorType = (typeof colorTypeOptions)[number];
 
 export function DrawerBackgroundSection() {
-  const { state, setBackgroundColor } = useEditor();
   const [colorFormat, setColorFormat] = useState<ColorType>('hex');
 
   return (
@@ -16,9 +15,9 @@ export function DrawerBackgroundSection() {
           format={colorFormat}
           label="Background color"
           description="Select a primary background color for the cover"
-          defaultValue={state.backgroundColor}
+          defaultValue={DEFAULT_CSS_VARIABLE_VALUES['bg-color']}
           onChangeEnd={(color) => {
-            setBackgroundColor(color);
+            updateCSSVariable({ name: '--cover-background-color', value: color });
           }}
         />
         <Select

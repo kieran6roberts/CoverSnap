@@ -3,18 +3,12 @@ import { createContext, useContext, ReactNode, useState } from 'react';
 type EditorState = {
   primaryTitle: string;
   subTitle: string;
-  backgroundColor: string;
-  primaryTitleColor: string;
-  subTitleColor: string;
 };
 
 type EditorContextType = {
   state: EditorState;
   setPrimaryTitle: (title: string) => void;
   setSubTitle: (title: string) => void;
-  setBackgroundColor: (background: string) => void;
-  setPrimaryTitleColor: (color: string) => void;
-  setSubTitleColor: (color: string) => void;
   resetEditor: () => void;
 };
 
@@ -22,10 +16,7 @@ const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 const defaultState: EditorState = {
   primaryTitle: '10 Tips/Principles For Cleaner React Code.',
-  subTitle: '',
-  backgroundColor: '#333333',
-  primaryTitleColor: '#ffffff',
-  subTitleColor: '#ffffff'
+  subTitle: ''
 };
 
 export function EditorProvider({ children }: { children: ReactNode }) {
@@ -39,17 +30,6 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, subTitle: title }));
   };
 
-  const setBackgroundColor = (background: string) => {
-    setState((prev) => ({ ...prev, backgroundColor: background }));
-  };
-
-  const setPrimaryTitleColor = (color: string) => {
-    setState((prev) => ({ ...prev, primaryTitleColor: color }));
-  };
-
-  const setSubTitleColor = (color: string) => {
-    setState((prev) => ({ ...prev, subTitleColor: color }));
-  };
   const resetEditor = () => {
     setState(defaultState);
   };
@@ -60,9 +40,6 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         state,
         setPrimaryTitle,
         setSubTitle,
-        setBackgroundColor,
-        setPrimaryTitleColor,
-        setSubTitleColor,
         resetEditor
       }}
     >
