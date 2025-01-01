@@ -3,6 +3,7 @@ import classes from './EditorDrawer.module.css';
 import { DrawerTextSection } from '~/components/DrawerEditing/TextSection';
 import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSection';
 import { useEditor } from '~/contexts/EditorContext';
+import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon } from 'iconoir-react';
 
 export function EditorDrawer() {
   const { resetEditor } = useEditor();
@@ -10,18 +11,37 @@ export function EditorDrawer() {
   const editSections = [
     {
       title: 'Text',
-      content: () => <DrawerTextSection />
+      content: () => <DrawerTextSection />,
+      icon: <IconText width={24} height={24} />
     },
     {
       title: 'Background',
-      content: () => <DrawerBackgroundSection />
-      // icon: <IconText />,
+      content: () => <DrawerBackgroundSection />,
+      icon: <MediaImage width={24} height={24} />
+    },
+    {
+      title: 'Templates',
+      content: () => null,
+      icon: <AlignBottomBox width={24} height={24} />,
+      isDisabled: true
+    },
+    {
+      title: 'Elements',
+      content: () => null,
+      icon: <Pentagon width={24} height={24} />,
+      isDisabled: true
+    },
+    {
+      title: 'Uploads',
+      content: () => null,
+      icon: <UploadSquare width={24} height={24} />,
+      isDisabled: true
     }
   ];
 
   const items = editSections.map((item) => (
     <Accordion.Item key={item.title} value={item.title}>
-      <Accordion.Control>
+      <Accordion.Control icon={item.icon} disabled={!!item.isDisabled}>
         <Text size="lg" fw={500}>
           {item.title}
         </Text>
@@ -35,7 +55,7 @@ export function EditorDrawer() {
   return (
     <Box component="aside" className={classes.sidebar} pos="relative">
       <ScrollArea h="calc(100vh - 69px - 69px)">
-        <Accordion radius="md" defaultValue={['Text', 'Background']} multiple variant="default">
+        <Accordion radius="md" multiple variant="default">
           {items}
         </Accordion>
       </ScrollArea>

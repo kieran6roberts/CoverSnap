@@ -21,7 +21,7 @@ type EditorContextType = {
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 const defaultState: EditorState = {
-  primaryTitle: 'Best practises for Remix state management',
+  primaryTitle: '10 Tips/Principles For Cleaner React Code.',
   subTitle: '',
   backgroundColor: '#333333',
   primaryTitleColor: '#ffffff',

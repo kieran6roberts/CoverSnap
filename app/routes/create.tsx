@@ -86,7 +86,7 @@ export default function Create() {
       >
         <Flex component="nav" justify="space-between" align="center">
           <Anchor component={Link} to="/" display="flex" aria-label="CoverSnap logo">
-            <Image src="/favicon.ico" width={28} height={28} alt="CoverSnap logo" />
+            <Image src="/favicon.ico" width={36} height={36} alt="CoverSnap logo" />
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
