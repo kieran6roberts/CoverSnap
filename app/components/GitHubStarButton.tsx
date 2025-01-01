@@ -29,7 +29,7 @@ export function GitHubStarButton({
       {...(hiddenFrom ? { hiddenFrom } : {})}
     >
       <Flex align="center" gap="xs">
-        <Github width={20} /> Find us on GitHub
+        <Github width={20} /> GitHub
       </Flex>
     </Button>
   );

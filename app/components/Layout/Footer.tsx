@@ -3,7 +3,7 @@ import { GITHUB_URL } from '~/consts';
 
 export function Footer() {
   return (
-    <Box component="footer" w="100%" py="lg">
+    <Box component="footer" w="100%" py="xl">
       <Container size="xl">
         <Stack gap="xs" justify="center" align="center">
           <Text ta="center" size="sm">

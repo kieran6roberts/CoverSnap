@@ -20,11 +20,6 @@ export function ColorSchemeToggle() {
       value: DARK_THEME,
       label: 'Dark',
       leftSection: <HalfMoon width={18} height={18} color="var(--mantine-color-text)" />
-    },
-    {
-      value: AUTO_THEME,
-      label: 'Auto',
-      leftSection: <Settings width={18} height={18} color="var(--mantine-color-text)" />
     }
   ];
 

@@ -2,7 +2,6 @@ import { Flex, Anchor, Box, ActionIcon, Modal, Text, Card, Group, Image, Stack, 
 import { Link, MetaFunction } from '@remix-run/react';
 import { useRef, useState, useEffect } from 'react';
 
-import { BrandLogo } from '~/components/BrandLogo';
 import { EditorDrawer } from '~/components/DrawerEditing/EditorDrawer';
 import { CoverImage } from '~/components/CoverImage';
 import { EditorProvider } from '~/contexts/EditorContext';
@@ -83,12 +82,21 @@ export default function Create() {
         w="100%"
         py="md"
         px="lg"
-        h={75}
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor size="sm" w={125} fw={125} variant="text" component={Link} to="/" display="flex">
-            <BrandLogo />
+          <Anchor
+            size="sm"
+            w={125}
+            fz="1rem"
+            underline="always"
+            fw={500}
+            variant="text"
+            component={Link}
+            to="/"
+            display="flex"
+          >
+            CoverSnap
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
