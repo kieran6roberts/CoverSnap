@@ -22,6 +22,7 @@ jobs:
           build: pnpm build
           start: pnpm start
           browser: chrome
+          record: false
 
   type-check:
     runs-on: ubuntu-latest
