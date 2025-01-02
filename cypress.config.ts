@@ -13,12 +13,7 @@ export default defineConfig({
   },
 
   e2e: {
-    defaultCommandTimeout: 10000,
-    video: false,
-    viewportHeight: 768,
-    viewportWidth: 1366,
-    trashAssetsBeforeRuns: true, // Clean screenshots after tests are done
-    setupNodeEvents(on) {
+    setupNodeEvents: async (on, config) => {
       on('task', verifyDownloadTasks);
       on('task', {
         log: (message: string) => {
@@ -27,6 +22,14 @@ export default defineConfig({
           return null;
         }
       });
+      const fileName = config.env.configFile || 'dev';
+      const configFile = await import(`./cypress/config/${fileName}.json`, {
+        assert: { type: 'json' }
+      });
+      return {
+        ...config,
+        ...configFile.default
+      };
     }
   }
 });
