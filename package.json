@@ -17,11 +17,7 @@
     "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix",
     "tests:open": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress open'",
     "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run'",
-<<<<<<< HEAD
     "tests:run:ci": "cypress run"
-=======
-    "tests:run:ci": "start-server-and-test 'pnpm start' http://localhost:3000 'cypress run --config baseUrl=http://localhost:3000'"
->>>>>>> 5ad0b04 (ci: set new base url for ci tests)
   },
   "keywords": [],
   "author": "Kieran Roberts",
