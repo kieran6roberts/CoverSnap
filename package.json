@@ -16,7 +16,8 @@
     "format": "pnpm lint && pnpm prettier:fix",
     "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix",
     "tests:open": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress open'",
-    "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run'"
+    "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run'",
+    "tests:run:ci": "cypress run"
   },
   "keywords": [],
   "author": "Kieran Roberts",

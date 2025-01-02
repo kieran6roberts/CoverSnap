@@ -21,11 +21,11 @@ export function DrawerTextSection() {
         value={state.primaryTitle}
         onChange={(e) => setPrimaryTitle(e.target.value)}
         placeholder="HTTP Security Headers and how to..."
-        error={state.primaryTitle.length > 60 ? 'Maximum 60 characters' : null}
+        error={state.primaryTitle.length > 80 ? 'Maximum 80 characters' : null}
         label="Cover Title"
-        description="Maximum 60 characters"
+        description="Maximum 80 characters"
         rightSection={hasPrimaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setPrimaryTitle('')} />}
-        maxLength={60}
+        maxLength={80}
       />
       <Stack>
         <Flex align="flex-end" justify="space-between" gap="xs">

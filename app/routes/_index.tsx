@@ -17,8 +17,8 @@ export const meta: MetaFunction = () => {
 };
 
 const heroImages = {
-  light: '/public/hero-light.png',
-  dark: '/public/hero-dark.png'
+  light: '/hero-light.png',
+  dark: '/hero-dark.png'
 } as const;
 
 export default function Index() {
