@@ -16,7 +16,7 @@
     "format": "pnpm lint && pnpm prettier:fix",
     "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix",
     "tests:open": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress open'",
-    "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run'",
+    "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run --config baseUrl=http://localhost:5173'",
     "tests:run:ci": "start-server-and-test 'pnpm start' http://localhost:3000 'cypress run --config baseUrl=http://localhost:3000'"
   },
   "keywords": [],
