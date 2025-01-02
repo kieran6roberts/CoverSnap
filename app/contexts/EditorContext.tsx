@@ -1,4 +1,6 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
+import { DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
+import { updateCSSVariable } from '~/utils/styles';
 
 type EditorState = {
   primaryTitle: string;
@@ -32,6 +34,17 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 
   const resetEditor = () => {
     setState(defaultState);
+    updateCSSVariable({ name: '--cover-title-color', value: DEFAULT_CSS_VARIABLE_VALUES['title-color'] });
+    updateCSSVariable({ name: '--cover-subtitle-color', value: DEFAULT_CSS_VARIABLE_VALUES['subtitle-color'] });
+    updateCSSVariable({
+      name: '--cover-title-font-size',
+      value: `${DEFAULT_CSS_VARIABLE_VALUES['title-font-size']}px`
+    });
+    updateCSSVariable({
+      name: '--cover-subtitle-font-size',
+      value: `${DEFAULT_CSS_VARIABLE_VALUES['subtitle-font-size']}px`
+    });
+    updateCSSVariable({ name: '--cover-background-color', value: DEFAULT_CSS_VARIABLE_VALUES['bg-color'] });
   };
 
   return (
