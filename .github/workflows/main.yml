@@ -28,8 +28,6 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           env: configFile=ci
-          start: pnpm build && pnpm start
-          command: pnpm tests:run:ci
           wait-on: 'http://localhost:3000'
           browser: chrome
           record: false
