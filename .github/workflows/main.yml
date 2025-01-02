@@ -23,6 +23,7 @@ jobs:
         with:
           build: pnpm build
           start: pnpm start:ci
+          wait-on: http://localhost:3000
           browser: chrome
           record: false
 
