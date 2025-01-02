@@ -22,7 +22,8 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       width: `${targetWidth}px`,
       height: `${targetHeight}px`,
       transform: 'none',
-      transformOrigin: 'top left'
+      transformOrigin: 'top left',
+      margin: '0px'
     });
 
     const titleElement = clone.querySelector('[class*="title"]');
