@@ -9,7 +9,7 @@ import { EditorArea } from '~/components/Layout/EditorArea';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'CoverSnap | Create Cover Image' },
+    { title: 'CoverSnap | Create Blog Cover Images' },
     {
       name: 'description',
       content: 'Use the editing tools to build your cover image and download it when you are ready.'

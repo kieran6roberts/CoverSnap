@@ -70,7 +70,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
   return (
     <>
       <Box component="aside" className={classes.sidebar} pos="relative">
-        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 75px)">
+        <ScrollArea visibleFrom="md" h="calc(100vh - 69px)">
           <Accordion radius="md" multiple variant="default">
             {items}
           </Accordion>
@@ -79,6 +79,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           {items}
         </Accordion>
         <Flex
+          hiddenFrom="md"
           justify={{ base: 'space-between', md: 'flex-end' }}
           bg="var(--mantine-color-body)"
           pos={{ base: 'fixed', md: 'sticky' }}
@@ -97,7 +98,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           >
             Reset all
           </Button>
-          <Button
+          {/* <Button
             visibleFrom="md"
             onClick={resetEditor}
             variant="light"
@@ -105,7 +106,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             color="var(--mantine-primary-color-4)"
           >
             Reset all
-          </Button>
+          </Button> */}
           <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
             Download image

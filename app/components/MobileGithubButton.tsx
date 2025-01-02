@@ -5,7 +5,7 @@ import { Github } from 'iconoir-react';
 
 export function MobileGithubButton() {
   return (
-    <ActionIcon variant="light" size="lg">
+    <ActionIcon hiddenFrom="md" variant="light" size="lg">
       <Github />
     </ActionIcon>
   );
