@@ -13,7 +13,7 @@ export function EditorArea() {
   return (
     <EditorProvider>
       <Flex direction={{ base: 'column-reverse', md: 'row' }}>
-        <Box visibleFrom="md">
+        <Box>
           <EditorDrawer imageNodeRef={coverImageNodeRef} />
         </Box>
 

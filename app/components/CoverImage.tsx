@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
+import { Rnd } from 'react-rnd';
 
 import classes from './CoverImage.module.css';
 import { useEditor } from '../contexts/EditorContext';
@@ -25,8 +26,42 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             Download size is 1600 x 840
           </Text>
           <Box ref={imageNodeRef} className={classes.cover} variant="filled">
-            <span className={classes.title}>{primaryTitle ?? ''}</span>
-            <span className={classes.subtitle}>{subTitle ?? ''}</span>
+            <Rnd
+              default={{
+                x: 0,
+                y: 0,
+                width: 'auto',
+                height: 'auto'
+              }}
+              bounds="parent"
+              enableResizing={{
+                top: true,
+                right: true,
+                bottom: true,
+                left: true
+              }}
+              className={classes.rndWrapper}
+            >
+              <span className={classes.title}>{primaryTitle ?? ''}</span>
+            </Rnd>
+            <Rnd
+              default={{
+                x: 0,
+                y: 0,
+                width: 'auto',
+                height: 'auto'
+              }}
+              bounds="parent"
+              enableResizing={{
+                top: true,
+                right: true,
+                bottom: true,
+                left: true
+              }}
+              className={classes.rndWrapper}
+            >
+              <span className={classes.subtitle}>{subTitle ?? ''}</span>
+            </Rnd>
           </Box>
           <Flex gap="xs" justify="center">
             <Button
