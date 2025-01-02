@@ -1,3 +1,5 @@
+'use client';
+
 import { Flex, Button } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import { Github } from 'iconoir-react';

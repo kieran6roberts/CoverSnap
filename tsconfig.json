@@ -5,7 +5,8 @@
     "**/.server/**/*.ts",
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "**/.client/**/*.tsx",
+    "cypress.config.ts"
   ],
   "exclude": ["node_modules", "build"],
   "compilerOptions": {

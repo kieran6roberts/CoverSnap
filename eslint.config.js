@@ -5,6 +5,7 @@ import tsParser from '@typescript-eslint/parser';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
+import cypressPlugin from 'eslint-plugin-cypress';
 
 export default [
   {
@@ -30,7 +31,8 @@ export default [
     plugins: {
       react,
       'jsx-a11y': jsxA11y,
-      'react-hooks': reactHooks
+      'react-hooks': reactHooks,
+      cypress: cypressPlugin
     },
     settings: {
       react: {

@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
 
 import classes from './CoverImage.module.css';

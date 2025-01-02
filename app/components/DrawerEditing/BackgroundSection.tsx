@@ -26,7 +26,7 @@ export function DrawerBackgroundSection() {
           data={colorTypeOptions}
           value={colorFormat}
           onChange={(value) => setColorFormat(value as ColorType)}
-          aria-label="Change color type"
+          aria-label="Change background color type"
           w={100}
           variant="default"
           allowDeselect={false}

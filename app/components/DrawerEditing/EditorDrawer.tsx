@@ -1,3 +1,5 @@
+'use client';
+
 import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
 
@@ -48,7 +50,11 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   const items = editSections.map((item) => (
     <Accordion.Item key={item.title} value={item.title}>
-      <Accordion.Control icon={item.icon} disabled={!!item.isDisabled}>
+      <Accordion.Control
+        aria-label={`Toggle ${item.title.toLowerCase()} editing`}
+        icon={item.icon}
+        disabled={!!item.isDisabled}
+      >
         <Text size="lg" fw={500}>
           {item.title}
         </Text>

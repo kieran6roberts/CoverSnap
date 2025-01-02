@@ -1,3 +1,5 @@
+'use client';
+
 import { Modal, Stack, Button, Flex, Text, Divider, Anchor } from '@mantine/core';
 import { GitHubStarButton } from './GitHubStarButton';
 

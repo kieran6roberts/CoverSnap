@@ -45,7 +45,7 @@ export function DrawerTextSection() {
             data={colorTypeOptions}
             value={primaryTitleColorFormat}
             onChange={(value) => setPrimaryTitleColorFormat(value as ColorType)}
-            aria-label="Change color type"
+            aria-label="Change title color type"
             w={150}
             variant="default"
             allowDeselect={false}
@@ -56,7 +56,7 @@ export function DrawerTextSection() {
       <TextInput
         value={state.subTitle}
         onChange={(e) => setSubTitle(e.target.value)}
-        placeholder="Let's dive into the world..."
+        placeholder="Let's dive into the world of..."
         label="Cover Subtitle"
         description="Maximum 80 characters"
         error={state.subTitle.length > 80 ? 'Maximum 80 characters' : null}
@@ -81,7 +81,7 @@ export function DrawerTextSection() {
             data={colorTypeOptions}
             value={subTitleColorFormat}
             onChange={(value) => setSubTitleColorFormat(value as ColorType)}
-            aria-label="Change color type"
+            aria-label="Change subtitle color type"
             w={150}
             variant="default"
             allowDeselect={false}
