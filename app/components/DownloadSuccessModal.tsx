@@ -2,6 +2,7 @@
 
 import { Modal, Stack, Button, Flex, Text, Divider, Anchor } from '@mantine/core';
 import { GitHubStarButton } from './GitHubStarButton';
+import { GITHUB_URL } from '~/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
   return (
@@ -14,7 +15,7 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
             @Kieran6Dev
           </Anchor>{' '}
           or raise an issue on{' '}
-          <Anchor underline="always" target="_blank" href="https://github.com/Kieran6Dev/coverSnap/issues">
+          <Anchor underline="always" target="_blank" href={GITHUB_URL}>
             GitHub.
           </Anchor>
         </Text>

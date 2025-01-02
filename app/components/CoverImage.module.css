@@ -20,6 +20,8 @@
   text-align: center;
 
   @media (max-width: em(992px)) {
+    padding: 1rem 0;
+
     .coverSection {
       padding: 0;
     }

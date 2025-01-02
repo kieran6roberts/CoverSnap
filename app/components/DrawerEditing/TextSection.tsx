@@ -22,7 +22,7 @@ export function DrawerTextSection() {
         onChange={(e) => setPrimaryTitle(e.target.value)}
         placeholder="HTTP Security Headers and how to..."
         error={state.primaryTitle.length > 80 ? 'Maximum 80 characters' : null}
-        label="Cover Title"
+        label="Title"
         description="Maximum 80 characters"
         rightSection={hasPrimaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setPrimaryTitle('')} />}
         maxLength={80}
@@ -31,7 +31,7 @@ export function DrawerTextSection() {
         <Flex align="flex-end" justify="space-between" gap="xs">
           <ColorInput
             format={primaryTitleColorFormat}
-            label="Primary title color"
+            label="Color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-color']}
             w="100%"
             onChangeEnd={(color) => {
@@ -58,7 +58,7 @@ export function DrawerTextSection() {
         onChange={(value) => {
           updateCSSVariable({ name: '--cover-title-font-size', value: `${value}px` });
         }}
-        label="Primary title font size (px)"
+        label="Font size (px)"
         size="md"
         suffix="px"
         allowDecimal={false}
@@ -68,7 +68,7 @@ export function DrawerTextSection() {
         value={state.subTitle}
         onChange={(e) => setSubTitle(e.target.value)}
         placeholder="Let's dive into the world of..."
-        label="Cover Subtitle"
+        label="Subtitle"
         description="Maximum 80 characters"
         error={state.subTitle.length > 80 ? 'Maximum 80 characters' : null}
         rightSection={hasSubTitle && <CloseButton size="sm" variant="subtle" onClick={() => setSubTitle('')} />}
@@ -78,7 +78,7 @@ export function DrawerTextSection() {
         <Flex align="flex-end" justify="space-between" gap="xs">
           <ColorInput
             format={subTitleColorFormat}
-            label="Subtitle color"
+            label="Color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-color']}
             w="100%"
             onChangeEnd={(color) => {
@@ -106,7 +106,7 @@ export function DrawerTextSection() {
         onChange={(value) => {
           updateCSSVariable({ name: '--cover-subtitle-font-size', value: `${value}px` });
         }}
-        label="Subtitle font size (px)"
+        label="Font size (px)"
         size="md"
         allowDecimal={false}
       />
