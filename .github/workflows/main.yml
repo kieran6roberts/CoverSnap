@@ -22,7 +22,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: pnpm build
-          start: pnpm start
+          start: pnpm start:ci
           browser: chrome
           record: false
 
