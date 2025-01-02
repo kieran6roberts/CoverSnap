@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Modal, Text, Stack, Group, Button, Image } from '@mantine/core';
+import { Modal, Text, Stack, Button } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 export function WelcomeModal() {
@@ -30,23 +30,23 @@ export function WelcomeModal() {
           size="md"
         >
           <Stack>
-            <Card padding="md" radius="md" mb="xl" withBorder>
-              <Card.Section>
-                <Image
-                  src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
-                  height={160}
-                  alt="Norway"
-                />
-              </Card.Section>
+            <Text>
+              Use the editing sidebar to adjust your content and design specifics. Drag and resize your text using the
+              cover image preview. More features coming soon!
+            </Text>
 
-              <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={500}>My Clean Code Principles</Text>
-              </Group>
-              <Text c="dimmed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Donec id elit non mi porta
-                gravida at eget metus.
-              </Text>
-            </Card>
+            <video
+              controls
+              width="100%"
+              autoPlay
+              loop
+              muted
+              style={{ maxWidth: 400, margin: '0 auto', borderRadius: '12px' }}
+            >
+              <source src="resize-demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
             <Button variant="filled" fullWidth data-autofocus onClick={() => setIsWelcomeModalOpen(false)}>
               Start editing
             </Button>
