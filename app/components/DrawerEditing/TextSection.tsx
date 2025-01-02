@@ -1,4 +1,4 @@
-import { CloseButton, ColorInput, Divider, Flex, Select, Stack, TextInput } from '@mantine/core';
+import { CloseButton, ColorInput, Divider, Flex, Select, Stack, TextInput, NumberInput } from '@mantine/core';
 
 import { useEditor } from '~/contexts/EditorContext';
 import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
@@ -32,7 +32,6 @@ export function DrawerTextSection() {
           <ColorInput
             format={primaryTitleColorFormat}
             label="Primary title color"
-            description="Select a primary title color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-color']}
             w="100%"
             onChangeEnd={(color) => {
@@ -52,6 +51,18 @@ export function DrawerTextSection() {
           />
         </Flex>
       </Stack>
+      <NumberInput
+        defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-font-size']}
+        max={80}
+        min={10}
+        onChange={(value) => {
+          updateCSSVariable({ name: '--cover-title-font-size', value: `${value}px` });
+        }}
+        label="Primary title font size (px)"
+        size="md"
+        suffix="px"
+        allowDecimal={false}
+      />
       <Divider label="Subtitle" mt={40} labelPosition="center" />
       <TextInput
         value={state.subTitle}
@@ -68,7 +79,6 @@ export function DrawerTextSection() {
           <ColorInput
             format={subTitleColorFormat}
             label="Subtitle color"
-            description="Select a subtitle color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-color']}
             w="100%"
             onChangeEnd={(color) => {
@@ -88,6 +98,18 @@ export function DrawerTextSection() {
           />
         </Flex>
       </Stack>
+      <NumberInput
+        defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-font-size']}
+        suffix="px"
+        max={50}
+        min={10}
+        onChange={(value) => {
+          updateCSSVariable({ name: '--cover-subtitle-font-size', value: `${value}px` });
+        }}
+        label="Subtitle font size (px)"
+        size="md"
+        allowDecimal={false}
+      />
     </Stack>
   );
 }

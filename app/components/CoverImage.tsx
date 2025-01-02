@@ -26,42 +26,46 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             Download size is 1600 x 840
           </Text>
           <Box ref={imageNodeRef} className={classes.cover} variant="filled">
-            <Rnd
-              default={{
-                x: 0,
-                y: 0,
-                width: 'auto',
-                height: 'auto'
-              }}
-              bounds="parent"
-              enableResizing={{
-                top: true,
-                right: true,
-                bottom: true,
-                left: true
-              }}
-              className={classes.rndWrapper}
-            >
-              <span className={classes.title}>{primaryTitle ?? ''}</span>
-            </Rnd>
-            <Rnd
-              default={{
-                x: 0,
-                y: 0,
-                width: 'auto',
-                height: 'auto'
-              }}
-              bounds="parent"
-              enableResizing={{
-                top: true,
-                right: true,
-                bottom: true,
-                left: true
-              }}
-              className={classes.rndWrapper}
-            >
-              <span className={classes.subtitle}>{subTitle ?? ''}</span>
-            </Rnd>
+            {primaryTitle ? (
+              <Rnd
+                default={{
+                  x: 0,
+                  y: 0,
+                  width: 'auto',
+                  height: 'auto'
+                }}
+                bounds="parent"
+                enableResizing={{
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true
+                }}
+                className={classes.rndWrapper}
+              >
+                <span className={classes.title}>{primaryTitle ?? ''}</span>
+              </Rnd>
+            ) : null}
+            {subTitle ? (
+              <Rnd
+                default={{
+                  x: 0,
+                  y: 0,
+                  width: 'auto',
+                  height: 'auto'
+                }}
+                bounds="parent"
+                enableResizing={{
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true
+                }}
+                className={classes.rndWrapper}
+              >
+                <span className={classes.subtitle}>{subTitle ?? ''}</span>
+              </Rnd>
+            ) : null}
           </Box>
           <Flex gap="xs" justify="center">
             <Button
