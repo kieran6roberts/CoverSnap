@@ -9,7 +9,11 @@ require('cy-verify-downloads').addCustomCommand();
 slowCypressDown(1000, false);
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('Hydration') || err.message.includes('hydrating')) {
+  if (
+    err.message.includes('Hydration') ||
+    err.message.includes('hydrating') ||
+    err.message.includes('Minified React error #418')
+  ) {
     return false;
   }
   return true;
