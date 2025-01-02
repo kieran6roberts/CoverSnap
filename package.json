@@ -10,6 +10,7 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "start": "remix-serve ./build/server/index.js",
+    "start:ci": "start-server-and-test 'remix-serve ./build/server/index.js --port 5173' http://localhost:5173 'cypress run'",
     "lint": "eslint .",
     "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "typecheck": "tsc",
