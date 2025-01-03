@@ -21,8 +21,8 @@ context('Download Cover', () => {
     cy.log('Download success modal should be shown');
 
     cy.findByRole('heading', { name: 'Thanks for using CoverSnap!' }).should('be.visible');
-    cy.findByRole('button', { name: 'Build a new cover' }).should('be.visible');
-    cy.findByRole('button', { name: 'Build a new cover' }).click();
+    cy.findByRole('button', { name: 'Keep building' }).should('be.visible');
+    cy.findByRole('button', { name: 'Keep building' }).click();
 
     cy.verifyDownload('coverSnap-cover.png');
   });
