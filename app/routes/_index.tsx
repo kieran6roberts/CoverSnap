@@ -81,7 +81,20 @@ export default function Index() {
             mt="xl"
             mb={{ base: 50, sm: 100 }}
           >
-            <Image src={heroImages['dark']} alt="CoverSnap create page screenshot" radius="md" loading="eager" />
+            <Image
+              lightHidden
+              src={heroImages['dark']}
+              alt="CoverSnap create page screenshot"
+              radius="md"
+              loading="eager"
+            />
+            <Image
+              darkHidden
+              src={heroImages['light']}
+              alt="CoverSnap create page screenshot"
+              radius="md"
+              loading="eager"
+            />
           </Box>
         </Flex>
       </Container>

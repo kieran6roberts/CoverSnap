@@ -31,8 +31,8 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
               <Rnd
                 default={{
                   x: 0,
-                  y: 0,
-                  width: 'auto',
+                  y: 25,
+                  width: '100%',
                   height: 'auto'
                 }}
                 bounds="parent"

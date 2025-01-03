@@ -22,7 +22,10 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       position: 'absolute',
       left: '-9999px',
       margin: '0',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      transform: `scale(${SCALE_FACTOR})`,
+      transformOrigin: 'top left',
+      borderRadius: '0px'
     });
 
     const titleRndWrapper = Array.from(clone.querySelectorAll('[class*="rndWrapper"]'));
@@ -36,8 +39,10 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       });
     }
 
+    // Scaled up the content correctly, now we can just set the dimensions so it's exact
     const blob = await domToImage.toBlob(clone, {
-      scale: SCALE_FACTOR
+      width: TARGET_WIDTH,
+      height: TARGET_HEIGHT
     });
 
     document.body.removeChild(clone);

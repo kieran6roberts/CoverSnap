@@ -98,15 +98,6 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           >
             Reset all
           </Button>
-          {/* <Button
-            visibleFrom="md"
-            onClick={resetEditor}
-            variant="light"
-            size="sm"
-            color="var(--mantine-primary-color-4)"
-          >
-            Reset all
-          </Button> */}
           <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
             Download image
