@@ -9,5 +9,5 @@ export const DEFAULT_CSS_VARIABLE_VALUES = {
   'subtitle-color': '#ffffff',
   'title-font-size': 28,
   'subtitle-font-size': 20,
-  'color-overlay-opacity': 100
+  'color-overlay-opacity': 0
 };

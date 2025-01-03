@@ -1,11 +1,15 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 import { DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
+import { ColorType } from '~/types';
 import { updateCSSVariable } from '~/utils/styles';
 
 type EditorState = {
   primaryTitle: string;
   subTitle: string;
   backgroundImage: string | null;
+  primaryTitleColorFormat: ColorType;
+  subTitleColorFormat: ColorType;
+  backgroundColorFormat: ColorType;
 };
 
 type EditorContextType = {
@@ -14,6 +18,9 @@ type EditorContextType = {
   setSubTitle: (title: string) => void;
   resetEditor: () => void;
   setBackgroundImage: (url: string | null) => void;
+  setPrimaryTitleColorFormat: (format: ColorType) => void;
+  setSubTitleColorFormat: (format: ColorType) => void;
+  setBackgroundColorFormat: (format: ColorType) => void;
 };
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
@@ -21,7 +28,10 @@ const EditorContext = createContext<EditorContextType | undefined>(undefined);
 const defaultState: EditorState = {
   primaryTitle: '10 Tips/Principles For Cleaner React Code.',
   subTitle: '',
-  backgroundImage: null
+  backgroundImage: null,
+  primaryTitleColorFormat: 'hex',
+  subTitleColorFormat: 'hex',
+  backgroundColorFormat: 'hex'
 };
 
 export function EditorProvider({ children }: { children: ReactNode }) {
@@ -39,7 +49,22 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, backgroundImage: url }));
   };
 
+  const setPrimaryTitleColorFormat = (format: ColorType) => {
+    setState((prev) => ({ ...prev, primaryTitleColorFormat: format }));
+  };
+
+  const setSubTitleColorFormat = (format: ColorType) => {
+    setState((prev) => ({ ...prev, subTitleColorFormat: format }));
+  };
+
+  const setBackgroundColorFormat = (format: ColorType) => {
+    setState((prev) => ({ ...prev, backgroundColorFormat: format }));
+  };
+
   const resetEditor = () => {
+    if (state.backgroundImage?.startsWith('blob:')) {
+      URL.revokeObjectURL(state.backgroundImage);
+    }
     setState(defaultState);
     updateCSSVariable({ name: '--cover-title-color', value: DEFAULT_CSS_VARIABLE_VALUES['title-color'] });
     updateCSSVariable({ name: '--cover-subtitle-color', value: DEFAULT_CSS_VARIABLE_VALUES['subtitle-color'] });
@@ -65,7 +90,10 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         setPrimaryTitle,
         setSubTitle,
         resetEditor,
-        setBackgroundImage
+        setBackgroundImage,
+        setPrimaryTitleColorFormat,
+        setSubTitleColorFormat,
+        setBackgroundColorFormat
       }}
     >
       {children}

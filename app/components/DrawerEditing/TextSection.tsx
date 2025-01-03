@@ -1,18 +1,17 @@
 import { CloseButton, ColorInput, Divider, Flex, Select, Stack, TextInput, NumberInput } from '@mantine/core';
+import { useSearchParams } from '@remix-run/react';
 
 import { useEditor } from '~/contexts/EditorContext';
 import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
 import { ColorType } from '~/types';
-import { useState } from 'react';
 import { updateCSSVariable } from '~/utils/styles';
 
 export function DrawerTextSection() {
-  const { state, setPrimaryTitle, setSubTitle } = useEditor();
+  const [searchParams] = useSearchParams();
+  const resetKey = searchParams.get('reset');
+  const { state, setPrimaryTitle, setSubTitle, setPrimaryTitleColorFormat, setSubTitleColorFormat } = useEditor();
   const hasPrimaryTitle = state.primaryTitle.length > 0;
   const hasSubTitle = state.subTitle.length > 0;
-
-  const [primaryTitleColorFormat, setPrimaryTitleColorFormat] = useState<ColorType>('hex');
-  const [subTitleColorFormat, setSubTitleColorFormat] = useState<ColorType>('hex');
 
   return (
     <Stack>
@@ -30,7 +29,8 @@ export function DrawerTextSection() {
       <Stack>
         <Flex align="flex-end" justify="space-between" gap="xs">
           <ColorInput
-            format={primaryTitleColorFormat}
+            key={`title-color-${resetKey}`}
+            format={state.primaryTitleColorFormat}
             label="Color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-color']}
             w="100%"
@@ -39,12 +39,14 @@ export function DrawerTextSection() {
             }}
           />
           <Select
+            key={`title-color-type-${resetKey}`}
             checkIconPosition="right"
             comboboxProps={{ shadow: 'md' }}
             data={colorTypeOptions}
-            value={primaryTitleColorFormat}
+            value={state.primaryTitleColorFormat}
             onChange={(value) => setPrimaryTitleColorFormat(value as ColorType)}
             aria-label="Change title color type"
+            searchable={false}
             w={150}
             variant="default"
             allowDeselect={false}
@@ -52,6 +54,7 @@ export function DrawerTextSection() {
         </Flex>
       </Stack>
       <NumberInput
+        key={`title-size-${resetKey}`}
         defaultValue={DEFAULT_CSS_VARIABLE_VALUES['title-font-size']}
         max={80}
         min={10}
@@ -77,7 +80,8 @@ export function DrawerTextSection() {
       <Stack>
         <Flex align="flex-end" justify="space-between" gap="xs">
           <ColorInput
-            format={subTitleColorFormat}
+            key={`subtitle-color-${resetKey}`}
+            format={state.subTitleColorFormat}
             label="Color"
             defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-color']}
             w="100%"
@@ -86,19 +90,22 @@ export function DrawerTextSection() {
             }}
           />
           <Select
+            key={`subtitle-color-type-${resetKey}`}
             checkIconPosition="right"
             comboboxProps={{ shadow: 'md' }}
             data={colorTypeOptions}
-            value={subTitleColorFormat}
+            value={state.subTitleColorFormat}
             onChange={(value) => setSubTitleColorFormat(value as ColorType)}
             aria-label="Change subtitle color type"
             w={150}
             variant="default"
+            searchable={false}
             allowDeselect={false}
           />
         </Flex>
       </Stack>
       <NumberInput
+        key={`subtitle-size-${resetKey}`}
         defaultValue={DEFAULT_CSS_VARIABLE_VALUES['subtitle-font-size']}
         suffix="px"
         max={50}

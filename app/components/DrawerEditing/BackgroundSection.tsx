@@ -1,17 +1,21 @@
 import { ColorInput, Stack, Flex, Select, FileInput, NumberInput } from '@mantine/core';
-import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
-import { useState } from 'react';
-import { updateCSSVariable } from '~/utils/styles';
+import { useSearchParams } from '@remix-run/react';
 import { MediaImageFolder } from 'iconoir-react';
+
+import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
+import { updateCSSVariable } from '~/utils/styles';
 import { useEditor } from '~/contexts/EditorContext';
 
 type ColorType = (typeof colorTypeOptions)[number];
 
 export function DrawerBackgroundSection() {
-  const [colorFormat, setColorFormat] = useState<ColorType>('hex');
+  const [searchParams] = useSearchParams();
+  const resetKey = searchParams.get('reset');
+
   const {
-    state: { backgroundImage },
-    setBackgroundImage
+    state: { backgroundImage, backgroundColorFormat },
+    setBackgroundImage,
+    setBackgroundColorFormat
   } = useEditor();
 
   const onBackgroundImageChange = (file: File | null) => {
@@ -32,7 +36,8 @@ export function DrawerBackgroundSection() {
     <Stack>
       <Flex align="flex-end" justify="space-between" gap="xs">
         <ColorInput
-          format={colorFormat}
+          key={`bg-color-${resetKey}`}
+          format={backgroundColorFormat}
           label="Background color"
           description="Select a primary background color for the cover"
           defaultValue={DEFAULT_CSS_VARIABLE_VALUES['bg-color']}
@@ -41,11 +46,12 @@ export function DrawerBackgroundSection() {
           }}
         />
         <Select
+          key={`bg-color-type-${resetKey}`}
           checkIconPosition="right"
           comboboxProps={{ shadow: 'md' }}
           data={colorTypeOptions}
-          value={colorFormat}
-          onChange={(value) => setColorFormat(value as ColorType)}
+          value={backgroundColorFormat}
+          onChange={(value) => setBackgroundColorFormat(value as ColorType)}
           aria-label="Change background color type"
           w={100}
           variant="default"
@@ -53,6 +59,7 @@ export function DrawerBackgroundSection() {
         />
       </Flex>
       <FileInput
+        key={`bg-image-${resetKey}`}
         clearable
         leftSection={<MediaImageFolder width={16} height={16} />}
         accept="image/png,image/jpeg,image/webp"
@@ -63,6 +70,7 @@ export function DrawerBackgroundSection() {
       />
       {backgroundImage ? (
         <NumberInput
+          key={`color-overlay-opacity-${resetKey}`}
           defaultValue={DEFAULT_CSS_VARIABLE_VALUES['color-overlay-opacity']}
           suffix="%"
           max={100}
