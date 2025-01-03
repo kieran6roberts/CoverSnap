@@ -1,4 +1,5 @@
 import { Flex, Anchor, Box, Image } from '@mantine/core';
+import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
 import { Link, MetaFunction } from '@remix-run/react';
 
 import { WelcomeModal } from '~/components/WelcomeModal';
@@ -6,6 +7,27 @@ import { GitHubStarButton } from '~/components/GitHubStarButton';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { MobileGithubButton } from '~/components/MobileGithubButton';
 import { EditorArea } from '~/components/Layout/EditorArea';
+import { editorOpenStateCookie } from '~/cookies.server';
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const cookieHeader = request.headers.get('Cookie');
+  const cookie = (await editorOpenStateCookie.parse(cookieHeader)) || {};
+  return { openItems: cookie.openItems };
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const cookieHeader = request.headers.get('Cookie');
+  const cookie = (await editorOpenStateCookie.parse(cookieHeader)) || {};
+
+  cookie.openItems = cookie.openItems = formData.get('openItems');
+
+  return new Response('', {
+    headers: {
+      'Set-Cookie': await editorOpenStateCookie.serialize(cookie)
+    }
+  });
+}
 
 export const meta: MetaFunction = () => {
   return [
