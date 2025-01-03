@@ -5,6 +5,7 @@ import { updateCSSVariable } from '~/utils/styles';
 type EditorState = {
   primaryTitle: string;
   subTitle: string;
+  backgroundImage: string | null;
 };
 
 type EditorContextType = {
@@ -12,13 +13,15 @@ type EditorContextType = {
   setPrimaryTitle: (title: string) => void;
   setSubTitle: (title: string) => void;
   resetEditor: () => void;
+  setBackgroundImage: (url: string | null) => void;
 };
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 const defaultState: EditorState = {
   primaryTitle: '10 Tips/Principles For Cleaner React Code.',
-  subTitle: ''
+  subTitle: '',
+  backgroundImage: null
 };
 
 export function EditorProvider({ children }: { children: ReactNode }) {
@@ -30,6 +33,10 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 
   const setSubTitle = (title: string) => {
     setState((prev) => ({ ...prev, subTitle: title }));
+  };
+
+  const setBackgroundImage = (url: string | null) => {
+    setState((prev) => ({ ...prev, backgroundImage: url }));
   };
 
   const resetEditor = () => {
@@ -45,6 +52,10 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       value: `${DEFAULT_CSS_VARIABLE_VALUES['subtitle-font-size']}px`
     });
     updateCSSVariable({ name: '--cover-background-color', value: DEFAULT_CSS_VARIABLE_VALUES['bg-color'] });
+    updateCSSVariable({
+      name: '--cover-color-overlay-opacity',
+      value: `${DEFAULT_CSS_VARIABLE_VALUES['color-overlay-opacity']}%`
+    });
   };
 
   return (
@@ -53,7 +64,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         state,
         setPrimaryTitle,
         setSubTitle,
-        resetEditor
+        resetEditor,
+        setBackgroundImage
       }}
     >
       {children}

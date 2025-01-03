@@ -11,13 +11,15 @@ import { useImageDownload } from '~/hooks/useImageDownload';
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
-    state: { primaryTitle, subTitle },
+    state: { primaryTitle, subTitle, backgroundImage },
     resetEditor
   } = useEditor();
 
   const { isLoading, isSuccessModalOpen, closeSuccessModal, downloadImage } = useImageDownload({
     imageRef: imageNodeRef
   });
+
+  // console.log(backgroundImage);
 
   return (
     <>
@@ -26,7 +28,23 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
           <Text ta="center" size="sm" fw={500}>
             Download size is 1600 x 840
           </Text>
-          <Box ref={imageNodeRef} className={classes.cover} variant="filled">
+          <Box
+            ref={imageNodeRef}
+            className={classes.cover}
+            variant="filled"
+            style={{
+              ...(backgroundImage && {
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'transparent',
+                background: `linear-gradient(
+                  color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
+                  color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
+                ), url(${backgroundImage})`
+              })
+            }}
+          >
             {primaryTitle ? (
               <Rnd
                 default={{

@@ -5,6 +5,7 @@
   --cover-subtitle-color: #ffffff;
   --cover-title-font-size: 28px;
   --cover-subtitle-font-size: 20px;
+  --cover-color-overlay-opacity: 100%;
 }
 
 .coverSection {

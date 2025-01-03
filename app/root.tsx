@@ -82,6 +82,11 @@ const theme = createTheme({
       defaultProps: {
         scrollbarSize: 10
       }
+    },
+    FileInput: {
+      defaultProps: {
+        size: 'md'
+      }
     }
   },
   defaultRadius: 'md',
