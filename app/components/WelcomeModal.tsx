@@ -31,8 +31,8 @@ export function WelcomeModal() {
         >
           <Stack>
             <Text>
-              Use the editing sidebar to adjust your content and design specifics. Drag and resize your text using the
-              cover image preview. More features coming soon!
+              Use the editing sidebar to adjust your content and design specifics. You can also drag and resize your
+              text using the cover image preview. More features coming soon!
             </Text>
 
             <video
