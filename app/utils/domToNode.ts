@@ -24,7 +24,8 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       margin: '0',
       boxSizing: 'border-box',
       transform: `scale(${SCALE_FACTOR})`,
-      transformOrigin: 'top left'
+      transformOrigin: 'top left',
+      borderRadius: '0px'
     });
 
     const titleRndWrapper = Array.from(clone.querySelectorAll('[class*="rndWrapper"]'));

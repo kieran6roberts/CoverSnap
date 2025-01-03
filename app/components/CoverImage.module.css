@@ -40,9 +40,6 @@
 
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: min(calc(90vw - 360px), 900px);
   min-width: 320px;
@@ -56,13 +53,11 @@
   color: var(--cover-title-color);
   font-size: var(--cover-title-font-size);
 
-  white-space: nowrap;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 600;
   text-wrap: balance;
   text-align: center;
   display: block;
-  width: 100%;
   margin: 0;
 }
 
@@ -71,14 +66,11 @@
   color: var(--cover-subtitle-color);
   font-size: var(--cover-subtitle-font-size);
 
-  white-space: nowrap;
   font-family: 'Courier New', Courier, monospace;
-  line-clamp: 3;
   font-weight: 500;
   text-wrap: balance;
   text-align: center;
   display: block;
-  width: 100%;
   margin: 0;
 }
 
