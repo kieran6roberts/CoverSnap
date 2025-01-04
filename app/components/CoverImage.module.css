@@ -5,6 +5,8 @@
   --cover-title-font-size: 28px;
   --cover-subtitle-font-size: 20px;
   --cover-color-overlay-opacity: 0%;
+  --cover-title-font: sans-serif;
+  --cover-subtitle-font: sans-serif;
 }
 
 .coverSection {
@@ -29,7 +31,6 @@
 }
 
 .coverWrapper {
-  border: 1px dashed var(--mantine-color-default-border);
   padding: 1rem 0;
   border-radius: 12px;
 }
@@ -60,8 +61,8 @@
   /* User edited */
   color: var(--cover-title-color);
   font-size: var(--cover-title-font-size);
+  font-family: var(--cover-title-font);
 
-  font-family: 'Courier New', Courier, monospace;
   font-weight: 600;
   text-wrap: balance;
   text-align: center;
@@ -73,8 +74,8 @@
   /* User edited */
   color: var(--cover-subtitle-color);
   font-size: var(--cover-subtitle-font-size);
+  font-family: var(--cover-subtitle-font);
 
-  font-family: 'Courier New', Courier, monospace;
   font-weight: 500;
   text-wrap: balance;
   text-align: center;

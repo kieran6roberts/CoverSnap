@@ -90,7 +90,7 @@ const theme = createTheme({
     }
   },
   defaultRadius: 'md',
-  primaryColor: 'violet'
+  primaryColor: 'teal'
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {

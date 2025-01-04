@@ -29,29 +29,29 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
     {
       title: 'Text',
       content: () => <DrawerTextSection />,
-      icon: <IconText width={24} height={24} />
+      icon: <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
     },
     {
       title: 'Background',
       content: () => <DrawerBackgroundSection />,
-      icon: <MediaImage width={24} height={24} />
+      icon: <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
     },
     {
       title: 'Templates',
       content: () => null,
-      icon: <AlignBottomBox width={24} height={24} />,
+      icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />,
       isDisabled: true
     },
     {
       title: 'Elements',
       content: () => null,
-      icon: <Pentagon width={24} height={24} />,
+      icon: <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />,
       isDisabled: true
     },
     {
       title: 'Uploads',
       content: () => null,
-      icon: <UploadSquare width={24} height={24} />,
+      icon: <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />,
       isDisabled: true
     }
   ];
@@ -85,8 +85,9 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             aria-label={`Toggle ${item.title.toLowerCase()} editing`}
             icon={item.icon}
             disabled={!!item.isDisabled}
+            className={classes.accordionControl}
           >
-            <Text size="lg" fw={500}>
+            <Text size="md" fw={500}>
               {item.title}
             </Text>
           </Accordion.Control>
@@ -115,6 +116,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           value={currentOpenItems}
           onChange={handleAccordionChange}
           variant="default"
+          pb="md"
         >
           {items}
         </Accordion>

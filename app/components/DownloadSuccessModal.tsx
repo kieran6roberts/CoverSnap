@@ -1,10 +1,21 @@
 'use client';
 
 import { Modal, Stack, Button, Flex, Text, Divider, Anchor } from '@mantine/core';
+import toast from 'react-hot-toast';
+import { Check } from 'iconoir-react';
+import { useEffect } from 'react';
+
 import { GitHubStarButton } from './GitHubStarButton';
 import { GITHUB_URL } from '~/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
+  useEffect(() => {
+    toast.success('Image downloaded successfully.', {
+      icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />,
+      id: 'download-success'
+    });
+  }, []);
+
   return (
     <Modal opened onClose={close} centered title="Thanks for using CoverSnap!">
       <Stack>
