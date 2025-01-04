@@ -3,6 +3,7 @@ import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { useEffect } from 'react';
 import { get, set, del } from 'idb-keyval';
 import { toast } from 'react-hot-toast';
+import { Check } from 'iconoir-react';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
 
@@ -104,7 +105,8 @@ export const useEditor = create(
         }
 
         toast.success('Cover reset.', {
-          id: 'reset-cover'
+          id: 'reset-cover',
+          icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
         });
 
         // Reset CSS variables

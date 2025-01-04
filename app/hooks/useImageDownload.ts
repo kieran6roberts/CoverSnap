@@ -1,5 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { saveDomNodeAsImage } from '~/utils/domToNode';
 
@@ -22,6 +23,8 @@ export const useImageDownload = ({ imageRef }: UseImageDownloadProps) => {
         setTimeout(() => {
           close();
         }, 500);
+      } else {
+        toast.error('Failed to download image. If the issue persists, contact @Kieran6Dev on X.');
       }
     }
   };
