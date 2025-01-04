@@ -12,9 +12,11 @@ type EditorState = {
   primaryTitle: string;
   primaryTitleColor: string;
   primaryTitleFontSize: number | string;
+  primaryTitleFont: string | null;
   subTitle: string;
   subTitleColor: string;
   subTitleFontSize: number | string;
+  subTitleFont: string | null;
   // Background
   backgroundImage: string | null;
   backgroundColor: string;
@@ -26,9 +28,11 @@ type EditorActions = {
   setPrimaryTitle: (title: string) => void;
   setPrimaryTitleColor: (color: string) => void;
   setPrimaryTitleFontSize: (size: number | string) => void;
+  setPrimaryTitleFont: (font: string | null) => void;
   setSubTitle: (title: string) => void;
   setSubTitleColor: (color: string) => void;
   setSubTitleFontSize: (size: number | string) => void;
+  setSubTitleFont: (font: string | null) => void;
   // Background
   setBackgroundColor: (color: string) => void;
   setBackgroundImage: (url: string | null) => void;
@@ -41,9 +45,11 @@ const defaultState: EditorState = {
   primaryTitle: '10 Tips/Principles For Cleaner React Code.',
   primaryTitleColor: 'rgba(255, 255, 255, 1)',
   primaryTitleFontSize: 28,
+  primaryTitleFont: 'sans-serif (default)',
   subTitle: '',
   subTitleColor: 'rgba(255, 255, 255, 1)',
   subTitleFontSize: 20,
+  subTitleFont: 'sans-serif (default)',
   // Background
   backgroundColor: 'rgba(51, 51, 51, 1)',
   backgroundImage: null
@@ -78,6 +84,12 @@ export const useEditor = create(
         set({ primaryTitleFontSize: size });
         updateCSSVariable({ name: '--cover-title-font-size', value: `${size}px` });
       },
+      setPrimaryTitleFont: (font) => {
+        set({ primaryTitleFont: font });
+        if (font) {
+          updateCSSVariable({ name: '--cover-title-font', value: font });
+        }
+      },
       setSubTitle: (title) => set({ subTitle: title }),
       setSubTitleColor: (color) => {
         set({ subTitleColor: color });
@@ -86,6 +98,12 @@ export const useEditor = create(
       setSubTitleFontSize: (size) => {
         set({ subTitleFontSize: size });
         updateCSSVariable({ name: '--cover-subtitle-font-size', value: `${size}px` });
+      },
+      setSubTitleFont: (font) => {
+        set({ subTitleFont: font });
+        if (font) {
+          updateCSSVariable({ name: '--cover-subtitle-font', value: font });
+        }
       },
 
       // Background
@@ -116,7 +134,9 @@ export const useEditor = create(
           '--cover-title-font-size': `${defaultState.primaryTitleFontSize}px`,
           '--cover-subtitle-font-size': `${defaultState.subTitleFontSize}px`,
           '--cover-background-color': defaultState.backgroundColor,
-          '--cover-color-overlay-opacity': '0%'
+          '--cover-color-overlay-opacity': '0%',
+          '--cover-title-font': defaultState.primaryTitleFont ?? 'sans-serif',
+          '--cover-subtitle-font': defaultState.subTitleFont ?? 'sans-serif'
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -133,7 +153,9 @@ export const useEditor = create(
         subTitle: state.subTitle,
         subTitleColor: state.subTitleColor,
         subTitleFontSize: state.subTitleFontSize,
-        backgroundColor: state.backgroundColor
+        backgroundColor: state.backgroundColor,
+        primaryTitleFont: state.primaryTitleFont,
+        subTitleFont: state.subTitleFont
       }),
       onRehydrateStorage: () => (state) => {
         if (!state) {
@@ -158,7 +180,9 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-subtitle-color': state.subTitleColor,
         '--cover-title-font-size': `${state.primaryTitleFontSize}px`,
         '--cover-subtitle-font-size': `${state.subTitleFontSize}px`,
-        '--cover-background-color': state.backgroundColor
+        '--cover-background-color': state.backgroundColor,
+        '--cover-title-font': state.primaryTitleFont ?? 'sans-serif',
+        '--cover-subtitle-font': state.subTitleFont ?? 'sans-serif'
       });
     }
   }, [hasHydrated]);

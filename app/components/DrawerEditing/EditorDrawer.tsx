@@ -80,11 +80,12 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           </Flex>
         }
       >
-        <Accordion.Item key={item.title} value={item.title} px={{ base: 'md', md: 0 }}>
+        <Accordion.Item key={item.title} value={item.title}>
           <Accordion.Control
             aria-label={`Toggle ${item.title.toLowerCase()} editing`}
             icon={item.icon}
             disabled={!!item.isDisabled}
+            className={classes.accordionControl}
           >
             <Text size="md" fw={500}>
               {item.title}
@@ -115,6 +116,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           value={currentOpenItems}
           onChange={handleAccordionChange}
           variant="default"
+          pb="md"
         >
           {items}
         </Accordion>

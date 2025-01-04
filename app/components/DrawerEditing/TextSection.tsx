@@ -1,4 +1,4 @@
-import { CloseButton, ColorInput, Divider, Stack, TextInput, NumberInput } from '@mantine/core';
+import { CloseButton, ColorInput, Divider, Stack, TextInput, NumberInput, Select } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 
 import { useEditor } from '~/contexts/EditorContext';
@@ -18,7 +18,11 @@ export function DrawerTextSection() {
     setPrimaryTitleFontSize,
     subTitleFontSize,
     setSubTitleFontSize,
-    setSubTitleColor
+    setSubTitleColor,
+    primaryTitleFont,
+    setPrimaryTitleFont,
+    subTitleFont,
+    setSubTitleFont
   } = useEditor();
   const hasPrimaryTitle = primaryTitle.length > 0;
   const hasSubTitle = subTitle.length > 0;
@@ -44,6 +48,30 @@ export function DrawerTextSection() {
         value={primaryTitleColor}
         label="Color"
         onChange={setPrimaryTitleColor}
+      />
+
+      <Select
+        aria-label="Title font"
+        label="Font"
+        placeholder="Pick value"
+        data={[
+          'sans-serif (default)',
+          'serif (default)',
+          'monospace (default)',
+          'Arial',
+          'Helvetica',
+          'Verdana',
+          'Tahoma',
+          'Trebuchet MS',
+          'Times New Roman',
+          'Georgia',
+          'Courier New',
+          'system-ui'
+        ]}
+        value={primaryTitleFont}
+        onChange={(value) => setPrimaryTitleFont(value)}
+        allowDeselect={false}
+        checkIconPosition="right"
       />
 
       <NumberInput
@@ -76,6 +104,30 @@ export function DrawerTextSection() {
         description="Accepts RGBA"
         value={subTitleColor}
         onChange={setSubTitleColor}
+      />
+
+      <Select
+        aria-label="Subtitle font"
+        label="Font"
+        placeholder="Pick value"
+        data={[
+          'sans-serif (default)',
+          'serif (default)',
+          'monospace (default)',
+          'Arial',
+          'Helvetica',
+          'Verdana',
+          'Tahoma',
+          'Trebuchet MS',
+          'Times New Roman',
+          'Georgia',
+          'Courier New',
+          'system-ui'
+        ]}
+        value={subTitleFont}
+        onChange={(value) => setSubTitleFont(value)}
+        allowDeselect={false}
+        checkIconPosition="right"
       />
 
       <NumberInput
