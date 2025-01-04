@@ -32,12 +32,14 @@
     "file-saver": "^2.0.5",
     "globals": "^15.14.0",
     "iconoir-react": "^7.10.1",
+    "idb-keyval": "^6.2.1",
     "isbot": "4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-rnd": "^10.4.14",
-    "start-server-and-test": "^2.0.9"
+    "start-server-and-test": "^2.0.9",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.15.2",

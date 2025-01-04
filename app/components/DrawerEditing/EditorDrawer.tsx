@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay } from '@mantine/core';
+import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
@@ -8,7 +8,7 @@ import type { EditorLoaderData } from '~/types/editor';
 import classes from './EditorDrawer.module.css';
 import { DrawerTextSection } from '~/components/DrawerEditing/TextSection';
 import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSection';
-import { useEditor } from '~/contexts/EditorContext';
+import { useEditor, EditorHydration } from '~/contexts/EditorContext';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
 
@@ -58,7 +58,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   const handleAccordionChange = (values: string[]) => {
     fetcher.submit(
-      { openItems: values },
+      { openItems: values, intent: 'updateOpenItems' },
       {
         method: 'post',
         action: '/create'
@@ -68,22 +68,24 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   const items = editSections.map((item) => {
     return (
-      <Accordion.Item key={item.title} value={item.title}>
-        <Accordion.Control
-          aria-label={`Toggle ${item.title.toLowerCase()} editing`}
-          icon={item.icon}
-          disabled={!!item.isDisabled}
-        >
-          <Text size="lg" fw={500}>
-            {item.title}
-          </Text>
-        </Accordion.Control>
-        <Accordion.Panel px="sm">
-          <Box pb={48} pt={24}>
-            {item.content()}
-          </Box>
-        </Accordion.Panel>
-      </Accordion.Item>
+      <EditorHydration key={item.title} skeleton={<Skeleton height={53} width="100%" />}>
+        <Accordion.Item key={item.title} value={item.title}>
+          <Accordion.Control
+            aria-label={`Toggle ${item.title.toLowerCase()} editing`}
+            icon={item.icon}
+            disabled={!!item.isDisabled}
+          >
+            <Text size="lg" fw={500}>
+              {item.title}
+            </Text>
+          </Accordion.Control>
+          <Accordion.Panel px="sm">
+            <Box pb={48} pt={24}>
+              {item.content()}
+            </Box>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </EditorHydration>
     );
   });
 

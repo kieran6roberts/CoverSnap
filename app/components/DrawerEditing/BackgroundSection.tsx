@@ -1,22 +1,15 @@
-import { ColorInput, Stack, Flex, Select, FileInput, NumberInput } from '@mantine/core';
+import { ColorInput, Stack, FileInput, NumberInput, Button, Image, Text } from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
 import { MediaImageFolder } from 'iconoir-react';
 
-import { colorTypeOptions, DEFAULT_CSS_VARIABLE_VALUES } from '~/consts';
-import { updateCSSVariable } from '~/utils/styles';
 import { useEditor } from '~/contexts/EditorContext';
-
-type ColorType = (typeof colorTypeOptions)[number];
+import { updateCSSVariable } from '~/utils/styles';
 
 export function DrawerBackgroundSection() {
   const [searchParams] = useSearchParams();
   const resetKey = searchParams.get('reset');
 
-  const {
-    state: { backgroundImage, backgroundColorFormat },
-    setBackgroundImage,
-    setBackgroundColorFormat
-  } = useEditor();
+  const { backgroundImage, backgroundColor, setBackgroundColor, setBackgroundImage } = useEditor();
 
   const onBackgroundImageChange = (file: File | null) => {
     // Revoke old image if it's a blob
@@ -34,44 +27,48 @@ export function DrawerBackgroundSection() {
 
   return (
     <Stack>
-      <Flex align="flex-end" justify="space-between" gap="xs">
-        <ColorInput
-          key={`bg-color-${resetKey}`}
-          format={backgroundColorFormat}
-          label="Background color"
-          description="Select a primary background color for the cover"
-          defaultValue={DEFAULT_CSS_VARIABLE_VALUES['bg-color']}
-          onChangeEnd={(color) => {
-            updateCSSVariable({ name: '--cover-background-color', value: color });
-          }}
-        />
-        <Select
-          key={`bg-color-type-${resetKey}`}
-          checkIconPosition="right"
-          comboboxProps={{ shadow: 'md' }}
-          data={colorTypeOptions}
-          value={backgroundColorFormat}
-          onChange={(value) => setBackgroundColorFormat(value as ColorType)}
-          aria-label="Change background color type"
-          w={100}
-          variant="default"
-          allowDeselect={false}
-        />
-      </Flex>
-      <FileInput
-        key={`bg-image-${resetKey}`}
-        clearable
-        leftSection={<MediaImageFolder width={16} height={16} />}
-        accept="image/png,image/jpeg,image/webp"
-        label="Upload background image"
-        placeholder="Click to upload"
-        maw={368}
-        onChange={onBackgroundImageChange}
+      <ColorInput
+        key={`bg-color-${resetKey}`}
+        format="rgba"
+        label="Background color"
+        description="Accepts RGBA"
+        value={backgroundColor}
+        onChange={setBackgroundColor}
       />
+      {backgroundImage ? (
+        <Stack>
+          <Text fw={500} component="span">
+            Upload background image
+          </Text>
+          <Image
+            src={backgroundImage}
+            radius="md"
+            style={{ border: '1px solid var(--mantine-color-default-border)' }}
+            alt="Background image"
+            width={368}
+            height={200}
+          />
+          <Button aria-label="Remove background image" onClick={() => setBackgroundImage(null)}>
+            Clear
+          </Button>
+        </Stack>
+      ) : (
+        <FileInput
+          key={`bg-image-${resetKey}`}
+          clearable
+          description="Accepts PNG, JPEG, and WEBP"
+          leftSection={<MediaImageFolder width={16} height={16} />}
+          accept="image/png,image/jpeg,image/webp"
+          label="Upload background image"
+          placeholder="Click to upload"
+          maw={368}
+          onChange={onBackgroundImageChange}
+        />
+      )}
       {backgroundImage ? (
         <NumberInput
           key={`color-overlay-opacity-${resetKey}`}
-          defaultValue={DEFAULT_CSS_VARIABLE_VALUES['color-overlay-opacity']}
+          defaultValue={0}
           suffix="%"
           max={100}
           min={0}
