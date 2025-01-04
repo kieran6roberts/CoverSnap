@@ -136,7 +136,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             onClick={resetEditor}
             variant="light"
             size="xs"
-            color="var(--mantine-primary-color-4)"
+            color="var(--mantine-primary-color-7)"
           >
             Reset all
           </Button>
