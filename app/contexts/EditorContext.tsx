@@ -1,13 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { get, set, del } from 'idb-keyval';
 import { toast } from 'react-hot-toast';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
 
 type EditorState = {
-  _hasHydrated: boolean;
   // Text
   primaryTitle: string;
   primaryTitleColor: string;
@@ -37,7 +36,6 @@ type EditorActions = {
 };
 
 const defaultState: EditorState = {
-  _hasHydrated: false,
   // Text
   primaryTitle: '10 Tips/Principles For Cleaner React Code.',
   primaryTitleColor: 'rgba(255, 255, 255, 1)',
@@ -63,8 +61,9 @@ const indexDBStorage: StateStorage = {
 };
 
 export const useEditor = create(
-  persist<EditorState & EditorActions>(
+  persist<EditorState & EditorActions & { _hasHydrated: boolean }>(
     (set) => ({
+      _hasHydrated: false,
       ...defaultState,
       setHasHydrated: (state) => set({ _hasHydrated: state }),
 
@@ -118,7 +117,7 @@ export const useEditor = create(
           '--cover-color-overlay-opacity': '0%'
         });
 
-        set(defaultState);
+        set({ _hasHydrated: true, ...defaultState });
       }
     }),
     {
@@ -135,15 +134,18 @@ export const useEditor = create(
         backgroundColor: state.backgroundColor
       }),
       onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
+        if (!state) {
+          toast.error('Failed to hydrate editor state. Please refresh the page.');
+          return;
+        }
+        state.setHasHydrated(true);
       }
     }
   )
 );
 
-// Create a wrapper component for hydration
+// Wapper component for hydration
 export function EditorHydration({ children, skeleton }: { children: React.ReactNode; skeleton?: React.ReactNode }) {
-  const [isHydrated, setIsHydrated] = useState(false);
   const hasHydrated = useEditor((state) => state._hasHydrated);
 
   useEffect(() => {
@@ -156,11 +158,10 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-subtitle-font-size': `${state.subTitleFontSize}px`,
         '--cover-background-color': state.backgroundColor
       });
-      setIsHydrated(true);
     }
   }, [hasHydrated]);
 
-  if (!isHydrated) {
+  if (!hasHydrated) {
     return skeleton ?? null;
   }
 
