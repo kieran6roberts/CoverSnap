@@ -68,7 +68,18 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   const items = editSections.map((item) => {
     return (
-      <EditorHydration key={item.title} skeleton={<Skeleton height={53} width="100%" />}>
+      <EditorHydration
+        key={item.title}
+        skeleton={
+          <Flex h={53} w="100%" justify="space-between" align="center" p="md">
+            <Flex gap="sm" align="center">
+              <Skeleton circle height={24} width={24} animate />
+              <Skeleton height={16} width={125} animate />
+            </Flex>
+            <Skeleton height={16} circle width={16} animate />
+          </Flex>
+        }
+      >
         <Accordion.Item key={item.title} value={item.title}>
           <Accordion.Control
             aria-label={`Toggle ${item.title.toLowerCase()} editing`}
