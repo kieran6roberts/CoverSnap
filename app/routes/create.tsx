@@ -31,10 +31,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'CoverSnap | Create Blog Cover Images' },
+    { title: 'CoverSnap | Easily Create Blog Cover Images' },
     {
       name: 'description',
-      content: 'Use the editing tools to build your cover image and download it when you are ready.'
+      content:
+        'Use the clean and easy-to-use editing tools to build your cover image. Download it when you are ready. Jump in!'
     }
   ];
 };

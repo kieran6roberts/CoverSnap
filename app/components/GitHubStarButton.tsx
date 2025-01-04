@@ -26,6 +26,7 @@ export function GitHubStarButton({
       to={GITHUB_URL}
       size={size}
       variant={variant}
+      color="var(--mantine-primary-color-7)"
       {...(isFullWidth ? { fullWidth: true } : {})}
       {...(visibleFrom ? { visibleFrom } : {})}
       {...(hiddenFrom ? { hiddenFrom } : {})}
