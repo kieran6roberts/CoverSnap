@@ -1,10 +1,10 @@
-/* Keep list up to date with DEFAULT_CSS_VARIABLE_VALUES */
 :root {
   --cover-background-color: #333333;
   --cover-title-color: #ffffff;
   --cover-subtitle-color: #ffffff;
   --cover-title-font-size: 28px;
   --cover-subtitle-font-size: 20px;
+  --cover-color-overlay-opacity: 0%;
 }
 
 .coverSection {
@@ -41,6 +41,14 @@
   position: relative;
   overflow: hidden;
   align-items: center;
+  width: min(calc(90vw - 360px), 900px);
+  min-width: 320px;
+  aspect-ratio: 1.9;
+  border-radius: 12px;
+  margin: 1rem;
+}
+
+.coverSkeleton {
   width: min(calc(90vw - 360px), 900px);
   min-width: 320px;
   aspect-ratio: 1.9;
