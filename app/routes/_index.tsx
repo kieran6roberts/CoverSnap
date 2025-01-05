@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node';
+import type { MetaFunction } from '@remix-run/cloudflare';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
 import { Link } from '@remix-run/react';
 
@@ -54,8 +54,8 @@ export default function Index() {
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
-              CoverSnap can help you create great looking cover images for your blog posts in seconds using simple
-              editing tools. It's completely free to use! Give it a star on GitHub if you found it useful. Enjoy.
+              CoverSnap empowers you to create great looking cover images for your blog posts in seconds using easy to
+              use editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
               <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">

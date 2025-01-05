@@ -8,11 +8,14 @@
   "main": "index.js",
   "scripts": {
     "build": "remix vite:build",
+    "start": "wrangler pages dev ./build/client",
+    "preview": "pnpm build && wrangler pages dev",
+    "deploy": "pnpm build && wrangler pages deploy",
     "dev": "remix vite:dev",
-    "start": "remix-serve ./build/server/index.js",
     "lint": "eslint .",
     "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "typecheck": "tsc",
+    "typegen": "wrangler types",
     "format": "pnpm lint && pnpm prettier:fix",
     "format:all": "pnpm typecheck && pnpm lint && pnpm prettier:fix",
     "tests:open": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress open'",
@@ -25,7 +28,8 @@
   "dependencies": {
     "@mantine/core": "^7.15.2",
     "@mantine/hooks": "^7.15.2",
-    "@remix-run/node": "^2.15.2",
+    "@remix-run/cloudflare": "^2.15.2",
+    "@remix-run/cloudflare-pages": "^2.15.2",
     "@remix-run/react": "^2.15.2",
     "@remix-run/serve": "^2.15.2",
     "dom-to-image-more": "^3.5.0",
@@ -36,7 +40,6 @@
     "isbot": "4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hot-toast": "^2.4.1",
     "react-rnd": "^10.4.14",
     "start-server-and-test": "^2.0.9",
     "zustand": "^5.0.2"
@@ -68,7 +71,8 @@
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "wrangler": "^3.99.0"
   },
   "engines": {
     "node": ">=18.0.0"

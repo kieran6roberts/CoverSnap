@@ -28,23 +28,20 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             Download size is 1600 x 840
           </Text>
           <EditorHydration skeleton={<Skeleton className={classes.coverSkeleton} />}>
-            <Box
-              ref={imageNodeRef}
-              className={classes.cover}
-              variant="filled"
-              style={{
-                ...(backgroundImage && {
-                  backgroundImage: `linear-gradient(
-                    color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
-                    color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
-                  ), url(${backgroundImage})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  backgroundColor: 'transparent'
-                })
-              }}
-            >
+            <Box ref={imageNodeRef} className={classes.cover} variant="filled">
+              <Box
+                className={classes.backgroundWrapper}
+                style={{
+                  ...(backgroundImage && {
+                    background: `linear-gradient(
+                      color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
+                      color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
+                    ), url(${backgroundImage}) center/cover no-repeat`,
+                    backgroundColor: 'transparent'
+                  })
+                }}
+              />
+
               {primaryTitle ? (
                 <Rnd
                   default={{

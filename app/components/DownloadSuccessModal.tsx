@@ -1,8 +1,6 @@
 'use client';
 
 import { Modal, Stack, Button, Flex, Text, Divider, Anchor } from '@mantine/core';
-import toast from 'react-hot-toast';
-import { Check } from 'iconoir-react';
 import { useEffect } from 'react';
 
 import { GitHubStarButton } from './GitHubStarButton';
@@ -10,10 +8,10 @@ import { GITHUB_URL } from '~/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
   useEffect(() => {
-    toast.success('Image downloaded successfully.', {
-      icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />,
-      id: 'download-success'
-    });
+    // toast.success('Image downloaded successfully.', {
+    //   icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    //   id: 'download-success'
+    // });
   }, []);
 
   return (
@@ -22,7 +20,7 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
         <Divider />
         <Text mb="md">
           If you have any feedback, please share it with me on X{' '}
-          <Anchor underline="always" target="_blank" href="https://x.com/Kieran6Dev">
+          <Anchor underline="always" target="_blank" data-autofocus href="https://x.com/Kieran6Dev">
             @Kieran6Dev
           </Anchor>
           , or raise an issue on{' '}
