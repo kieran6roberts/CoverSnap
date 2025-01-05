@@ -1,19 +1,26 @@
 # CoverSnap
 
-CoverSnap is a free tool that helps you build a simple cover image for your blog articles. Publish your articles faster with a few simple clicks of the editing tools.
+CoverSnap empowers you to create great looking cover images for your blog posts in seconds using easy to use editing tools. No design skills required and it's completely free to download your image.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 ## Screenshots
 
-![CoverSnap landing page](https://cdn.hashnode.com/res/hashnode/image/upload/v1735735722162/IYa4xp6j8.png?auto=format)
+<img width="1440" alt="CoverSnap landing page screenshot" src="https://github.com/user-attachments/assets/0c64e602-a63e-4f80-828e-b9359c34a33b" />
+
+<img width="1440" alt="CoverSnap editor screenshot" src="https://github.com/user-attachments/assets/d92dc658-6cc9-4dd5-b6d5-3f1d3a513b77" />
+
 
 ## Features
 
 - Cover image editing tools
-- Optimized cover image PNG download
+  - Add titles/subtitles and customize their font size/color/font etc.
+  - Drag and resize your text to your needs
+  - Add background images using colors or user uploaded images.
+  - Much more to come...
+- Cover image PNG download
+  - Download set to 1600x840px currently. More options to come.
 - Light/dark mode toggle
-- more to come...
 
 ## Tech Stack
 
@@ -25,6 +32,20 @@ CoverSnap is a free tool that helps you build a simple cover image for your blog
 ## Contributing
 
 Contributions are currently not open, but will be soon. Stay tuned.
+
+## Development
+
+Running the dev server: `pnpm dev`
+
+Type check + lint + formatting: `pnpm format:all`
+
+## Tests
+
+Running tests locally: `pnpm tests:run`
+
+## Feedback
+
+If you have any feedback, please reach out to me at [@Kieran6Dev](https://x.com/Kieran6dev)
 
 ## Authors
 
