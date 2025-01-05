@@ -2,7 +2,6 @@ import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/cloudflare';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
-import { Toaster } from 'react-hot-toast';
 
 export const links: LinksFunction = () => [
   {
@@ -96,7 +95,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <MantineProvider theme={theme}>{children}</MantineProvider>
         <ScrollRestoration />
         <Scripts />
-        <Toaster />
       </body>
     </html>
   );

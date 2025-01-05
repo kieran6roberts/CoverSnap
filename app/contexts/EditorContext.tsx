@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { useEffect } from 'react';
 import { get, set, del } from 'idb-keyval';
-import { toast } from 'react-hot-toast';
-import { Check } from 'iconoir-react';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
 
@@ -122,10 +120,10 @@ export const useEditor = create(
           URL.revokeObjectURL(state.backgroundImage);
         }
 
-        toast.success('Cover reset.', {
-          id: 'reset-cover',
-          icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
-        });
+        // toast.success('Cover reset.', {
+        //   id: 'reset-cover',
+        //   icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
+        // });
 
         // Reset CSS variables
         updateCSSVariables({
@@ -159,7 +157,7 @@ export const useEditor = create(
       }),
       onRehydrateStorage: () => (state) => {
         if (!state) {
-          toast.error('Failed to hydrate editor state. Please refresh the page.');
+          // toast.error('Failed to hydrate editor state. Please refresh the page.');
           return;
         }
         state.setHasHydrated(true);

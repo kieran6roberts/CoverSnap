@@ -1,26 +1,27 @@
 'use client';
 
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import { Modal, Text, Stack, Button } from '@mantine/core';
-import { useEffect, useState } from 'react';
+
+import type { EditorLoaderData } from '~/types/editor';
 
 export function WelcomeModal() {
-  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+  const fetcher = useFetcher();
+  const { hasVisited } = useLoaderData<EditorLoaderData>();
 
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisitedEditor');
-    if (!hasVisited) {
-      localStorage.setItem('hasVisitedEditor', 'true');
-      setIsWelcomeModalOpen(true);
-    }
-  }, []);
+  const hasVisitedEditor = fetcher.formData ? fetcher.formData.get('hasVisited') === 'true' : hasVisited;
+
+  const handleClose = () => {
+    fetcher.submit({ hasVisited: 'true' }, { method: 'post' });
+  };
 
   return (
     <>
-      {isWelcomeModalOpen && (
+      {!hasVisitedEditor && (
         <Modal
           centered
-          opened
-          onClose={() => setIsWelcomeModalOpen(false)}
+          opened={!hasVisitedEditor}
+          onClose={handleClose}
           fz="xl"
           title={
             <Text size="xl" fw={500}>
@@ -47,7 +48,7 @@ export function WelcomeModal() {
               Your browser does not support the video tag.
             </video>
 
-            <Button variant="filled" fullWidth data-autofocus onClick={() => setIsWelcomeModalOpen(false)}>
+            <Button variant="filled" fullWidth data-autofocus onClick={handleClose}>
               Start editing
             </Button>
           </Stack>
