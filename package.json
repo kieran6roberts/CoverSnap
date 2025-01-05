@@ -10,7 +10,6 @@
     "build": "remix vite:build",
     "start": "wrangler pages dev ./build/client",
     "preview": "pnpm build && wrangler pages dev",
-    "deploy": "pnpm build && wrangler pages deploy",
     "dev": "remix vite:dev",
     "lint": "eslint .",
     "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
