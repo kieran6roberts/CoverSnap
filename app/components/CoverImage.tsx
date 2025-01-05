@@ -89,9 +89,8 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
               visibleFrom="md"
               onClick={resetStyles}
               size="md"
-              variant="light"
               rightSection={<Restart width={24} height={24} />}
-              color="var(--mantine-primary-color-7)"
+              variant="outline"
             >
               Reset applied styles
             </Button>

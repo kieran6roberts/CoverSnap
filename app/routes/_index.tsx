@@ -7,18 +7,77 @@ import { Footer } from '~/components/Layout/Footer';
 import { GitHubStarButton } from '~/components/GitHubStarButton';
 
 export const meta: MetaFunction = () => {
+  const title = 'CoverSnap - Build free blog post cover images in seconds.';
+  const description =
+    'CoverSnap lets you easily generate good looking cover images for your blog posts, without the design headache.';
+  const image = '/home-dark.png';
+  const url = 'https://coversnap.pages.dev';
+  const domain = 'coversnap.pages.dev';
+
   return [
-    { title: 'CoverSnap' },
+    { title },
     {
       name: 'description',
-      content: 'CoverSnap lets you easily generate good looking cover images for your blog posts.'
+      content: description
+    },
+    {
+      property: 'og:title',
+      content: title
+    },
+    {
+      property: 'og:description',
+      content: description
+    },
+    {
+      property: 'og:image',
+      content: image
+    },
+    {
+      property: 'og:url',
+      content: url
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      property: 'og:site_name',
+      content: domain
+    },
+    {
+      property: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      property: 'twitter:creator',
+      content: '@Kieran6Dev'
+    },
+    {
+      property: 'twitter:title',
+      content: title
+    },
+    {
+      property: 'twitter:description',
+      content: description
+    },
+    {
+      property: 'twitter:image',
+      content: image
+    },
+    {
+      property: 'twitter:url',
+      content: url
+    },
+    {
+      property: 'twitter:domain',
+      content: domain
     }
   ];
 };
 
 const heroImages = {
-  light: '/hero-light.png',
-  dark: '/hero-dark.png'
+  light: '/editor-light.png',
+  dark: '/editor-dark.png'
 } as const;
 
 export default function Index() {
@@ -64,8 +123,8 @@ export default function Index() {
               <Button visibleFrom="sm" component={Link} to="/create" size="lg" variant="filled">
                 Build for free
               </Button>
-              <GitHubStarButton hiddenFrom="sm" size="md" variant="light" />
-              <GitHubStarButton visibleFrom="sm" size="md" variant="light" />
+              <GitHubStarButton hiddenFrom="sm" size="md" variant="outline" />
+              <GitHubStarButton visibleFrom="sm" size="md" variant="outline" />
             </Flex>
           </Stack>
           <Box

@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import { Flex, Anchor, Box, Image } from '@mantine/core';
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/cloudflare';
 
@@ -46,12 +47,70 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export const meta: MetaFunction = () => {
+  const title = 'CoverSnap - Create';
+  const description =
+    "Use CoverSnap's simple editing tools to donwload free cover images for your blog without the design headache.";
+  const image = '/editor-dark.png';
+  const url = 'https://coversnap.pages.dev/create';
+  const domain = 'coversnap.pages.dev';
+
   return [
-    { title: 'CoverSnap | Easily Create Blog Cover Images' },
+    { title },
     {
       name: 'description',
-      content:
-        'Use the clean and easy-to-use editing tools to build your cover image. Download it when you are ready. Jump in!'
+      content: description
+    },
+    {
+      property: 'og:title',
+      content: title
+    },
+    {
+      property: 'og:description',
+      content: description
+    },
+    {
+      property: 'og:image',
+      content: image
+    },
+    {
+      property: 'og:url',
+      content: url
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      property: 'og:site_name',
+      content: domain
+    },
+    {
+      property: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      property: 'twitter:creator',
+      content: '@Kieran6Dev'
+    },
+    {
+      property: 'twitter:title',
+      content: title
+    },
+    {
+      property: 'twitter:description',
+      content: description
+    },
+    {
+      property: 'twitter:image',
+      content: image
+    },
+    {
+      property: 'twitter:url',
+      content: url
+    },
+    {
+      property: 'twitter:domain',
+      content: domain
     }
   ];
 };
@@ -74,7 +133,7 @@ export default function Create() {
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
-            <GitHubStarButton visibleFrom="md" size="sm" variant="light" />
+            <GitHubStarButton visibleFrom="md" size="sm" variant="outline" />
             <MobileGithubButton />
           </Flex>
         </Flex>

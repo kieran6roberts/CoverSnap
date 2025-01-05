@@ -131,13 +131,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           p="md"
           style={{ borderTop: '1px solid var(--mantine-color-default-border)', zIndex: 10 }}
         >
-          <Button
-            hiddenFrom="md"
-            onClick={resetEditor}
-            variant="light"
-            size="xs"
-            color="var(--mantine-primary-color-7)"
-          >
+          <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="xs">
             Reset all
           </Button>
           <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
