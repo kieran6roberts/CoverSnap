@@ -1,39 +1,28 @@
 import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
+import type { LinksFunction } from '@remix-run/cloudflare';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
 import { Toaster } from 'react-hot-toast';
 
 export const links: LinksFunction = () => [
-  // { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossOrigin: 'anonymous' },
-  // {
-  //   rel: 'preconnect',
-  //   href: 'https://fonts.gstatic.com',
-  //   crossOrigin: 'anonymous'
-  // },
-  // {
-  //   rel: 'stylesheet',
-  //   href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  //   crossOrigin: 'anonymous'
-  // },
   {
     rel: 'apple-touch-icon',
-    href: '/public/apple-touch-icon.png',
+    href: '/apple-touch-icon.png',
     sizes: '180x180'
   },
   {
     rel: 'icon',
     type: 'image/png',
-    href: '/public/favicon-32x32.png',
+    href: '/favicon-32x32.png',
     sizes: '32x32'
   },
   {
     rel: 'icon',
     type: 'image/png',
-    href: '/public/favicon-16x16.png',
+    href: '/favicon-16x16.png',
     sizes: '16x16'
   },
-  { rel: 'manifest', href: '/public/site.webmanifest' }
+  { rel: 'manifest', href: '/site.webmanifest' }
 ];
 
 const theme = createTheme({

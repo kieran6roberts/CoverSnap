@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node';
+import type { MetaFunction } from '@remix-run/cloudflare';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
 import { Link } from '@remix-run/react';
 

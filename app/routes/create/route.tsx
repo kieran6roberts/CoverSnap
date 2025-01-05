@@ -1,5 +1,6 @@
 import { Flex, Anchor, Box, Image } from '@mantine/core';
-import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
+import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/cloudflare';
+
 import { Link, MetaFunction } from '@remix-run/react';
 
 import { WelcomeModal } from '~/components/WelcomeModal';
