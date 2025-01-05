@@ -7,7 +7,7 @@ import { GitHubStarButton } from '~/components/GitHubStarButton';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { MobileGithubButton } from '~/components/MobileGithubButton';
 import { EditorArea } from '~/components/Layout/EditorArea';
-import { editorOpenStateCookie } from '~/cookies.server';
+import { editorOpenStateCookie } from '~/routes/create/cookies';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie');
