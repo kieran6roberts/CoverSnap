@@ -13,7 +13,6 @@ import {
   UnstyledButton,
   Center
 } from '@mantine/core';
-import { useSearchParams } from '@remix-run/react';
 import { MediaImageFolder, Check } from 'iconoir-react';
 import * as patterns from 'hero-patterns';
 
@@ -22,9 +21,6 @@ import { updateCSSVariable } from '~/utils/styles';
 import classes from './BackgroundSection.module.css';
 
 export function DrawerBackgroundSection() {
-  const [searchParams] = useSearchParams();
-  const resetKey = searchParams.get('reset');
-
   const {
     backgroundImage,
     backgroundColor,
@@ -69,7 +65,6 @@ export function DrawerBackgroundSection() {
     <Stack>
       <Divider label="Basic" labelPosition="center" />
       <ColorInput
-        key={`bg-color-${resetKey}`}
         format="rgba"
         label="Background color"
         description="Accepts RGBA"
@@ -95,7 +90,6 @@ export function DrawerBackgroundSection() {
         </Stack>
       ) : (
         <FileInput
-          key={`bg-image-${resetKey}`}
           clearable
           description="Accepts PNG, JPEG, and WEBP"
           leftSection={<MediaImageFolder width={16} height={16} />}
@@ -108,7 +102,6 @@ export function DrawerBackgroundSection() {
       )}
       {backgroundImage ? (
         <NumberInput
-          key={`color-overlay-opacity-${resetKey}`}
           defaultValue={0}
           max={1}
           min={0}
@@ -124,7 +117,6 @@ export function DrawerBackgroundSection() {
       <Divider label="Patterns" mt={40} labelPosition="center" />
       <ColorInput
         disabled={!!backgroundImage}
-        key={`pattern-color-${resetKey}`}
         format="hex"
         label="Pattern color"
         description="Accepts HEX"
@@ -141,7 +133,6 @@ export function DrawerBackgroundSection() {
         }
       />
       <NumberInput
-        key={`pattern-opacity-${resetKey}`}
         disabled={!!backgroundImage}
         max={1}
         min={0}

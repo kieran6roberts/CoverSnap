@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
+import type { TextAlignment } from '~/types/editor';
+import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
 
 interface BackgroundPattern {
   url: string | null;
@@ -20,12 +22,12 @@ type EditorState = {
   primaryTitleColor: string;
   primaryTitleFontSize: number | string;
   primaryTitleFont: string | null;
-  primaryTitleAlign: 'left' | 'center' | 'right';
+  primaryTitleAlign: TextAlignment;
   subTitle: string;
   subTitleColor: string;
   subTitleFontSize: number | string;
   subTitleFont: string | null;
-  subTitleAlign: 'left' | 'center' | 'right';
+  subTitleAlign: TextAlignment;
   // Background
   backgroundImage: string | null;
   backgroundColor: string;
@@ -39,12 +41,12 @@ type EditorActions = {
   setPrimaryTitleColor: (color: string) => void;
   setPrimaryTitleFontSize: (size: number | string) => void;
   setPrimaryTitleFont: (font: string | null) => void;
-  setPrimaryTitleAlign: (align: 'left' | 'center' | 'right') => void;
+  setPrimaryTitleAlign: (align: TextAlignment) => void;
   setSubTitle: (title: string) => void;
   setSubTitleColor: (color: string) => void;
   setSubTitleFontSize: (size: number | string) => void;
   setSubTitleFont: (font: string | null) => void;
-  setSubTitleAlign: (align: 'left' | 'center' | 'right') => void;
+  setSubTitleAlign: (align: TextAlignment) => void;
   // Background
   setBackgroundColor: (color: string) => void;
   setBackgroundImage: (url: string | null) => void;
@@ -59,12 +61,12 @@ const defaultState: EditorState = {
   primaryTitleColor: 'rgba(255, 255, 255, 1)',
   primaryTitleFontSize: 28,
   primaryTitleFont: 'sans-serif (default)',
-  primaryTitleAlign: 'center',
+  primaryTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
   subTitle: '',
   subTitleColor: 'rgba(255, 255, 255, 1)',
   subTitleFontSize: 20,
   subTitleFont: 'sans-serif (default)',
-  subTitleAlign: 'center',
+  subTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
   // Background
   backgroundColor: 'rgba(51, 51, 51, 1)',
   backgroundImage: null,

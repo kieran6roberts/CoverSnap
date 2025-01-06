@@ -6,18 +6,14 @@ import { AlignLeft, AlignCenter, AlignRight } from 'iconoir-react';
 
 import { EditorHydration, useEditor } from '~/contexts/EditorContext';
 import classes from './CoverImage.module.css';
+import type { TextAlignment } from '~/types/editor';
+import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
 
-const AlignmentControls = ({
-  value,
-  onChange
-}: {
-  value: 'center' | 'left' | 'right';
-  onChange: (value: 'center' | 'left' | 'right') => void;
-}) => (
+const AlignmentControls = ({ value, onChange }: { value: TextAlignment; onChange: (value: TextAlignment) => void }) => (
   <SegmentedControl
     size="xs"
     value={value}
-    onChange={(value) => onChange(value as 'center' | 'left' | 'right')}
+    onChange={(value) => onChange(value as TextAlignment)}
     data={[
       {
         label: (
@@ -25,7 +21,7 @@ const AlignmentControls = ({
             <AlignLeft width={12} height={12} />
           </Center>
         ),
-        value: 'left'
+        value: TEXT_ALIGNMENT_OPTIONS.left
       },
       {
         label: (
@@ -33,7 +29,7 @@ const AlignmentControls = ({
             <AlignCenter width={12} height={12} />
           </Center>
         ),
-        value: 'center'
+        value: TEXT_ALIGNMENT_OPTIONS.center
       },
       {
         label: (
@@ -41,11 +37,50 @@ const AlignmentControls = ({
             <AlignRight width={12} height={12} />
           </Center>
         ),
-        value: 'right'
+        value: TEXT_ALIGNMENT_OPTIONS.right
       }
     ]}
     className={classes.titleControl}
   />
+);
+
+const RndWrapper = ({
+  children,
+  isPreviewMode,
+  wrapperHeight,
+  wrapperWidth,
+  textAlignment,
+  setTextAlignment
+}: {
+  children: React.ReactNode;
+  isPreviewMode: boolean;
+  wrapperHeight: string | number;
+  wrapperWidth: string | number;
+  textAlignment: TextAlignment;
+  setTextAlignment: (align: TextAlignment) => void;
+}) => (
+  <Rnd
+    disableDragging={isPreviewMode}
+    minHeight={100}
+    default={{
+      x: 0,
+      y: 0,
+      width: wrapperWidth,
+      height: wrapperHeight
+    }}
+    bounds="parent"
+    enableResizing={{
+      top: !isPreviewMode,
+      right: !isPreviewMode,
+      bottom: !isPreviewMode,
+      left: !isPreviewMode
+    }}
+    className={classes.rndWrapper}
+    style={{ border: isPreviewMode ? '1px dashed transparent' : '1px dashed var(--mantine-primary-color-8)' }}
+  >
+    {!isPreviewMode ? <AlignmentControls value={textAlignment} onChange={setTextAlignment} /> : null}
+    {children}
+  </Rnd>
 );
 
 export function CoverImageEditor({
@@ -88,52 +123,27 @@ export function CoverImageEditor({
         />
 
         {primaryTitle ? (
-          <Rnd
-            disableDragging={isPreviewMode}
-            minHeight={100}
-            default={{
-              x: 0,
-              y: 0,
-              width: '100%',
-              height: '100%'
-            }}
-            bounds="parent"
-            enableResizing={{
-              top: !isPreviewMode,
-              right: !isPreviewMode,
-              bottom: !isPreviewMode,
-              left: !isPreviewMode
-            }}
-            className={classes.rndWrapper}
-            style={{ border: isPreviewMode ? '1px dashed transparent' : '1px dashed var(--mantine-primary-color-8)' }}
+          <RndWrapper
+            isPreviewMode={isPreviewMode}
+            wrapperHeight="100%"
+            wrapperWidth="100%"
+            textAlignment={primaryTitleAlign}
+            setTextAlignment={setPrimaryTitleAlign}
           >
-            {!isPreviewMode ? <AlignmentControls value={primaryTitleAlign} onChange={setPrimaryTitleAlign} /> : null}
             <span className={classes.title}>{primaryTitle ?? ''}</span>
-          </Rnd>
+          </RndWrapper>
         ) : null}
+
         {subTitle ? (
-          <Rnd
-            disableDragging={isPreviewMode}
-            minHeight={100}
-            default={{
-              x: 0,
-              y: 0,
-              width: 'auto',
-              height: 'auto'
-            }}
-            bounds="parent"
-            enableResizing={{
-              top: !isPreviewMode,
-              right: !isPreviewMode,
-              bottom: !isPreviewMode,
-              left: !isPreviewMode
-            }}
-            style={{ border: isPreviewMode ? 'none' : '1px dashed var(--mantine-primary-color-8)' }}
-            className={classes.rndWrapper}
+          <RndWrapper
+            isPreviewMode={isPreviewMode}
+            wrapperHeight="auto"
+            wrapperWidth="auto"
+            textAlignment={subTitleAlign}
+            setTextAlignment={setSubTitleAlign}
           >
-            {!isPreviewMode ? <AlignmentControls value={subTitleAlign} onChange={setSubTitleAlign} /> : null}
             <span className={classes.subtitle}>{subTitle ?? ''}</span>
-          </Rnd>
+          </RndWrapper>
         ) : null}
       </Box>
     </EditorHydration>

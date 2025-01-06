@@ -1,11 +1,30 @@
 import { CloseButton, ColorInput, Divider, Stack, TextInput, NumberInput, Select } from '@mantine/core';
-import { useSearchParams } from '@remix-run/react';
 
 import { useEditor } from '~/contexts/EditorContext';
 
+const PRIMARY_TEXT_LENGTH = 80;
+const SECONDARY_TEXT_LENGTH = 60;
+const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
+const PRIMARY_TEXT_FONT_SIZE_MAX = 80;
+const SECONDARY_TEXT_FONT_SIZE_MIN = 10;
+const SECONDARY_TEXT_FONT_SIZE_MAX = 60;
+
+const fonts = [
+  'sans-serif (default)',
+  'serif (default)',
+  'monospace (default)',
+  'Arial',
+  'Helvetica',
+  'Verdana',
+  'Tahoma',
+  'Trebuchet MS',
+  'Times New Roman',
+  'Georgia',
+  'Courier New',
+  'system-ui'
+];
+
 export function DrawerTextSection() {
-  const [searchParams] = useSearchParams();
-  const resetKey = searchParams.get('reset');
   const {
     primaryTitle,
     primaryTitleColor,
@@ -34,15 +53,14 @@ export function DrawerTextSection() {
         value={primaryTitle}
         onChange={(e) => setPrimaryTitle(e.target.value)}
         placeholder="HTTP Security Headers and how to..."
-        error={primaryTitle.length > 80 ? 'Maximum 80 characters' : null}
+        error={primaryTitle.length > PRIMARY_TEXT_LENGTH ? `Maximum ${PRIMARY_TEXT_LENGTH} characters` : null}
         label="Title"
-        description="Maximum 80 characters"
+        description={`Maximum ${PRIMARY_TEXT_LENGTH} characters`}
         rightSection={hasPrimaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setPrimaryTitle('')} />}
-        maxLength={80}
+        maxLength={PRIMARY_TEXT_LENGTH}
       />
 
       <ColorInput
-        key={`title-color-${resetKey}`}
         format="rgba"
         description="Accepts RGBA"
         value={primaryTitleColor}
@@ -54,20 +72,7 @@ export function DrawerTextSection() {
         aria-label="Title font"
         label="Font"
         placeholder="Pick value"
-        data={[
-          'sans-serif (default)',
-          'serif (default)',
-          'monospace (default)',
-          'Arial',
-          'Helvetica',
-          'Verdana',
-          'Tahoma',
-          'Trebuchet MS',
-          'Times New Roman',
-          'Georgia',
-          'Courier New',
-          'system-ui'
-        ]}
+        data={fonts}
         value={primaryTitleFont}
         onChange={(value) => setPrimaryTitleFont(value)}
         allowDeselect={false}
@@ -75,9 +80,8 @@ export function DrawerTextSection() {
       />
 
       <NumberInput
-        key={`title-size-${resetKey}`}
-        max={80}
-        min={10}
+        max={PRIMARY_TEXT_FONT_SIZE_MAX}
+        min={PRIMARY_TEXT_FONT_SIZE_MIN}
         value={primaryTitleFontSize}
         onChange={(value) => setPrimaryTitleFontSize(value)}
         label="Font size (px)"
@@ -91,14 +95,13 @@ export function DrawerTextSection() {
         onChange={(e) => setSubTitle(e.target.value)}
         placeholder="Let's dive into the world of..."
         label="Subtitle"
-        description="Maximum 80 characters"
-        error={subTitle.length > 80 ? 'Maximum 80 characters' : null}
+        description={`Maximum ${SECONDARY_TEXT_LENGTH} characters`}
+        error={subTitle.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null}
         rightSection={hasSubTitle && <CloseButton size="sm" variant="subtle" onClick={() => setSubTitle('')} />}
-        maxLength={80}
+        maxLength={SECONDARY_TEXT_LENGTH}
       />
 
       <ColorInput
-        key={`subtitle-color-${resetKey}`}
         format="rgba"
         label="Color"
         description="Accepts RGBA"
@@ -110,20 +113,7 @@ export function DrawerTextSection() {
         aria-label="Subtitle font"
         label="Font"
         placeholder="Pick value"
-        data={[
-          'sans-serif (default)',
-          'serif (default)',
-          'monospace (default)',
-          'Arial',
-          'Helvetica',
-          'Verdana',
-          'Tahoma',
-          'Trebuchet MS',
-          'Times New Roman',
-          'Georgia',
-          'Courier New',
-          'system-ui'
-        ]}
+        data={fonts}
         value={subTitleFont}
         onChange={(value) => setSubTitleFont(value)}
         allowDeselect={false}
@@ -131,12 +121,11 @@ export function DrawerTextSection() {
       />
 
       <NumberInput
-        key={`subtitle-size-${resetKey}`}
         value={subTitleFontSize}
         onChange={(value) => setSubTitleFontSize(value)}
         suffix="px"
-        max={50}
-        min={10}
+        max={SECONDARY_TEXT_FONT_SIZE_MAX}
+        min={SECONDARY_TEXT_FONT_SIZE_MIN}
         label="Font size (px)"
         size="md"
         allowDecimal={false}
