@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton } from '@mantine/core';
+import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton, Badge } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
@@ -87,9 +87,12 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             disabled={!!item.isDisabled}
             className={classes.accordionControl}
           >
-            <Text size="md" fw={500}>
-              {item.title}
-            </Text>
+            <Flex gap="xs" align="center">
+              <Text size="md" fw={500}>
+                {item.title}
+              </Text>
+              {item.isDisabled && <Badge size="xs">Coming soon</Badge>}
+            </Flex>
           </Accordion.Control>
           <Accordion.Panel px="sm">
             <Box pb={48} pt={24}>
@@ -116,7 +119,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           value={currentOpenItems}
           onChange={handleAccordionChange}
           variant="default"
-          pb="md"
+          pb={80}
         >
           {items}
         </Accordion>

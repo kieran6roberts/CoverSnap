@@ -75,6 +75,11 @@ const theme = createTheme({
       defaultProps: {
         size: 'md'
       }
+    },
+    SegmentedControl: {
+      defaultProps: {
+        radius: 'md'
+      }
     }
   },
   defaultRadius: 'md',

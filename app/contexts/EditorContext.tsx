@@ -11,10 +11,12 @@ type EditorState = {
   primaryTitleColor: string;
   primaryTitleFontSize: number | string;
   primaryTitleFont: string | null;
+  primaryTitleAlign: 'left' | 'center' | 'right';
   subTitle: string;
   subTitleColor: string;
   subTitleFontSize: number | string;
   subTitleFont: string | null;
+  subTitleAlign: 'left' | 'center' | 'right';
   // Background
   backgroundImage: string | null;
   backgroundColor: string;
@@ -27,10 +29,12 @@ type EditorActions = {
   setPrimaryTitleColor: (color: string) => void;
   setPrimaryTitleFontSize: (size: number | string) => void;
   setPrimaryTitleFont: (font: string | null) => void;
+  setPrimaryTitleAlign: (align: 'left' | 'center' | 'right') => void;
   setSubTitle: (title: string) => void;
   setSubTitleColor: (color: string) => void;
   setSubTitleFontSize: (size: number | string) => void;
   setSubTitleFont: (font: string | null) => void;
+  setSubTitleAlign: (align: 'left' | 'center' | 'right') => void;
   // Background
   setBackgroundColor: (color: string) => void;
   setBackgroundImage: (url: string | null) => void;
@@ -44,10 +48,12 @@ const defaultState: EditorState = {
   primaryTitleColor: 'rgba(255, 255, 255, 1)',
   primaryTitleFontSize: 28,
   primaryTitleFont: 'sans-serif (default)',
+  primaryTitleAlign: 'center',
   subTitle: '',
   subTitleColor: 'rgba(255, 255, 255, 1)',
   subTitleFontSize: 20,
   subTitleFont: 'sans-serif (default)',
+  subTitleAlign: 'center',
   // Background
   backgroundColor: 'rgba(51, 51, 51, 1)',
   backgroundImage: null
@@ -88,6 +94,11 @@ export const useEditor = create(
           updateCSSVariable({ name: '--cover-title-font', value: font });
         }
       },
+      setPrimaryTitleAlign: (align) => {
+        set({ primaryTitleAlign: align });
+        updateCSSVariable({ name: '--cover-title-align', value: align });
+      },
+
       setSubTitle: (title) => set({ subTitle: title }),
       setSubTitleColor: (color) => {
         set({ subTitleColor: color });
@@ -103,7 +114,10 @@ export const useEditor = create(
           updateCSSVariable({ name: '--cover-subtitle-font', value: font });
         }
       },
-
+      setSubTitleAlign: (align) => {
+        set({ subTitleAlign: align });
+        updateCSSVariable({ name: '--cover-subtitle-align', value: align });
+      },
       // Background
       setBackgroundColor: (color) => {
         set({ backgroundColor: color });
@@ -134,7 +148,9 @@ export const useEditor = create(
           '--cover-background-color': defaultState.backgroundColor,
           '--cover-color-overlay-opacity': '0%',
           '--cover-title-font': defaultState.primaryTitleFont ?? 'sans-serif',
-          '--cover-subtitle-font': defaultState.subTitleFont ?? 'sans-serif'
+          '--cover-subtitle-font': defaultState.subTitleFont ?? 'sans-serif',
+          '--cover-title-align': defaultState.primaryTitleAlign,
+          '--cover-subtitle-align': defaultState.subTitleAlign
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -148,9 +164,11 @@ export const useEditor = create(
         primaryTitle: state.primaryTitle,
         primaryTitleColor: state.primaryTitleColor,
         primaryTitleFontSize: state.primaryTitleFontSize,
+        primaryTitleAlign: state.primaryTitleAlign,
         subTitle: state.subTitle,
         subTitleColor: state.subTitleColor,
         subTitleFontSize: state.subTitleFontSize,
+        subTitleAlign: state.subTitleAlign,
         backgroundColor: state.backgroundColor,
         primaryTitleFont: state.primaryTitleFont,
         subTitleFont: state.subTitleFont
@@ -180,7 +198,9 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-subtitle-font-size': `${state.subTitleFontSize}px`,
         '--cover-background-color': state.backgroundColor,
         '--cover-title-font': state.primaryTitleFont ?? 'sans-serif',
-        '--cover-subtitle-font': state.subTitleFont ?? 'sans-serif'
+        '--cover-subtitle-font': state.subTitleFont ?? 'sans-serif',
+        '--cover-title-align': state.primaryTitleAlign,
+        '--cover-subtitle-align': state.subTitleAlign
       });
     }
   }, [hasHydrated]);
