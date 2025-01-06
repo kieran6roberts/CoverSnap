@@ -166,7 +166,7 @@ export function DrawerBackgroundSection() {
                 component="span"
                 fw={500}
                 ta="center"
-                c={isSelected ? 'var(--mantine-primary-color-filled)' : 'var(--mantine-color-scheme)'}
+                c={isSelected ? 'var(--mantine-primary-color-light-color)' : 'var(--mantine-color-scheme)'}
               >
                 {key}
               </Text>
@@ -176,12 +176,15 @@ export function DrawerBackgroundSection() {
                   radius="md"
                   className={classes.patternCard}
                   style={{
-                    backgroundImage: value(backgroundPattern.color, 1)
+                    backgroundImage: value(backgroundPattern.color, 1),
+                    border: isSelected
+                      ? '1px solid var(--mantine-primary-color-light-color)'
+                      : '1px solid var(--mantine-color-default-border)'
                   }}
                 >
                   {isSelected && (
                     <Center className={classes['patternCard-selected']}>
-                      <Text component="span" fw={500} c="var(--mantine-primary-color-filled)">
+                      <Text component="span" fw={500} c="var(--mantine-primary-color-light-color)">
                         <Check width={32} height={32} />
                       </Text>
                     </Center>

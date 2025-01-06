@@ -4,12 +4,10 @@
   background-position: top;
   background-repeat: repeat;
   aspect-ratio: 1.9;
-  border: 1px solid var(--mantine-color-default-border);
   position: relative;
   overflow: hidden;
   height: 100%;
   width: 100%;
-  border: 1px solid var(--mantine-color-default-border);
   opacity: 0.8;
   transition: opacity 0.2s ease-in-out;
 }
