@@ -1,5 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { saveDomNodeAsImage } from '~/utils/domToNode';
 
@@ -23,7 +24,16 @@ export const useImageDownload = ({ imageRef }: UseImageDownloadProps) => {
           close();
         }, 500);
       } else {
-        // toast.error('Failed to download image. If the issue persists, contact @Kieran6Dev on X.');
+        toast.error('Failed to download image. If the issue persists, contact @Kieran6Dev on X.', {
+          action: {
+            label: 'Contact me',
+            onClick: () => window.open('https://x.com/Kieran6Dev', '_blank')
+          },
+          duration: 15000
+        });
+        setTimeout(() => {
+          close();
+        }, 500);
       }
     }
   };

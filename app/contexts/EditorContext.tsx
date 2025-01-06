@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { useEffect } from 'react';
 import { get, set, del } from 'idb-keyval';
+import { toast } from 'sonner';
+import { Check } from 'iconoir-react';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
 
@@ -134,10 +136,10 @@ export const useEditor = create(
           URL.revokeObjectURL(state.backgroundImage);
         }
 
-        // toast.success('Cover reset.', {
-        //   id: 'reset-cover',
-        //   icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
-        // });
+        toast.success('Cover reset.', {
+          id: 'reset-cover',
+          icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
+        });
 
         // Reset CSS variables
         updateCSSVariables({
@@ -173,12 +175,20 @@ export const useEditor = create(
         primaryTitleFont: state.primaryTitleFont,
         subTitleFont: state.subTitleFont
       }),
-      onRehydrateStorage: () => (state) => {
-        if (!state) {
-          // toast.error('Failed to hydrate editor state. Please refresh the page.');
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          setTimeout(() => {
+            toast.error('Failed to hydrate editor state. Please refresh the page.', {
+              action: {
+                label: 'Refresh',
+                onClick: () => window.location.reload()
+              }
+            });
+          }, 0);
           return;
+        } else if (state) {
+          state.setHasHydrated(true);
         }
-        state.setHasHydrated(true);
       }
     }
   )
