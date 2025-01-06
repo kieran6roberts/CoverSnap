@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton } from '@mantine/core';
+import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton, Badge } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
@@ -11,6 +11,38 @@ import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSe
 import { useEditor, EditorHydration } from '~/contexts/EditorContext';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
+import { CREATE_ROUTE } from '~/consts';
+
+const editSections = [
+  {
+    title: 'Text',
+    content: () => <DrawerTextSection />,
+    icon: <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
+  },
+  {
+    title: 'Background',
+    content: () => <DrawerBackgroundSection />,
+    icon: <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
+  },
+  {
+    title: 'Templates',
+    content: () => null,
+    icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    isDisabled: true
+  },
+  {
+    title: 'Elements',
+    content: () => null,
+    icon: <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    isDisabled: true
+  },
+  {
+    title: 'Uploads',
+    content: () => null,
+    icon: <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    isDisabled: true
+  }
+];
 
 export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const fetcher = useFetcher();
@@ -25,43 +57,12 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
     imageRef: imageNodeRef
   });
 
-  const editSections = [
-    {
-      title: 'Text',
-      content: () => <DrawerTextSection />,
-      icon: <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
-    },
-    {
-      title: 'Background',
-      content: () => <DrawerBackgroundSection />,
-      icon: <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
-    },
-    {
-      title: 'Templates',
-      content: () => null,
-      icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />,
-      isDisabled: true
-    },
-    {
-      title: 'Elements',
-      content: () => null,
-      icon: <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />,
-      isDisabled: true
-    },
-    {
-      title: 'Uploads',
-      content: () => null,
-      icon: <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />,
-      isDisabled: true
-    }
-  ];
-
   const handleAccordionChange = (values: string[]) => {
     fetcher.submit(
       { openItems: values, intent: 'updateOpenItems' },
       {
         method: 'post',
-        action: '/create'
+        action: CREATE_ROUTE
       }
     );
   };
@@ -87,9 +88,12 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             disabled={!!item.isDisabled}
             className={classes.accordionControl}
           >
-            <Text size="md" fw={500}>
-              {item.title}
-            </Text>
+            <Flex gap="xs" align="center">
+              <Text size="md" fw={500}>
+                {item.title}
+              </Text>
+              {item.isDisabled && <Badge size="xs">Coming soon</Badge>}
+            </Flex>
           </Accordion.Control>
           <Accordion.Panel px="sm">
             <Box pb={48} pt={24}>
@@ -116,7 +120,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           value={currentOpenItems}
           onChange={handleAccordionChange}
           variant="default"
-          pb="md"
+          pb={80}
         >
           {items}
         </Accordion>
@@ -125,11 +129,11 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           justify={{ base: 'space-between', md: 'flex-end' }}
           bg="var(--mantine-color-body)"
           pos={{ base: 'fixed', md: 'sticky' }}
+          className={classes.mobileFooter}
           bottom={0}
           right={0}
           left={0}
           p="md"
-          style={{ borderTop: '1px solid var(--mantine-color-default-border)', zIndex: 10 }}
         >
           <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="xs">
             Reset all

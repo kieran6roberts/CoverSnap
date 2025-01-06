@@ -5,6 +5,31 @@ import fs from 'file-saver';
 const TARGET_WIDTH = 1600;
 const TARGET_HEIGHT = 840;
 
+const hideTitleControls = (node: HTMLElement) => {
+  const titleControls = Array.from(node.querySelectorAll('[class*="titleControl"]'));
+  if (titleControls.length > 0) {
+    titleControls.forEach((element) => {
+      if (element instanceof HTMLElement) {
+        element.style.display = 'none';
+      }
+    });
+  }
+};
+
+const hideDashedBorders = (node: HTMLElement) => {
+  const titleRndWrapper = Array.from(node.querySelectorAll('[class*="rndWrapper"]'));
+  if (titleRndWrapper.length > 0) {
+    titleRndWrapper.forEach((element) => {
+      if (element instanceof HTMLElement) {
+        element.style.border = '1px dashed transparent';
+        element.style.display = 'flex';
+        element.style.alignItems = 'center';
+        element.style.overflow = 'hidden';
+      }
+    });
+  }
+};
+
 export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['current']) {
   if (!node) return { success: false, blob: null };
 
@@ -28,16 +53,8 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       borderRadius: '0px'
     });
 
-    const titleRndWrapper = Array.from(clone.querySelectorAll('[class*="rndWrapper"]'));
-
-    // Remove dashed borders
-    if (titleRndWrapper.length > 0) {
-      titleRndWrapper.forEach((element) => {
-        if (element instanceof HTMLElement) {
-          element.style.border = 'none';
-        }
-      });
-    }
+    hideTitleControls(clone);
+    hideDashedBorders(clone);
 
     // Scaled up the content correctly, now we can just set the dimensions so it's exact
     const blob = await domToImage.toBlob(clone, {

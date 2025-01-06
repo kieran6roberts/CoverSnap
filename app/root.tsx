@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/cloudflare';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
+import { Toaster } from 'sonner';
 
 export const links: LinksFunction = () => [
   {
@@ -27,6 +28,8 @@ export const links: LinksFunction = () => [
 const theme = createTheme({
   autoContrast: true,
   luminanceThreshold: 0.3,
+  primaryColor: 'indigo',
+  primaryShade: 7,
   components: {
     Text: {
       defaultProps: {
@@ -71,14 +74,23 @@ const theme = createTheme({
         scrollbarSize: 10
       }
     },
+    NumberInput: {
+      defaultProps: {
+        size: 'md'
+      }
+    },
     FileInput: {
       defaultProps: {
         size: 'md'
       }
+    },
+    SegmentedControl: {
+      defaultProps: {
+        radius: 'md'
+      }
     }
   },
-  defaultRadius: 'md',
-  primaryColor: 'teal'
+  defaultRadius: 'md'
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -92,6 +104,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
+        <Toaster />
         <MantineProvider theme={theme}>{children}</MantineProvider>
         <ScrollRestoration />
         <Scripts />

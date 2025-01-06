@@ -32,3 +32,8 @@
 [data-mantine-color-scheme='dark'] .sidebar {
   background-color: var(--mantine-color-dark-7);
 }
+
+.mobileFooter {
+  border-top: 1px solid var(--mantine-color-default-border);
+  z-index: 10;
+}

@@ -133,7 +133,7 @@ export default function Create() {
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
-            <GitHubStarButton visibleFrom="md" size="sm" variant="outline" />
+            <GitHubStarButton visibleFrom="md" size="sm" variant="light" />
             <MobileGithubButton />
           </Flex>
         </Flex>
