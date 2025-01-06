@@ -41,10 +41,15 @@ export function DrawerBackgroundSection() {
       setBackgroundImage(imageUrl);
     } else {
       setBackgroundImage(null);
+      updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
     }
   };
 
   const onPatternChange = (name: string) => {
+    if (backgroundImage) {
+      onBackgroundImageChange(null);
+      updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
+    }
     if (name === backgroundPattern.name) {
       setBackgroundPattern({
         name: null,
@@ -84,7 +89,7 @@ export function DrawerBackgroundSection() {
             width={368}
             height={200}
           />
-          <Button aria-label="Remove background image" onClick={() => setBackgroundImage(null)}>
+          <Button aria-label="Remove background image" onClick={() => onBackgroundImageChange(null)}>
             Clear
           </Button>
         </Stack>
@@ -108,9 +113,11 @@ export function DrawerBackgroundSection() {
           step={0.1}
           decimalScale={1}
           onChange={(value) => {
-            updateCSSVariable({ name: '--cover-color-overlay-opacity', value: `${value}%` });
+            // Convert decimal to percentage for color-mix
+            const percentage = value ? Number(value) * 100 : 0;
+            updateCSSVariable({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
           }}
-          label="Color overlay opacity"
+          label="Overlay opacity"
           allowNegative={false}
         />
       ) : null}
@@ -152,24 +159,27 @@ export function DrawerBackgroundSection() {
       />
       <SimpleGrid cols={2} spacing="sm" verticalSpacing="xl" mt={32}>
         {Object.entries(patterns).map(([key, value]) => {
+          const isSelected = backgroundPattern.name === key;
           return (
             <Stack key={key} gap="xs">
-              <Text component="span" mb={4} fw={500} ta="center">
+              <Text
+                component="span"
+                fw={500}
+                ta="center"
+                c={isSelected ? 'var(--mantine-primary-color-filled)' : 'var(--mantine-color-scheme)'}
+              >
                 {key}
               </Text>
-              <UnstyledButton
-                disabled={!!backgroundImage}
-                aria-label={`Select ${key} background pattern`}
-                onClick={() => onPatternChange(key)}
-              >
+
+              <UnstyledButton aria-label={`Select ${key} background pattern`} onClick={() => onPatternChange(key)}>
                 <Paper
                   radius="md"
                   className={classes.patternCard}
                   style={{
-                    backgroundImage: value(backgroundPattern.color, backgroundPattern.opacity)
+                    backgroundImage: value(backgroundPattern.color, 1)
                   }}
                 >
-                  {backgroundPattern.name === key && (
+                  {isSelected && (
                     <Center className={classes['patternCard-selected']}>
                       <Text component="span" fw={500} c="var(--mantine-primary-color-filled)">
                         <Check width={32} height={32} />

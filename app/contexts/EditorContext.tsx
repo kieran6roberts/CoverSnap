@@ -143,7 +143,7 @@ export const useEditor = create(
         updateCSSVariable({ name: '--cover-background-color', value: color });
       },
       setBackgroundImage: (url) => {
-        set({ backgroundImage: url, backgroundPattern: { ...defaultState.backgroundPattern, url } });
+        set({ backgroundImage: url, backgroundPattern: { ...defaultState.backgroundPattern } });
       },
       setBackgroundPattern: (pattern) => {
         set({ backgroundPattern: pattern });
