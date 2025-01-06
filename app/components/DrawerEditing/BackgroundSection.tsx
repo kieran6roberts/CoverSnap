@@ -1,15 +1,38 @@
-import { ColorInput, Stack, FileInput, NumberInput, Button, Image, Text } from '@mantine/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  ColorInput,
+  Stack,
+  FileInput,
+  NumberInput,
+  Button,
+  Image,
+  Text,
+  Divider,
+  Paper,
+  SimpleGrid,
+  UnstyledButton,
+  Center
+} from '@mantine/core';
 import { useSearchParams } from '@remix-run/react';
-import { MediaImageFolder } from 'iconoir-react';
+import { MediaImageFolder, Check } from 'iconoir-react';
+import * as patterns from 'hero-patterns';
 
 import { useEditor } from '~/contexts/EditorContext';
 import { updateCSSVariable } from '~/utils/styles';
+import classes from './BackgroundSection.module.css';
 
 export function DrawerBackgroundSection() {
   const [searchParams] = useSearchParams();
   const resetKey = searchParams.get('reset');
 
-  const { backgroundImage, backgroundColor, setBackgroundColor, setBackgroundImage } = useEditor();
+  const {
+    backgroundImage,
+    backgroundColor,
+    setBackgroundColor,
+    setBackgroundImage,
+    setBackgroundPattern,
+    backgroundPattern
+  } = useEditor();
 
   const onBackgroundImageChange = (file: File | null) => {
     // Revoke old image if it's a blob
@@ -25,8 +48,26 @@ export function DrawerBackgroundSection() {
     }
   };
 
+  const onPatternChange = (name: string) => {
+    if (name === backgroundPattern.name) {
+      setBackgroundPattern({
+        name: null,
+        url: null,
+        color: backgroundPattern.color,
+        opacity: backgroundPattern.opacity
+      });
+    } else {
+      setBackgroundPattern({
+        ...backgroundPattern,
+        name,
+        url: (patterns as any)[name](backgroundPattern.color, backgroundPattern.opacity)
+      });
+    }
+  };
+
   return (
     <Stack>
+      <Divider label="Basic" labelPosition="center" />
       <ColorInput
         key={`bg-color-${resetKey}`}
         format="rgba"
@@ -69,18 +110,87 @@ export function DrawerBackgroundSection() {
         <NumberInput
           key={`color-overlay-opacity-${resetKey}`}
           defaultValue={0}
-          suffix="%"
-          max={100}
+          max={1}
           min={0}
+          step={0.1}
+          decimalScale={1}
           onChange={(value) => {
             updateCSSVariable({ name: '--cover-color-overlay-opacity', value: `${value}%` });
           }}
           label="Color overlay opacity"
-          size="md"
-          allowDecimal={false}
           allowNegative={false}
         />
       ) : null}
+      <Divider label="Patterns" mt={40} labelPosition="center" />
+      <ColorInput
+        disabled={!!backgroundImage}
+        key={`pattern-color-${resetKey}`}
+        format="hex"
+        label="Pattern color"
+        description="Accepts HEX"
+        value={backgroundPattern.color}
+        onChangeEnd={(color) =>
+          setBackgroundPattern({
+            ...backgroundPattern,
+
+            url: backgroundPattern.name
+              ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
+              : null,
+            color
+          })
+        }
+      />
+      <NumberInput
+        key={`pattern-opacity-${resetKey}`}
+        disabled={!!backgroundImage}
+        max={1}
+        min={0}
+        step={0.1}
+        value={backgroundPattern.opacity}
+        onChange={(value) =>
+          setBackgroundPattern({
+            ...backgroundPattern,
+            opacity: Number(value),
+            url: backgroundPattern.name
+              ? (patterns as any)[backgroundPattern.name](backgroundPattern.color, Number(value))
+              : null
+          })
+        }
+        label="Pattern opacity"
+        allowNegative={false}
+      />
+      <SimpleGrid cols={2} spacing="sm" verticalSpacing="xl" mt={32}>
+        {Object.entries(patterns).map(([key, value]) => {
+          return (
+            <Stack key={key} gap="xs">
+              <Text component="span" mb={4} fw={500} ta="center">
+                {key}
+              </Text>
+              <UnstyledButton
+                disabled={!!backgroundImage}
+                aria-label={`Select ${key} background pattern`}
+                onClick={() => onPatternChange(key)}
+              >
+                <Paper
+                  radius="md"
+                  className={classes.patternCard}
+                  style={{
+                    backgroundImage: value(backgroundPattern.color, backgroundPattern.opacity)
+                  }}
+                >
+                  {backgroundPattern.name === key && (
+                    <Center className={classes['patternCard-selected']}>
+                      <Text component="span" fw={500} c="var(--mantine-primary-color-filled)">
+                        <Check width={32} height={32} />
+                      </Text>
+                    </Center>
+                  )}
+                </Paper>
+              </UnstyledButton>
+            </Stack>
+          );
+        })}
+      </SimpleGrid>
     </Stack>
   );
 }

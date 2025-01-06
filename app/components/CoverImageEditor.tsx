@@ -61,6 +61,7 @@ export function CoverImageEditor({
     primaryTitleAlign,
     subTitleAlign,
     backgroundImage,
+    backgroundPattern,
     setPrimaryTitleAlign,
     setSubTitleAlign
   } = useEditor();
@@ -70,13 +71,19 @@ export function CoverImageEditor({
         <Box
           className={classes.backgroundWrapper}
           style={{
-            ...(backgroundImage && {
-              background: `linear-gradient(
-                      color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
-                      color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
-                    ), url(${backgroundImage}) center/cover no-repeat`,
-              backgroundColor: 'transparent'
-            })
+            ...(backgroundPattern?.url
+              ? {
+                  background: backgroundPattern.url
+                }
+              : backgroundImage
+                ? {
+                    background: `linear-gradient(
+                  color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
+                  color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
+                ), url(${backgroundImage}) center/cover no-repeat`,
+                    backgroundColor: 'transparent'
+                  }
+                : {})
           }}
         />
 

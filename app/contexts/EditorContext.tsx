@@ -7,6 +7,13 @@ import { Check } from 'iconoir-react';
 
 import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
 
+interface BackgroundPattern {
+  url: string | null;
+  name: string | null;
+  color: string;
+  opacity: number;
+}
+
 type EditorState = {
   // Text
   primaryTitle: string;
@@ -22,6 +29,7 @@ type EditorState = {
   // Background
   backgroundImage: string | null;
   backgroundColor: string;
+  backgroundPattern: BackgroundPattern;
 };
 
 type EditorActions = {
@@ -40,6 +48,7 @@ type EditorActions = {
   // Background
   setBackgroundColor: (color: string) => void;
   setBackgroundImage: (url: string | null) => void;
+  setBackgroundPattern: (pattern: BackgroundPattern) => void;
   // Reset
   resetEditor: () => void;
 };
@@ -58,7 +67,13 @@ const defaultState: EditorState = {
   subTitleAlign: 'center',
   // Background
   backgroundColor: 'rgba(51, 51, 51, 1)',
-  backgroundImage: null
+  backgroundImage: null,
+  backgroundPattern: {
+    url: null,
+    color: '#ffffff',
+    name: null,
+    opacity: 1
+  }
 };
 
 const indexDBStorage: StateStorage = {
@@ -126,7 +141,10 @@ export const useEditor = create(
         updateCSSVariable({ name: '--cover-background-color', value: color });
       },
       setBackgroundImage: (url) => {
-        set({ backgroundImage: url });
+        set({ backgroundImage: url, backgroundPattern: { ...defaultState.backgroundPattern, url } });
+      },
+      setBackgroundPattern: (pattern) => {
+        set({ backgroundPattern: pattern });
       },
 
       // Reset
@@ -173,7 +191,8 @@ export const useEditor = create(
         subTitleAlign: state.subTitleAlign,
         backgroundColor: state.backgroundColor,
         primaryTitleFont: state.primaryTitleFont,
-        subTitleFont: state.subTitleFont
+        subTitleFont: state.subTitleFont,
+        backgroundPattern: state.backgroundPattern
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {

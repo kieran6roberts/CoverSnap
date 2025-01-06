@@ -34,6 +34,7 @@
     "dom-to-image-more": "^3.5.0",
     "file-saver": "^2.0.5",
     "globals": "^15.14.0",
+    "hero-patterns": "^2.1.0",
     "iconoir-react": "^7.10.1",
     "idb-keyval": "^6.2.1",
     "isbot": "4",

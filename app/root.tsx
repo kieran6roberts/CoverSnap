@@ -72,6 +72,11 @@ const theme = createTheme({
         scrollbarSize: 10
       }
     },
+    NumberInput: {
+      defaultProps: {
+        size: 'md'
+      }
+    },
     FileInput: {
       defaultProps: {
         size: 'md'

@@ -1,0 +1,19 @@
+.patternCard {
+  background-color: #333333;
+  background-size: 20%;
+  background-position: top;
+  background-repeat: repeat;
+  aspect-ratio: 1.9;
+  border: 1px solid var(--mantine-color-default-border);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  border: 1px solid var(--mantine-color-default-border);
+}
+
+.patternCard-selected {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
