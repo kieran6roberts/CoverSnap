@@ -9,6 +9,8 @@
   --cover-subtitle-font: sans-serif;
   --cover-title-align: center;
   --cover-subtitle-align: center;
+  --cover-title-stack: 0;
+  --cover-subtitle-stack: 1;
 }
 
 .coverSection {
@@ -93,9 +95,8 @@
 
 .titleControl {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0px;
+  right: 4px;
+  top: 4px;
   z-index: 10;
 }
 
@@ -117,6 +118,14 @@
   align-items: center;
   border-radius: 12px;
   overflow: hidden;
+
+  &.primary {
+    z-index: var(--cover-title-stack);
+  }
+
+  &.secondary {
+    z-index: var(--cover-subtitle-stack);
+  }
 }
 
 [data-mantine-color-scheme='dark'] .coverSection {

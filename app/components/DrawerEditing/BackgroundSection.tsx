@@ -67,7 +67,7 @@ export function DrawerBackgroundSection() {
   };
 
   return (
-    <Stack>
+    <Stack gap="xl">
       <Divider label="Basic" labelPosition="center" />
       <ColorInput
         format="rgba"

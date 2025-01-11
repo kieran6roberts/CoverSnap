@@ -23,11 +23,13 @@ type EditorState = {
   primaryTitleFontSize: number | string;
   primaryTitleFont: string | null;
   primaryTitleAlign: TextAlignment;
+  primaryTitleStack: number;
   subTitle: string;
   subTitleColor: string;
   subTitleFontSize: number | string;
   subTitleFont: string | null;
   subTitleAlign: TextAlignment;
+  subTitleStack: number;
   // Background
   backgroundImage: string | null;
   backgroundColor: string;
@@ -47,6 +49,7 @@ type EditorActions = {
   setSubTitleFontSize: (size: number | string) => void;
   setSubTitleFont: (font: string | null) => void;
   setSubTitleAlign: (align: TextAlignment) => void;
+  setStack: ({ text, stack }: { text: 'primary' | 'secondary'; stack: 'top' | 'bottom' }) => void;
   // Background
   setBackgroundColor: (color: string) => void;
   setBackgroundImage: (url: string | null) => void;
@@ -62,11 +65,13 @@ const defaultState: EditorState = {
   primaryTitleFontSize: 28,
   primaryTitleFont: 'sans-serif (default)',
   primaryTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
+  primaryTitleStack: 0,
   subTitle: '',
   subTitleColor: 'rgba(255, 255, 255, 1)',
   subTitleFontSize: 20,
   subTitleFont: 'sans-serif (default)',
   subTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
+  subTitleStack: 1,
   // Background
   backgroundColor: 'rgba(51, 51, 51, 1)',
   backgroundImage: null,
@@ -137,6 +142,19 @@ export const useEditor = create(
         set({ subTitleAlign: align });
         updateCSSVariable({ name: '--cover-subtitle-align', value: align });
       },
+
+      setStack: ({ text, stack }) => {
+        const isPrimary = text === 'primary';
+        const isSecondary = text === 'secondary';
+        const isTop = stack === 'top';
+        const isBottom = stack === 'bottom';
+
+        set({
+          primaryTitleStack: isPrimary && isTop ? 1 : isPrimary && isBottom ? 0 : isTop ? 0 : 1,
+          subTitleStack: isSecondary && isTop ? 1 : isSecondary && isBottom ? 0 : isTop ? 0 : 1
+        });
+      },
+
       // Background
       setBackgroundColor: (color) => {
         set({ backgroundColor: color });
@@ -172,7 +190,9 @@ export const useEditor = create(
           '--cover-title-font': defaultState.primaryTitleFont ?? 'sans-serif',
           '--cover-subtitle-font': defaultState.subTitleFont ?? 'sans-serif',
           '--cover-title-align': defaultState.primaryTitleAlign,
-          '--cover-subtitle-align': defaultState.subTitleAlign
+          '--cover-subtitle-align': defaultState.subTitleAlign,
+          '--cover-title-stack': defaultState.primaryTitleStack.toString(),
+          '--cover-subtitle-stack': defaultState.subTitleStack.toString()
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -194,7 +214,9 @@ export const useEditor = create(
         backgroundColor: state.backgroundColor,
         primaryTitleFont: state.primaryTitleFont,
         subTitleFont: state.subTitleFont,
-        backgroundPattern: state.backgroundPattern
+        backgroundPattern: state.backgroundPattern,
+        primaryTitleStack: state.primaryTitleStack,
+        subTitleStack: state.subTitleStack
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -231,7 +253,9 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-title-font': state.primaryTitleFont ?? 'sans-serif',
         '--cover-subtitle-font': state.subTitleFont ?? 'sans-serif',
         '--cover-title-align': state.primaryTitleAlign,
-        '--cover-subtitle-align': state.subTitleAlign
+        '--cover-subtitle-align': state.subTitleAlign,
+        '--cover-title-stack': state.primaryTitleStack.toString(),
+        '--cover-subtitle-stack': state.subTitleStack.toString()
       });
     }
   }, [hasHydrated]);

@@ -47,7 +47,7 @@ export function DrawerTextSection() {
   const hasSubTitle = subTitle.length > 0;
 
   return (
-    <Stack>
+    <Stack gap="xl">
       <Divider label="Primary title" labelPosition="center" />
       <TextInput
         value={primaryTitle}

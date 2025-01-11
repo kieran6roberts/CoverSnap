@@ -31,6 +31,16 @@ const theme = createTheme({
   primaryColor: 'indigo',
   primaryShade: 7,
   components: {
+    InputLabel: {
+      defaultProps: {
+        mb: 5
+      }
+    },
+    InputDescription: {
+      defaultProps: {
+        mb: 10
+      }
+    },
     Text: {
       defaultProps: {
         c: 'var(--mantine-color-text)'
