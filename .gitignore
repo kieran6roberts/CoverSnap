@@ -2,7 +2,8 @@ node_modules
 /.cache
 /build
 .env
-/public/.DS_Store
+/public/.DS_Store]
+.DS_Store
 .dev.vars
 .wrangler
 

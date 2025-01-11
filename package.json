@@ -3,8 +3,12 @@
   "type": "module",
   "packageManager": "pnpm@9.0.6",
   "version": "1.0.0",
-  "description": "Cover Snap lets you easily generate good looking cover images for your blog posts.",
+  "description": "Cover Snap is a free tool that lets you easily generate good looking cover images for your blog posts in seconds using the editing dashboard.",
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "github:kieran6roberts/CoverSnap"
+  },
   "main": "index.js",
   "scripts": {
     "build": "remix vite:build",
