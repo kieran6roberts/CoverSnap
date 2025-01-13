@@ -22,12 +22,8 @@ import classes from './BackgroundSection.module.css';
 
 export function DrawerBackgroundSection() {
   const {
-    backgroundImage,
-    backgroundColor,
-    setBackgroundColor,
-    setBackgroundImage,
-    setBackgroundPattern,
-    backgroundPattern
+    background: { image: backgroundImage, color: backgroundColor, pattern: backgroundPattern },
+    updateBackground
   } = useEditor();
 
   const onBackgroundImageChange = (file: File | null) => {
@@ -38,9 +34,9 @@ export function DrawerBackgroundSection() {
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setBackgroundImage(imageUrl);
+      updateBackground({ image: imageUrl });
     } else {
-      setBackgroundImage(null);
+      updateBackground({ image: null });
       updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
     }
   };
@@ -51,17 +47,22 @@ export function DrawerBackgroundSection() {
       updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
     }
     if (name === backgroundPattern.name) {
-      setBackgroundPattern({
-        name: null,
-        url: null,
-        color: backgroundPattern.color,
-        opacity: backgroundPattern.opacity
+      updateBackground({
+        pattern: {
+          name: null,
+          url: null,
+          color: backgroundPattern.color,
+          opacity: backgroundPattern.opacity
+        }
       });
     } else {
-      setBackgroundPattern({
-        ...backgroundPattern,
-        name,
-        url: (patterns as any)[name](backgroundPattern.color, backgroundPattern.opacity)
+      updateBackground({
+        pattern: {
+          name,
+          url: (patterns as any)[name](backgroundPattern.color, backgroundPattern.opacity),
+          color: backgroundPattern.color,
+          opacity: backgroundPattern.opacity
+        }
       });
     }
   };
@@ -74,7 +75,7 @@ export function DrawerBackgroundSection() {
         label="Background color"
         description="Accepts RGBA"
         value={backgroundColor}
-        onChange={setBackgroundColor}
+        onChange={(value) => updateBackground({ color: value })}
       />
       {backgroundImage ? (
         <Stack>
@@ -129,13 +130,14 @@ export function DrawerBackgroundSection() {
         description="Accepts HEX"
         value={backgroundPattern.color}
         onChangeEnd={(color) =>
-          setBackgroundPattern({
-            ...backgroundPattern,
-
-            url: backgroundPattern.name
-              ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
-              : null,
-            color
+          updateBackground({
+            pattern: {
+              ...backgroundPattern,
+              url: backgroundPattern.name
+                ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
+                : null,
+              color
+            }
           })
         }
       />
@@ -146,12 +148,14 @@ export function DrawerBackgroundSection() {
         step={0.1}
         value={backgroundPattern.opacity}
         onChange={(value) =>
-          setBackgroundPattern({
-            ...backgroundPattern,
-            opacity: Number(value),
-            url: backgroundPattern.name
-              ? (patterns as any)[backgroundPattern.name](backgroundPattern.color, Number(value))
-              : null
+          updateBackground({
+            pattern: {
+              ...backgroundPattern,
+              opacity: Number(value),
+              url: backgroundPattern.name
+                ? (patterns as any)[backgroundPattern.name](backgroundPattern.color, Number(value))
+                : null
+            }
           })
         }
         label="Pattern opacity"

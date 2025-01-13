@@ -26,55 +26,57 @@ const fonts = [
 
 export function DrawerTextSection() {
   const {
-    primaryTitle,
-    primaryTitleColor,
-    subTitle,
-    subTitleColor,
-    primaryTitleFontSize,
-    setPrimaryTitle,
-    setPrimaryTitleColor,
-    setSubTitle,
-    setPrimaryTitleFontSize,
-    subTitleFontSize,
-    setSubTitleFontSize,
-    setSubTitleColor,
-    primaryTitleFont,
-    setPrimaryTitleFont,
-    subTitleFont,
-    setSubTitleFont
+    primaryText: {
+      content: primaryText,
+      color: primaryTextColor,
+      font: primaryTextFont,
+      fontSize: primaryTextFontSize
+    },
+    secondaryText: {
+      content: secondaryText,
+      color: secondaryTextColor,
+      font: secondaryTextFont,
+      fontSize: secondaryTextFontSize
+    },
+    updatePrimaryText,
+    updateSecondaryText
   } = useEditor();
-  const hasPrimaryTitle = primaryTitle.length > 0;
-  const hasSubTitle = subTitle.length > 0;
+  const hasPrimaryText = primaryText.length > 0;
+  const hasSecondaryText = secondaryText.length > 0;
 
   return (
     <Stack gap="xl">
-      <Divider label="Primary title" labelPosition="center" />
+      <Divider label="Primary text" labelPosition="center" />
       <TextInput
-        value={primaryTitle}
-        onChange={(e) => setPrimaryTitle(e.target.value)}
+        value={primaryText}
+        onChange={(e) => updatePrimaryText({ content: e.target.value })}
         placeholder="HTTP Security Headers and how to..."
-        error={primaryTitle.length > PRIMARY_TEXT_LENGTH ? `Maximum ${PRIMARY_TEXT_LENGTH} characters` : null}
-        label="Title"
+        error={primaryText.length > PRIMARY_TEXT_LENGTH ? `Maximum ${PRIMARY_TEXT_LENGTH} characters` : null}
+        label="Content"
         description={`Maximum ${PRIMARY_TEXT_LENGTH} characters`}
-        rightSection={hasPrimaryTitle && <CloseButton size="sm" variant="subtle" onClick={() => setPrimaryTitle('')} />}
+        rightSection={
+          hasPrimaryText && (
+            <CloseButton size="sm" variant="subtle" onClick={() => updatePrimaryText({ content: '' })} />
+          )
+        }
         maxLength={PRIMARY_TEXT_LENGTH}
       />
 
       <ColorInput
         format="rgba"
         description="Accepts RGBA"
-        value={primaryTitleColor}
+        value={primaryTextColor}
         label="Color"
-        onChange={setPrimaryTitleColor}
+        onChange={(value) => updatePrimaryText({ color: value })}
       />
 
       <Select
-        aria-label="Title font"
+        aria-label="Content font"
         label="Font"
         placeholder="Pick value"
         data={fonts}
-        value={primaryTitleFont}
-        onChange={(value) => setPrimaryTitleFont(value)}
+        value={primaryTextFont}
+        onChange={(value) => updatePrimaryText({ font: value })}
         allowDeselect={false}
         checkIconPosition="right"
       />
@@ -82,22 +84,26 @@ export function DrawerTextSection() {
       <NumberInput
         max={PRIMARY_TEXT_FONT_SIZE_MAX}
         min={PRIMARY_TEXT_FONT_SIZE_MIN}
-        value={primaryTitleFontSize}
-        onChange={(value) => setPrimaryTitleFontSize(value)}
+        value={primaryTextFontSize}
+        onChange={(value) => updatePrimaryText({ fontSize: value })}
         label="Font size (px)"
         size="md"
         suffix="px"
         allowDecimal={false}
       />
-      <Divider label="Subtitle" mt={40} labelPosition="center" />
+      <Divider label="Secondary text" mt={40} labelPosition="center" />
       <TextInput
-        value={subTitle}
-        onChange={(e) => setSubTitle(e.target.value)}
+        value={secondaryText}
+        onChange={(e) => updateSecondaryText({ content: e.target.value })}
         placeholder="Let's dive into the world of..."
-        label="Subtitle"
+        label="Content"
         description={`Maximum ${SECONDARY_TEXT_LENGTH} characters`}
-        error={subTitle.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null}
-        rightSection={hasSubTitle && <CloseButton size="sm" variant="subtle" onClick={() => setSubTitle('')} />}
+        error={secondaryText.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null}
+        rightSection={
+          hasSecondaryText && (
+            <CloseButton size="sm" variant="subtle" onClick={() => updateSecondaryText({ content: '' })} />
+          )
+        }
         maxLength={SECONDARY_TEXT_LENGTH}
       />
 
@@ -105,24 +111,24 @@ export function DrawerTextSection() {
         format="rgba"
         label="Color"
         description="Accepts RGBA"
-        value={subTitleColor}
-        onChange={setSubTitleColor}
+        value={secondaryTextColor}
+        onChange={(value) => updateSecondaryText({ color: value })}
       />
 
       <Select
-        aria-label="Subtitle font"
+        aria-label="Content font"
         label="Font"
         placeholder="Pick value"
         data={fonts}
-        value={subTitleFont}
-        onChange={(value) => setSubTitleFont(value)}
+        value={secondaryTextFont}
+        onChange={(value) => updateSecondaryText({ font: value })}
         allowDeselect={false}
         checkIconPosition="right"
       />
 
       <NumberInput
-        value={subTitleFontSize}
-        onChange={(value) => setSubTitleFontSize(value)}
+        value={secondaryTextFontSize}
+        onChange={(value) => updateSecondaryText({ fontSize: value })}
         suffix="px"
         max={SECONDARY_TEXT_FONT_SIZE_MAX}
         min={SECONDARY_TEXT_FONT_SIZE_MIN}

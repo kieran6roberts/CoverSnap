@@ -1,16 +1,16 @@
 :root {
-  --cover-background-color: #333333;
-  --cover-title-color: #ffffff;
-  --cover-subtitle-color: #ffffff;
-  --cover-title-font-size: 28px;
-  --cover-subtitle-font-size: 20px;
+  --cover-primary-text-color: #ffffff;
+  --cover-primary-text-font-size: 28px;
+  --cover-primary-text-font: sans-serif;
+  --cover-primary-text-align: center;
+  --cover-primary-text-stack: 0;
+  --cover-secondary-text-color: #ffffff;
+  --cover-secondary-text-font-size: 20px;
+  --cover-secondary-text-font: sans-serif;
+  --cover-secondary-text-align: center;
+  --cover-secondary-text-stack: 1;
   --cover-color-overlay-opacity: 0%;
-  --cover-title-font: sans-serif;
-  --cover-subtitle-font: sans-serif;
-  --cover-title-align: center;
-  --cover-subtitle-align: center;
-  --cover-title-stack: 0;
-  --cover-subtitle-stack: 1;
+  --cover-background-color: #333333;
 }
 
 .coverSection {
@@ -82,10 +82,10 @@
 
 .title {
   /* User edited */
-  color: var(--cover-title-color);
-  font-size: var(--cover-title-font-size);
-  font-family: var(--cover-title-font);
-  text-align: var(--cover-title-align);
+  color: var(--cover-primary-text-color);
+  font-size: var(--cover-primary-text-font-size);
+  font-family: var(--cover-primary-text-font);
+  text-align: var(--cover-primary-text-align);
 
   display: block;
   font-weight: 600;
@@ -102,10 +102,10 @@
 
 .subtitle {
   /* User edited */
-  color: var(--cover-subtitle-color);
-  font-size: var(--cover-subtitle-font-size);
-  font-family: var(--cover-subtitle-font);
-  text-align: var(--cover-subtitle-align);
+  color: var(--cover-secondary-text-color);
+  font-size: var(--cover-secondary-text-font-size);
+  font-family: var(--cover-secondary-text-font);
+  text-align: var(--cover-secondary-text-align);
 
   font-weight: 500;
   display: block;
@@ -120,11 +120,11 @@
   overflow: hidden;
 
   &.primary {
-    z-index: var(--cover-title-stack);
+    z-index: var(--cover-primary-text-stack);
   }
 
   &.secondary {
-    z-index: var(--cover-subtitle-stack);
+    z-index: var(--cover-secondary-text-stack);
   }
 }
 

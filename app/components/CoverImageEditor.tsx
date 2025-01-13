@@ -87,11 +87,11 @@ const RndWrapper = ({
   textAlignment: TextAlignment;
   setTextAlignment: (align: TextAlignment) => void;
   stack: number;
-  setStack: ({ text, stack }: { text: 'primary' | 'secondary'; stack: 'top' | 'bottom' }) => void;
+  setStack: (stack: 'top' | 'bottom') => void;
   textType: 'primary' | 'secondary';
 }) => {
   const handleStackChange = (stack: 'top' | 'bottom') => {
-    setStack({ text: textType, stack });
+    setStack(stack);
   };
 
   return (
@@ -139,17 +139,11 @@ export function CoverImageEditor({
   isPreviewMode: boolean;
 }) {
   const {
-    primaryTitle,
-    subTitle,
-    primaryTitleAlign,
-    subTitleAlign,
-    backgroundImage,
-    backgroundPattern,
-    setPrimaryTitleAlign,
-    setSubTitleAlign,
-    primaryTitleStack,
-    subTitleStack,
-    setStack
+    primaryText: { content: primaryText, align: primaryTextAlign, stack: primaryTextStack },
+    secondaryText: { content: secondaryText, align: secondaryTextAlign, stack: secondaryTextStack },
+    background: { image: backgroundImage, pattern: backgroundPattern },
+    updatePrimaryText,
+    updateSecondaryText
   } = useEditor();
   return (
     <EditorHydration skeleton={<Skeleton className={classes.coverSkeleton} />}>
@@ -173,33 +167,33 @@ export function CoverImageEditor({
           }}
         />
 
-        {primaryTitle ? (
+        {primaryText ? (
           <RndWrapper
             isPreviewMode={isPreviewMode}
             wrapperHeight="100%"
             wrapperWidth="100%"
-            textAlignment={primaryTitleAlign}
-            setTextAlignment={setPrimaryTitleAlign}
-            stack={primaryTitleStack}
-            setStack={setStack}
+            textAlignment={primaryTextAlign}
+            setTextAlignment={(value) => updatePrimaryText({ align: value })}
+            stack={primaryTextStack.order}
+            setStack={(value) => updatePrimaryText({ stack: { ...primaryTextStack, position: value } })}
             textType="primary"
           >
-            <span className={classes.title}>{primaryTitle ?? ''}</span>
+            <span className={classes.title}>{primaryText ?? ''}</span>
           </RndWrapper>
         ) : null}
 
-        {subTitle ? (
+        {secondaryText ? (
           <RndWrapper
             isPreviewMode={isPreviewMode}
             wrapperHeight="auto"
             wrapperWidth="auto"
-            textAlignment={subTitleAlign}
-            setTextAlignment={setSubTitleAlign}
-            stack={subTitleStack}
-            setStack={setStack}
+            textAlignment={secondaryTextAlign}
+            setTextAlignment={(value) => updateSecondaryText({ align: value })}
+            stack={secondaryTextStack.order}
+            setStack={(value) => updateSecondaryText({ stack: { ...secondaryTextStack, position: value } })}
             textType="secondary"
           >
-            <span className={classes.subtitle}>{subTitle ?? ''}</span>
+            <span className={classes.subtitle}>{secondaryText ?? ''}</span>
           </RndWrapper>
         ) : null}
       </Box>
