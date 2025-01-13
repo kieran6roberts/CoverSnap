@@ -1,28 +1,15 @@
 import { CloseButton, ColorInput, Divider, Stack, TextInput, NumberInput, Select } from '@mantine/core';
 
 import { useEditor } from '~/contexts/EditorContext';
-
-const PRIMARY_TEXT_LENGTH = 80;
-const SECONDARY_TEXT_LENGTH = 60;
-const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
-const PRIMARY_TEXT_FONT_SIZE_MAX = 80;
-const SECONDARY_TEXT_FONT_SIZE_MIN = 10;
-const SECONDARY_TEXT_FONT_SIZE_MAX = 60;
-
-const fonts = [
-  'sans-serif (default)',
-  'serif (default)',
-  'monospace (default)',
-  'Arial',
-  'Helvetica',
-  'Verdana',
-  'Tahoma',
-  'Trebuchet MS',
-  'Times New Roman',
-  'Georgia',
-  'Courier New',
-  'system-ui'
-];
+import {
+  PRIMARY_TEXT_LENGTH,
+  SECONDARY_TEXT_LENGTH,
+  PRIMARY_TEXT_FONT_SIZE_MIN,
+  PRIMARY_TEXT_FONT_SIZE_MAX,
+  SECONDARY_TEXT_FONT_SIZE_MIN,
+  SECONDARY_TEXT_FONT_SIZE_MAX,
+  fonts
+} from '~/consts/editor';
 
 export function DrawerTextSection() {
   const {
@@ -67,7 +54,7 @@ export function DrawerTextSection() {
         description="Accepts RGBA"
         value={primaryTextColor}
         label="Color"
-        onChange={(value) => updatePrimaryText({ color: value })}
+        onChangeEnd={(value) => updatePrimaryText({ color: value })}
       />
 
       <Select
@@ -112,7 +99,7 @@ export function DrawerTextSection() {
         label="Color"
         description="Accepts RGBA"
         value={secondaryTextColor}
-        onChange={(value) => updateSecondaryText({ color: value })}
+        onChangeEnd={(value) => updateSecondaryText({ color: value })}
       />
 
       <Select
