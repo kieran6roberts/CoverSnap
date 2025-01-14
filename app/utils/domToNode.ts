@@ -11,7 +11,11 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
 
   try {
     const originalRect = node.getBoundingClientRect();
-    const canvas = await html2canvas(node);
+    const canvas = await html2canvas(node, {
+      onclone: (_doc, el) => {
+        el.style.borderRadius = '0';
+      }
+    });
 
     const scaleFactorWidth = TARGET_WIDTH / originalRect.width;
     const scaleFactorHeight = TARGET_HEIGHT / originalRect.height;
