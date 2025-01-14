@@ -13,7 +13,13 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
   } = useEditor();
 
   return (
-    <EditorHydration skeleton={<Skeleton className={classes.coverSkeleton} />}>
+    <EditorHydration
+      skeleton={
+        <Skeleton radius={12} animate>
+          <span className={classes.coverSkeleton} />
+        </Skeleton>
+      }
+    >
       <Box
         ref={imageNodeRef}
         style={{

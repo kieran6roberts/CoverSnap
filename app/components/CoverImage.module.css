@@ -48,6 +48,10 @@
   }
 }
 
+[data-mantine-color-scheme='dark'] .coverSection {
+  background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+}
+
 .coverWrapper {
   display: flex;
   flex-direction: column;
@@ -64,12 +68,12 @@
 }
 
 .coverSkeleton {
+  display: block;
   width: min(calc(90vw - 360px), 900px);
   min-width: 320px;
   aspect-ratio: 1.9;
   border-radius: 12px;
-}
-
-[data-mantine-color-scheme='dark'] .coverSection {
-  background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+  background-color: blue;
+  z-index: 99;
+  padding: 1rem;
 }
