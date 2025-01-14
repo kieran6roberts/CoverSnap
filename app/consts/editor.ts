@@ -33,7 +33,7 @@ const DEFAULT_PATTERN = {
   url: null,
   name: null,
   color: '#ffffff',
-  opacity: 1
+  opacity: 0.1
 };
 
 export const TEXT_ALIGNMENT_OPTIONS = {

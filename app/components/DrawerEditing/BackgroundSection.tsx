@@ -7,11 +7,11 @@ import {
   Button,
   Image,
   Text,
-  Divider,
   Paper,
   SimpleGrid,
   UnstyledButton,
-  Center
+  Center,
+  Fieldset
 } from '@mantine/core';
 import { MediaImageFolder, Check } from 'iconoir-react';
 import * as patterns from 'hero-patterns';
@@ -69,136 +69,140 @@ export function DrawerBackgroundSection() {
 
   return (
     <Stack gap="xl">
-      <Divider label="Basic" labelPosition="center" />
-      <ColorInput
-        format="rgba"
-        label="Background color"
-        description="Accepts RGBA"
-        value={backgroundColor}
-        onChange={(value) => updateBackground({ color: value })}
-      />
-      {backgroundImage ? (
-        <Stack>
-          <Text fw={500} component="span">
-            Upload background image
-          </Text>
-          <Image
-            src={backgroundImage}
-            radius="md"
-            style={{ border: '1px solid var(--mantine-color-default-border)' }}
-            alt="Background image"
-            width={368}
-            height={200}
-          />
-          <Button aria-label="Remove background image" onClick={() => onBackgroundImageChange(null)}>
-            Clear
-          </Button>
-        </Stack>
-      ) : (
-        <FileInput
-          clearable
-          description="Accepts PNG, JPEG, and WEBP"
-          leftSection={<MediaImageFolder width={16} height={16} />}
-          accept="image/png,image/jpeg,image/webp"
-          label="Upload background image"
-          placeholder="Click to upload"
-          maw={368}
-          onChange={onBackgroundImageChange}
+      <Fieldset legend="Colors">
+        <ColorInput
+          format="rgba"
+          label="Background color"
+          description="Accepts RGBA"
+          value={backgroundColor}
+          onChange={(value) => updateBackground({ color: value })}
         />
-      )}
-      {backgroundImage ? (
+      </Fieldset>
+      <Fieldset legend="Images">
+        {backgroundImage ? (
+          <Stack>
+            <Text fw={500} component="span">
+              Upload background image
+            </Text>
+            <Image
+              src={backgroundImage}
+              radius="md"
+              style={{ border: '1px solid var(--mantine-color-default-border)' }}
+              alt="Background image"
+              width={368}
+              height={200}
+            />
+            <Button aria-label="Remove background image" onClick={() => onBackgroundImageChange(null)}>
+              Clear
+            </Button>
+          </Stack>
+        ) : (
+          <FileInput
+            clearable
+            description="Accepts PNG, JPEG, and WEBP"
+            leftSection={<MediaImageFolder width={16} height={16} />}
+            accept="image/png,image/jpeg,image/webp"
+            label="Upload background image"
+            placeholder="Click to upload"
+            maw={368}
+            onChange={onBackgroundImageChange}
+          />
+        )}
+        {backgroundImage ? (
+          <NumberInput
+            defaultValue={0}
+            max={1}
+            min={0}
+            step={0.1}
+            decimalScale={1}
+            onChange={(value) => {
+              // Convert decimal to percentage for color-mix
+              const percentage = value ? Number(value) * 100 : 0;
+              updateCSSVariables({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
+            }}
+            label="Overlay opacity"
+            allowNegative={false}
+          />
+        ) : null}
+      </Fieldset>
+      <Fieldset legend="Patterns">
+        <ColorInput
+          disabled={!!backgroundImage}
+          format="hex"
+          label="Pattern color"
+          description="Accepts HEX"
+          value={backgroundPattern.color}
+          onChangeEnd={(color) =>
+            updateBackground({
+              pattern: {
+                ...backgroundPattern,
+                url: backgroundPattern.name
+                  ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
+                  : null,
+                color
+              }
+            })
+          }
+        />
         <NumberInput
-          defaultValue={0}
+          disabled={!!backgroundImage}
           max={1}
           min={0}
           step={0.1}
-          decimalScale={1}
-          onChange={(value) => {
-            // Convert decimal to percentage for color-mix
-            const percentage = value ? Number(value) * 100 : 0;
-            updateCSSVariables({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
-          }}
-          label="Overlay opacity"
+          value={backgroundPattern.opacity}
+          onChange={(value) =>
+            updateBackground({
+              pattern: {
+                ...backgroundPattern,
+                opacity: Number(value),
+                url: backgroundPattern.name
+                  ? (patterns as any)[backgroundPattern.name](backgroundPattern.color, Number(value))
+                  : null
+              }
+            })
+          }
+          label="Pattern opacity"
           allowNegative={false}
         />
-      ) : null}
-      <Divider label="Patterns" mt={40} labelPosition="center" />
-      <ColorInput
-        disabled={!!backgroundImage}
-        format="hex"
-        label="Pattern color"
-        description="Accepts HEX"
-        value={backgroundPattern.color}
-        onChangeEnd={(color) =>
-          updateBackground({
-            pattern: {
-              ...backgroundPattern,
-              url: backgroundPattern.name
-                ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
-                : null,
-              color
-            }
-          })
-        }
-      />
-      <NumberInput
-        disabled={!!backgroundImage}
-        max={1}
-        min={0}
-        step={0.1}
-        value={backgroundPattern.opacity}
-        onChange={(value) =>
-          updateBackground({
-            pattern: {
-              ...backgroundPattern,
-              opacity: Number(value),
-              url: backgroundPattern.name
-                ? (patterns as any)[backgroundPattern.name](backgroundPattern.color, Number(value))
-                : null
-            }
-          })
-        }
-        label="Pattern opacity"
-        allowNegative={false}
-      />
-      <SimpleGrid cols={2} spacing="sm" verticalSpacing="xl" mt={32}>
-        {Object.entries(patterns).map(([key, value]) => {
-          const isSelected = backgroundPattern.name === key;
-          return (
-            <Stack key={key} gap="xs">
-              <Text
-                component="span"
-                fw={500}
-                ta="center"
-                c={isSelected ? 'var(--mantine-primary-color-light-color)' : 'var(--mantine-color-scheme)'}
-              >
-                {key}
-              </Text>
-
-              <UnstyledButton aria-label={`Select ${key} background pattern`} onClick={() => onPatternChange(key)}>
-                <Paper
-                  radius="md"
-                  className={classes.patternCard}
-                  style={{
-                    backgroundImage: value(backgroundPattern.color, 1),
-                    border: isSelected
-                      ? '1px solid var(--mantine-primary-color-light-color)'
-                      : '1px solid var(--mantine-color-default-border)'
-                  }}
+        <SimpleGrid cols={2} spacing="sm" verticalSpacing="xl" component="section">
+          {Object.entries(patterns).map(([key, value]) => {
+            const isSelected = backgroundPattern.name === key;
+            return (
+              <Stack key={key} gap={2} component="article">
+                <Text
+                  component="span"
+                  fw={600}
+                  ta="center"
+                  c={isSelected ? 'var(--mantine-color-primary-filled)' : 'var(--mantine-color-dimmed)'}
                 >
-                  {isSelected && (
-                    <Center className={classes['patternCard-selected']}>
-                      <Text component="span" fw={500} c="var(--mantine-primary-color-light-color)">
-                        <Check width={32} height={32} />
-                      </Text>
-                    </Center>
-                  )}
-                </Paper>
-              </UnstyledButton>
-            </Stack>
-          );
-        })}
-      </SimpleGrid>
+                  {key}
+                </Text>
+
+                <UnstyledButton aria-label={`Select ${key} background pattern`} onClick={() => onPatternChange(key)}>
+                  <Paper
+                    radius="md"
+                    className={classes.patternCard}
+                    style={{
+                      backgroundImage: value(backgroundPattern.color, 1),
+                      border: isSelected
+                        ? '1px solid var(--mantine-primary-color-light-color)'
+                        : '1px solid var(--mantine-color-default-border)'
+                    }}
+                  >
+                    {isSelected && (
+                      <Center className={classes['patternCard-selected']}>
+                        <Center component="span" w={40} h={40} bg="white" style={{ borderRadius: '100%' }}>
+                          <Check width={32} height={32} color="var(--mantine-color-blue-filled)" />
+                        </Center>
+                      </Center>
+                    )}
+                  </Paper>
+                </UnstyledButton>
+              </Stack>
+            );
+          })}
+        </SimpleGrid>
+      </Fieldset>
     </Stack>
   );
 }

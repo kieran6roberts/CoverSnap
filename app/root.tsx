@@ -33,12 +33,29 @@ const theme = createTheme({
   components: {
     InputLabel: {
       defaultProps: {
-        mb: 5
+        mb: 2
+      }
+    },
+    Fieldset: {
+      defaultProps: {
+        variant: 'unstyled'
+      },
+      styles: {
+        root: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--mantine-spacing-md)'
+        },
+        legend: {
+          fontSize: 'var(--mantine-font-size-lg)',
+          fontWeight: 500,
+          opacity: 0.6
+        }
       }
     },
     InputDescription: {
       defaultProps: {
-        mb: 10
+        mb: 8
       }
     },
     Text: {
