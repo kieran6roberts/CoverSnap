@@ -5,10 +5,10 @@ context('Download Cover', () => {
 
   it('Download cover', () => {
     cy.log('User is first greeted with a welcome modal');
-    cy.findByRole('heading', { name: 'Welcome to CoverSnap!' }).should('exist');
+    cy.findByRole('heading', { name: 'Hey 👋' }).should('exist');
     cy.findByRole('button', { name: 'Start editing' }).should('exist');
     cy.findByRole('button', { name: 'Start editing' }).click();
-    cy.findByRole('heading', { name: 'Welcome to CoverSnap!' }).should('not.exist');
+    cy.findByRole('heading', { name: 'Hey 👋' }).should('not.exist');
 
     cy.log('Local storage item prevents modal from showing to user again');
     cy.reload();
