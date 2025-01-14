@@ -69,7 +69,8 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
               display: 'block',
               fontWeight: 600,
               margin: 0,
-              letterSpacing: 'normal'
+              letterSpacing: 'normal',
+              zIndex: 1
             }}
           >
             {primaryText.content}
@@ -92,7 +93,8 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
               bottom: 'var(--cover-secondary-bottom, unset)',
               right: 'var(--cover-secondary-right, unset)',
               left: 'var(--cover-secondary-left, unset)',
-              letterSpacing: 'normal'
+              letterSpacing: 'normal',
+              zIndex: 1
             }}
           >
             {secondaryText.content}

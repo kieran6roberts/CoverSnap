@@ -1,5 +1,8 @@
-export const PRIMARY_TEXT_LENGTH = 80;
-export const SECONDARY_TEXT_LENGTH = 60;
+import classnames from 'classnames';
+import classes from '~/components/DrawerEditing/TemplatePreview.module.css';
+
+export const PRIMARY_TEXT_LENGTH = 100;
+export const SECONDARY_TEXT_LENGTH = 80;
 export const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
 export const PRIMARY_TEXT_FONT_SIZE_MAX = 80;
 export const SECONDARY_TEXT_FONT_SIZE_MIN = 10;
@@ -14,4 +17,140 @@ export const fonts = [
   'Times New Roman',
   'Georgia',
   'Courier New'
+];
+
+const DEFAULT_PRIMARY_TEXT_CONTENT = 'Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.';
+const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
+const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
+const DEFAULT_SECONDARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
+const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
+const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
+const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
+const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
+const DEFAULT_TEMPLATE = 'centered';
+const DEFAULT_BACKGROUND_COLOR = 'rgba(51, 51, 51, 1)';
+const DEFAULT_PATTERN = {
+  url: null,
+  name: null,
+  color: '#ffffff',
+  opacity: 1
+};
+
+export const TEXT_ALIGNMENT_OPTIONS = {
+  left: 'left',
+  center: 'center',
+  right: 'right'
+} as const;
+
+export const DEFAULT_EDITOR_STATE = {
+  template: DEFAULT_TEMPLATE,
+  primaryText: {
+    content: DEFAULT_PRIMARY_TEXT_CONTENT,
+    color: DEFAULT_PRIMARY_TEXT_COLOR,
+    fontSize: DEFAULT_PRIMARY_TEXT_FONT_SIZE,
+    font: DEFAULT_PRIMARY_TEXT_FONT
+  },
+  secondaryText: {
+    content: DEFAULT_SECONDARY_TEXT_CONTENT,
+    color: DEFAULT_SECONDARY_TEXT_COLOR,
+    fontSize: DEFAULT_SECONDARY_TEXT_FONT_SIZE,
+    font: DEFAULT_SECONDARY_TEXT_FONT
+  },
+  background: {
+    image: null,
+    color: DEFAULT_BACKGROUND_COLOR,
+    pattern: DEFAULT_PATTERN
+  }
+};
+
+export const TEMPLATES = [
+  {
+    id: 'centered',
+    name: 'Centered Stack',
+    styles: {
+      '--cover-align-items': 'center',
+      '--cover-primary-text-align': 'center',
+      '--cover-secondary-position': 'relative',
+      '--cover-secondary-text-align': 'center',
+      '--cover-secondary-bottom': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-left': 'unset'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--centered'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'left-aligned',
+    name: 'Left Aligned',
+    styles: {
+      '--cover-align-items': 'flex-start',
+      '--cover-primary-text-align': 'left',
+      '--cover-secondary-position': 'relative',
+      '--cover-secondary-bottom': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-left': 'unset',
+      '--cover-secondary-text-align': 'left'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--left'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'right-aligned',
+    name: 'Right Aligned',
+    styles: {
+      '--cover-align-items': 'flex-end',
+      '--cover-primary-text-align': 'right',
+      '--cover-secondary-position': 'relative',
+      '--cover-secondary-bottom': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-left': 'unset',
+      '--cover-secondary-text-align': 'right'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--right'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'center-bottom-right',
+    name: 'Center + Bottom Right',
+    styles: {
+      '--cover-align-items': 'center',
+      '--cover-primary-text-align': 'center',
+      '--cover-secondary-position': 'absolute',
+      '--cover-secondary-bottom': '1rem',
+      '--cover-secondary-right': '1rem',
+      '--cover-secondary-left': 'unset',
+      '--cover-secondary-text-align': 'right'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--centered']),
+      primaryText: classnames(classes['previewBar--wide']),
+      secondaryText: classnames(classes['previewBar--bottom-right'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'center-bottom-left',
+    name: 'Center + Bottom Left',
+    styles: {
+      '--cover-align-items': 'center',
+      '--cover-primary-text-align': 'center',
+      '--cover-secondary-position': 'absolute',
+      '--cover-secondary-bottom': '1rem',
+      '--cover-secondary-left': '1rem',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-text-align': 'left'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--centered']),
+      primaryText: classnames(classes['previewBar--wide']),
+      secondaryText: classnames(classes['previewBar--bottom-left'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  }
 ];

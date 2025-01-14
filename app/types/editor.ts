@@ -1,4 +1,4 @@
-import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
+import { TEXT_ALIGNMENT_OPTIONS } from '~/consts/editor';
 
 export type EditorLoaderData = {
   openItems: string[];

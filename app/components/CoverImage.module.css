@@ -1,27 +1,30 @@
 :root {
+  /* Cover Wrapper */
+  --cover-display: flex;
+  --cover-justify-content: center;
+  --cover-align-items: center;
+
+  /* Cover Primary Text */
   --cover-primary-text-color: #ffffff;
   --cover-primary-text-font-size: 28px;
   --cover-primary-text-font: sans-serif;
   --cover-primary-text-align: center;
-  --cover-primary-text-stack: 0;
+
+  /* Cover Secondary Text */
   --cover-secondary-text-color: #ffffff;
   --cover-secondary-text-font-size: 20px;
   --cover-secondary-text-font: sans-serif;
   --cover-secondary-text-align: center;
-  --cover-secondary-text-stack: 1;
+
+  /* Cover Background (overlay */
   --cover-color-overlay-opacity: 0%;
   --cover-background-color: #333333;
 
+  /* Cover Secondary Text */
   --cover-secondary-bottom: unset;
   --cover-secondary-right: unset;
   --cover-secondary-left: unset;
   --cover-secondary-position: relative;
-
-  /* Base template variables with default values */
-
-  --cover-display: flex;
-  --cover-justify-content: center;
-  --cover-align-items: center;
 }
 
 .coverSection {

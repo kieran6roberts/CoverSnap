@@ -6,16 +6,13 @@ import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
 import { updateCSSVariables } from '~/utils/styles';
-import type { TextAlignment } from '~/types/editor';
-import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
-import { templates } from '~/components/DrawerEditing/TemplateSection';
+import { DEFAULT_EDITOR_STATE, TEMPLATES } from '~/consts/editor';
 
 interface TextState {
   content: string;
   color: string;
   fontSize: number | string;
-  font: string | null;
-  align: TextAlignment;
+  font: string;
 }
 
 interface BackgroundState {
@@ -45,33 +42,7 @@ type EditorActions = {
   resetEditor: () => void;
 };
 
-const defaultState: EditorState = {
-  template: 'centered',
-  primaryText: {
-    content: '10 Tips/Principles For Cleaner React Code.',
-    color: 'rgba(255, 255, 255, 1)',
-    fontSize: 58,
-    font: 'Arial',
-    align: TEXT_ALIGNMENT_OPTIONS.center
-  },
-  secondaryText: {
-    content: 'by Kieran Roberts',
-    color: 'rgba(255, 255, 255, 1)',
-    fontSize: 20,
-    font: 'Arial',
-    align: TEXT_ALIGNMENT_OPTIONS.center
-  },
-  background: {
-    image: null,
-    color: 'rgba(51, 51, 51, 1)',
-    pattern: {
-      url: null,
-      name: null,
-      color: '#ffffff',
-      opacity: 1
-    }
-  }
-};
+const defaultState: EditorState = DEFAULT_EDITOR_STATE;
 
 const indexDBStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
@@ -141,34 +112,28 @@ export const useEditor = create(
       },
 
       updateBackground: (updates) => {
-        set((state) => ({
-          background: { ...state.background, ...updates }
-        }));
+        set((state) => {
+          const newState = {
+            background: { ...state.background, ...updates }
+          };
 
-        const cssUpdates: Record<string, string> = {};
+          // Clear pattern when setting image
+          if (updates.image) {
+            newState.background.pattern = defaultState.background.pattern;
+          }
+          return newState;
+        });
 
         if (updates.color) {
-          cssUpdates['--cover-background-color'] = updates.color;
-        }
-
-        if (Object.keys(cssUpdates).length > 0) {
-          updateCSSVariables(cssUpdates);
-        }
-
-        if (updates.image) {
-          // Clear pattern when setting image
-          set((state) => ({
-            background: {
-              ...state.background,
-              pattern: defaultState.background.pattern
-            }
-          }));
+          updateCSSVariables({
+            '--cover-background-color': updates.color
+          });
         }
       },
 
       updateTemplate: (templateId) => {
         set((state) => {
-          const template = templates.find((t) => t.id === templateId);
+          const template = TEMPLATES.find((t) => t.id === templateId);
           if (!template) return state;
 
           updateCSSVariables(template.styles);
@@ -192,16 +157,30 @@ export const useEditor = create(
         });
 
         updateCSSVariables({
+          /* Cover Wrapper */
+          '--cover-display': 'flex',
+          '--cover-justify-content': 'center',
+          '--cover-align-items': 'center',
+
+          /* Cover Primary Text */
           '--cover-primary-text-color': defaultState.primaryText.color,
           '--cover-primary-text-font-size': `${defaultState.primaryText.fontSize}px`,
-          '--cover-primary-text-font': defaultState.primaryText.font ?? 'sans-serif',
+          '--cover-primary-text-font': defaultState.primaryText.font,
+          '--cover-primary-text-align': 'center',
 
+          /* Cover Primary Text */
           '--cover-secondary-text-color': defaultState.secondaryText.color,
           '--cover-secondary-text-font-size': `${defaultState.secondaryText.fontSize}px`,
-          '--cover-secondary-text-font': defaultState.secondaryText.font ?? 'sans-serif',
+          '--cover-secondary-text-font': defaultState.secondaryText.font,
+          '--cover-secondary-text-align': 'center',
+          '--cover-secondary-bottom': 'unset',
+          '--cover-secondary-right': 'unset',
+          '--cover-secondary-left': 'unset',
+          '--cover-secondary-position': 'relative',
+
+          /* Cover Background (overlay) */
           '--cover-color-overlay-opacity': '0%',
-          '--cover-background-color': defaultState.background.color,
-          ...templates[0].styles
+          '--cover-background-color': defaultState.background.color
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -215,7 +194,10 @@ export const useEditor = create(
         template: state.template,
         primaryText: state.primaryText,
         secondaryText: state.secondaryText,
-        background: state.background
+        background: {
+          color: state.background.color,
+          pattern: state.background.pattern
+        }
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -242,16 +224,38 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
   useEffect(() => {
     if (hasHydrated) {
       const state = useEditor.getState();
-      const template = templates.find((t) => t.id === state.template);
+      const template = TEMPLATES.find((t) => t.id === state.template);
 
       updateCSSVariables({
+        /* Cover Wrapper */
+        '--cover-align-items': 'center',
+
+        /* Cover Primary Text */
         '--cover-primary-text-color': state.primaryText.color,
         '--cover-primary-text-font-size': `${state.primaryText.fontSize}px`,
-        '--cover-primary-text-font': state.primaryText.font ?? 'sans-serif',
+        '--cover-primary-text-font': state.primaryText.font,
+
+        /* Cover Secondary Text */
         '--cover-secondary-text-color': state.secondaryText.color,
         '--cover-secondary-text-font-size': `${state.secondaryText.fontSize}px`,
-        '--cover-secondary-text-font': state.secondaryText.font ?? 'sans-serif',
+        '--cover-secondary-text-font': state.secondaryText.font,
+
+        /* 
+          Cover Background (overlay)
+
+          Note: For now the image & bg opacity is not persisted.
+         */
         '--cover-background-color': state.background.color,
+
+        /*
+        '--cover-align-items
+        '--cover-primary-text-align
+        '--cover-secondary-position
+        '--cover-secondary-bottom
+        '--cover-secondary-right
+        '--cover-secondary-left
+        '--cover-secondary-text-align
+        */
         ...template?.styles
       });
     }
