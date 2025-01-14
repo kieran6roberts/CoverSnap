@@ -9,7 +9,8 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
   const {
     primaryText,
     secondaryText,
-    background: { image: backgroundImage, pattern: backgroundPattern }
+    background: { image: backgroundImage, pattern: backgroundPattern },
+    cover
   } = useEditor();
 
   return (
@@ -34,7 +35,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
           width: 'min(calc(90vw - 360px), 900px)',
           padding: '1rem',
           minWidth: '320px',
-          aspectRatio: '1.9',
+          aspectRatio: cover.aspectRatio,
           borderRadius: '12px',
           letterSpacing: 'normal'
         }}

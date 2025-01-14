@@ -51,10 +51,11 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
   // Optimistic value
   const currentOpenItems = fetcher.formData ? fetcher.formData.get('openItems')?.toString().split(',') : openItems;
 
-  const { resetEditor } = useEditor();
+  const { resetEditor, cover } = useEditor();
 
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
-    imageRef: imageNodeRef
+    imageRef: imageNodeRef,
+    cover
   });
 
   const handleAccordionChange = (values: string[]) => {
@@ -113,19 +114,6 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             {items}
           </Accordion>
         </ScrollArea>
-        <Text
-          hiddenFrom="md"
-          display="block"
-          my={10}
-          ta="center"
-          fz={{ base: 10, md: 14 }}
-          component="span"
-          c="dimmed"
-          fw={500}
-          px="xs"
-        >
-          Download size is 1600 x 840. <br /> Note: Currently for the best results, edit & download on desktop.
-        </Text>
         <Accordion
           hiddenFrom="md"
           radius="md"

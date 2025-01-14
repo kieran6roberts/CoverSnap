@@ -156,5 +156,41 @@ export const DEFAULT_EDITOR_STATE = {
     image: null,
     color: DEFAULT_BACKGROUND_COLOR,
     pattern: DEFAULT_PATTERN
+  },
+  cover: {
+    width: 1600,
+    height: 840,
+    aspectRatio: 1.9
+  }
+};
+
+export const IMAGE_DOWNLOAD_SIZES = {
+  hashnode: {
+    label: '(Hashnode)',
+    value: 'hashnode:1.9:1600x840',
+    width: 1600,
+    height: 840,
+    aspectRatio: 1.9
+  },
+  devto: {
+    label: '(Dev)',
+    value: 'dev:2.38:1000x420',
+    width: 1000,
+    height: 420,
+    aspectRatio: 2.38
+  },
+  mediumRegular: {
+    label: '(Medium: standard)',
+    value: 'medium-regular:2:1500x750',
+    width: 1500,
+    height: 750,
+    aspectRatio: 2
+  },
+  mediumLarge: {
+    label: '(Medium: large)',
+    value: 'medium-large:2:2500x1250',
+    width: 2500,
+    height: 1250,
+    aspectRatio: 2
   }
 };

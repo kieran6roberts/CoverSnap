@@ -3,7 +3,7 @@
   --cover-display: flex;
   --cover-justify-content: center;
   --cover-align-items: center;
-
+  --cover-aspect-ratio: 1.9;
   /* Cover Primary Text */
   --cover-primary-text-color: #ffffff;
   --cover-primary-text-font-size: 28px;
@@ -71,7 +71,7 @@
   display: block;
   width: min(calc(90vw - 360px), 900px);
   min-width: 320px;
-  aspect-ratio: 1.9;
+  aspect-ratio: var(--cover-aspect-ratio);
   border-radius: 12px;
   background-color: blue;
   z-index: 99;

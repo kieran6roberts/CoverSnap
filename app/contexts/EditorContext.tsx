@@ -15,6 +15,12 @@ interface TextState {
   font: string;
 }
 
+interface CoverState {
+  width: number;
+  height: number;
+  aspectRatio: number;
+}
+
 interface BackgroundState {
   image: string | null;
   color: string;
@@ -31,6 +37,7 @@ interface EditorState {
   primaryText: TextState;
   secondaryText: TextState;
   background: BackgroundState;
+  cover: CoverState;
 }
 
 type EditorActions = {
@@ -38,6 +45,7 @@ type EditorActions = {
   updatePrimaryText: (updates: Partial<TextState>) => void;
   updateSecondaryText: (updates: Partial<TextState>) => void;
   updateBackground: (updates: Partial<BackgroundState>) => void;
+  updateCover: (updates: CoverState) => void;
   updateTemplate: (templateId: string) => void;
   resetEditor: () => void;
 };
@@ -136,6 +144,16 @@ export const useEditor = create(
         }
       },
 
+      updateCover: (updates) => {
+        set((state) => {
+          return {
+            cover: { ...state.cover, ...updates }
+          };
+        });
+
+        updateCSSVariables({ '--cover-aspect-ratio': `${updates.aspectRatio}` });
+      },
+
       updateTemplate: (templateId) => {
         set((state) => {
           const template = TEMPLATES.find((t) => t.id === templateId);
@@ -202,7 +220,8 @@ export const useEditor = create(
         background: {
           color: state.background.color,
           pattern: state.background.pattern
-        }
+        },
+        cover: state.cover
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -261,7 +280,9 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-secondary-left
         '--cover-secondary-text-align
         */
-        ...template?.styles
+        ...template?.styles,
+        /* Cover Aspect Ratio */
+        '--cover-aspect-ratio': `${(state.cover.width / state.cover.height).toFixed(1)}`
       });
     }
   }, [hasHydrated]);

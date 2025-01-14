@@ -2,11 +2,14 @@ import domToImage from 'dom-to-image-more';
 import fs from 'file-saver';
 import html2canvas from 'html2canvas';
 
-const TARGET_WIDTH = 1600;
-const TARGET_HEIGHT = 840;
-
-export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['current']) {
+export async function saveDomNodeAsImage(
+  node: React.RefObject<HTMLElement>['current'],
+  cover: { width: number; height: number; aspectRatio: number }
+) {
   if (!node) return { success: false, blob: null };
+
+  const TARGET_WIDTH = cover.width;
+  const TARGET_HEIGHT = cover.height;
 
   try {
     const originalRect = node.getBoundingClientRect();
@@ -21,7 +24,9 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
       },
       scale: SCALE_FACTOR,
       useCORS: true,
-      logging: false
+      logging: false,
+      // Otherwise there is a white looking border on the right side of the image
+      backgroundColor: null
     });
 
     const blob = await domToImage.toBlob(canvas, {
