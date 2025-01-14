@@ -17,7 +17,7 @@ import { MediaImageFolder, Check } from 'iconoir-react';
 import * as patterns from 'hero-patterns';
 
 import { useEditor } from '~/contexts/EditorContext';
-import { updateCSSVariable } from '~/utils/styles';
+import { updateCSSVariables } from '~/utils/styles';
 import classes from './BackgroundSection.module.css';
 
 export function DrawerBackgroundSection() {
@@ -37,14 +37,14 @@ export function DrawerBackgroundSection() {
       updateBackground({ image: imageUrl });
     } else {
       updateBackground({ image: null });
-      updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
+      updateCSSVariables({ name: '--cover-color-overlay-opacity', value: '0%' });
     }
   };
 
   const onPatternChange = (name: string) => {
     if (backgroundImage) {
       onBackgroundImageChange(null);
-      updateCSSVariable({ name: '--cover-color-overlay-opacity', value: '0%' });
+      updateCSSVariables({ name: '--cover-color-overlay-opacity', value: '0%' });
     }
     if (name === backgroundPattern.name) {
       updateBackground({
@@ -116,7 +116,7 @@ export function DrawerBackgroundSection() {
           onChange={(value) => {
             // Convert decimal to percentage for color-mix
             const percentage = value ? Number(value) * 100 : 0;
-            updateCSSVariable({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
+            updateCSSVariables({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
           }}
           label="Overlay opacity"
           allowNegative={false}

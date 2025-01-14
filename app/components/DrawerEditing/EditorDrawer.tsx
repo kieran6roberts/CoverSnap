@@ -8,12 +8,18 @@ import type { EditorLoaderData } from '~/types/editor';
 import classes from './EditorDrawer.module.css';
 import { DrawerTextSection } from '~/components/DrawerEditing/TextSection';
 import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSection';
+import { DrawerTemplateSection } from '~/components/DrawerEditing/TemplateSection';
 import { useEditor, EditorHydration } from '~/contexts/EditorContext';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
 import { CREATE_ROUTE } from '~/consts';
 
 const editSections = [
+  {
+    title: 'Template',
+    content: () => <DrawerTemplateSection />,
+    icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />
+  },
   {
     title: 'Text',
     content: () => <DrawerTextSection />,
@@ -23,12 +29,6 @@ const editSections = [
     title: 'Background',
     content: () => <DrawerBackgroundSection />,
     icon: <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
-  },
-  {
-    title: 'Templates',
-    content: () => null,
-    icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />,
-    isDisabled: true
   },
   {
     title: 'Elements',

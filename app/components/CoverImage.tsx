@@ -2,15 +2,13 @@
 
 import { Box, Text, Flex, Button, LoadingOverlay } from '@mantine/core';
 import type { ButtonProps } from '@mantine/core';
-import { Download, Restart, EyeClosed, Eye } from 'iconoir-react';
-import { useSearchParams, useNavigate } from '@remix-run/react';
+import { Download, Restart } from 'iconoir-react';
 
 import { useEditor } from '~/contexts/EditorContext';
 import classes from './CoverImage.module.css';
 import { DownloadSuccessModal } from './DownloadSuccessModal';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { CoverImageEditor } from './CoverImageEditor';
-import { PREVIEW_PARAM } from '~/consts';
 
 const DownloadButton = ({
   isLoading,
@@ -29,10 +27,7 @@ const DownloadButton = ({
 };
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
-  const [searchParams] = useSearchParams();
   const { resetEditor } = useEditor();
-  const navigate = useNavigate();
-  const isPreviewMode = searchParams.get(PREVIEW_PARAM) === 'true';
 
   const { isLoading, isSuccessModalOpen, closeSuccessModal, downloadImage } = useImageDownload({
     imageRef: imageNodeRef
@@ -42,19 +37,11 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
     resetEditor();
   };
 
-  const onPreviewModeChange = () => {
-    if (isPreviewMode) {
-      navigate('/create', { replace: true });
-    } else {
-      navigate(`?${PREVIEW_PARAM}=true`, { replace: true });
-    }
-  };
-
   return (
     <>
       <Box component="section" className={classes.coverSection}>
         <Box className={classes.coverWrapper}>
-          <CoverImageEditor imageNodeRef={imageNodeRef} isPreviewMode={isPreviewMode} />
+          <CoverImageEditor imageNodeRef={imageNodeRef} />
           <Flex gap="xs" justify="center" wrap="wrap">
             <Button
               visibleFrom="md"
@@ -66,15 +53,6 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
               Reset applied styles
             </Button>
 
-            <Button
-              onClick={onPreviewModeChange}
-              size="md"
-              rightSection={isPreviewMode ? <Eye width={24} height={24} /> : <EyeClosed width={24} height={24} />}
-              variant="outline"
-              miw={180}
-            >
-              Preview ({isPreviewMode ? 'ON' : 'OFF'})
-            </Button>
             <DownloadButton isLoading={isLoading} downloadImage={downloadImage} visibleFrom="md" />
           </Flex>
           <Text ta="center" size="sm" fw={500}>

@@ -8,6 +8,7 @@ import { Check } from 'iconoir-react';
 import { updateCSSVariables } from '~/utils/styles';
 import type { TextAlignment } from '~/types/editor';
 import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
+import { templates } from '~/components/DrawerEditing/TemplateSection';
 
 interface TextState {
   content: string;
@@ -15,10 +16,6 @@ interface TextState {
   fontSize: number | string;
   font: string | null;
   align: TextAlignment;
-  stack: {
-    position: 'top' | 'bottom';
-    order: number;
-  };
 }
 
 interface BackgroundState {
@@ -32,42 +29,37 @@ interface BackgroundState {
   };
 }
 
-type EditorState = {
+interface EditorState {
+  template: string;
   primaryText: TextState;
   secondaryText: TextState;
   background: BackgroundState;
-};
+}
 
 type EditorActions = {
   setHasHydrated: (state: boolean) => void;
   updatePrimaryText: (updates: Partial<TextState>) => void;
   updateSecondaryText: (updates: Partial<TextState>) => void;
   updateBackground: (updates: Partial<BackgroundState>) => void;
+  updateTemplate: (templateId: string) => void;
   resetEditor: () => void;
 };
 
 const defaultState: EditorState = {
+  template: 'centered',
   primaryText: {
     content: '10 Tips/Principles For Cleaner React Code.',
     color: 'rgba(255, 255, 255, 1)',
-    fontSize: 28,
-    font: 'sans-serif (default)',
-    align: TEXT_ALIGNMENT_OPTIONS.center,
-    stack: {
-      position: 'bottom',
-      order: 0
-    }
+    fontSize: 58,
+    font: 'Arial',
+    align: TEXT_ALIGNMENT_OPTIONS.center
   },
   secondaryText: {
-    content: '',
+    content: 'by Kieran Roberts',
     color: 'rgba(255, 255, 255, 1)',
     fontSize: 20,
-    font: 'sans-serif (default)',
-    align: TEXT_ALIGNMENT_OPTIONS.center,
-    stack: {
-      position: 'top',
-      order: 1
-    }
+    font: 'Arial',
+    align: TEXT_ALIGNMENT_OPTIONS.center
   },
   background: {
     image: null,
@@ -102,26 +94,6 @@ export const useEditor = create(
 
       updatePrimaryText: (updates) => {
         set((state) => {
-          if (updates.stack) {
-            const { position } = updates.stack;
-            return {
-              primaryText: {
-                ...state.primaryText,
-                ...updates,
-                stack: {
-                  position,
-                  order: position === 'top' ? 1 : 0
-                }
-              },
-              secondaryText: {
-                ...state.secondaryText,
-                stack: {
-                  position: position === 'top' ? 'bottom' : 'top',
-                  order: position === 'top' ? 0 : 1
-                }
-              }
-            };
-          }
           return {
             primaryText: { ...state.primaryText, ...updates }
           };
@@ -138,13 +110,6 @@ export const useEditor = create(
         if (updates.font) {
           cssUpdates['--cover-primary-text-font'] = updates.font;
         }
-        if (updates.align) {
-          cssUpdates['--cover-primary-text-align'] = updates.align;
-        }
-        if (updates.stack) {
-          cssUpdates['--cover-primary-text-stack'] = updates.stack.order.toString();
-          cssUpdates['--cover-secondary-text-stack'] = (updates.stack.position === 'top' ? 0 : 1).toString();
-        }
 
         if (Object.keys(cssUpdates).length > 0) {
           updateCSSVariables(cssUpdates);
@@ -153,26 +118,6 @@ export const useEditor = create(
 
       updateSecondaryText: (updates) => {
         set((state) => {
-          if (updates.stack) {
-            const { position } = updates.stack;
-            return {
-              secondaryText: {
-                ...state.secondaryText,
-                ...updates,
-                stack: {
-                  position,
-                  order: position === 'top' ? 1 : 0
-                }
-              },
-              primaryText: {
-                ...state.primaryText,
-                stack: {
-                  position: position === 'top' ? 'bottom' : 'top',
-                  order: position === 'top' ? 0 : 1
-                }
-              }
-            };
-          }
           return {
             secondaryText: { ...state.secondaryText, ...updates }
           };
@@ -188,13 +133,6 @@ export const useEditor = create(
         }
         if (updates.font) {
           cssUpdates['--cover-secondary-text-font'] = updates.font;
-        }
-        if (updates.align) {
-          cssUpdates['--cover-secondary-text-align'] = updates.align;
-        }
-        if (updates.stack) {
-          cssUpdates['--cover-secondary-text-stack'] = updates.stack.order.toString();
-          cssUpdates['--cover-primary-text-stack'] = (updates.stack.position === 'top' ? 0 : 1).toString();
         }
 
         if (Object.keys(cssUpdates).length > 0) {
@@ -228,6 +166,20 @@ export const useEditor = create(
         }
       },
 
+      updateTemplate: (templateId) => {
+        set((state) => {
+          const template = templates.find((t) => t.id === templateId);
+          if (!template) return state;
+
+          updateCSSVariables(template.styles);
+
+          return {
+            ...state,
+            template: templateId
+          };
+        });
+      },
+
       resetEditor: () => {
         const state = useEditor.getState();
         if (state.background.image?.startsWith('blob:')) {
@@ -243,15 +195,13 @@ export const useEditor = create(
           '--cover-primary-text-color': defaultState.primaryText.color,
           '--cover-primary-text-font-size': `${defaultState.primaryText.fontSize}px`,
           '--cover-primary-text-font': defaultState.primaryText.font ?? 'sans-serif',
-          '--cover-primary-text-align': defaultState.primaryText.align,
-          '--cover-primary-text-stack': defaultState.primaryText.stack.toString(),
+
           '--cover-secondary-text-color': defaultState.secondaryText.color,
           '--cover-secondary-text-font-size': `${defaultState.secondaryText.fontSize}px`,
           '--cover-secondary-text-font': defaultState.secondaryText.font ?? 'sans-serif',
-          '--cover-secondary-text-align': defaultState.secondaryText.align,
-          '--cover-secondary-text-stack': defaultState.secondaryText.stack.toString(),
           '--cover-color-overlay-opacity': '0%',
-          '--cover-background-color': defaultState.background.color
+          '--cover-background-color': defaultState.background.color,
+          ...templates[0].styles
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -262,6 +212,7 @@ export const useEditor = create(
       storage: createJSONStorage(() => indexDBStorage),
       // @ts-expect-error fix: todo
       partialize: (state) => ({
+        template: state.template,
         primaryText: state.primaryText,
         secondaryText: state.secondaryText,
         background: state.background
@@ -291,18 +242,17 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
   useEffect(() => {
     if (hasHydrated) {
       const state = useEditor.getState();
+      const template = templates.find((t) => t.id === state.template);
+
       updateCSSVariables({
         '--cover-primary-text-color': state.primaryText.color,
         '--cover-primary-text-font-size': `${state.primaryText.fontSize}px`,
         '--cover-primary-text-font': state.primaryText.font ?? 'sans-serif',
-        '--cover-primary-text-align': state.primaryText.align,
-        '--cover-primary-text-stack': state.primaryText.stack.toString(),
         '--cover-secondary-text-color': state.secondaryText.color,
         '--cover-secondary-text-font-size': `${state.secondaryText.fontSize}px`,
         '--cover-secondary-text-font': state.secondaryText.font ?? 'sans-serif',
-        '--cover-secondary-text-align': state.secondaryText.align,
-        '--cover-secondary-text-stack': state.secondaryText.stack.toString(),
-        '--cover-background-color': state.background.color
+        '--cover-background-color': state.background.color,
+        ...template?.styles
       });
     }
   }, [hasHydrated]);
