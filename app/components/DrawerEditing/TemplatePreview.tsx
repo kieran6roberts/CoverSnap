@@ -26,7 +26,9 @@ export const TemplatePreview = ({
       <div className={classnames(classes.previewBar, classes['previewBar--narrow'], previewSecondaryBarClasses)} />
       {isSelected && (
         <Center pos="absolute" inset={0} bg="rgba(0, 0, 0, 0.5)">
-          <Check width={32} height={32} color="white" />
+          <Center component="span" w={40} h={40} bg="white" style={{ borderRadius: '100%' }}>
+            <Check width={32} height={32} color="var(--mantine-color-blue-filled)" />
+          </Center>
         </Center>
       )}
     </Paper>

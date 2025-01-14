@@ -65,8 +65,8 @@ export const DEFAULT_EDITOR_STATE = {
 
 export const TEMPLATES = [
   {
-    id: 'centered',
-    name: 'Centered Stack',
+    id: 'hero',
+    name: 'Hero',
     styles: {
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
@@ -82,8 +82,8 @@ export const TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   },
   {
-    id: 'left-aligned',
-    name: 'Left Aligned',
+    id: 'left-handed',
+    name: 'Left Handed',
     styles: {
       '--cover-align-items': 'flex-start',
       '--cover-primary-text-align': 'left',
@@ -99,8 +99,8 @@ export const TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   },
   {
-    id: 'right-aligned',
-    name: 'Right Aligned',
+    id: 'right-handed',
+    name: 'Right Handed',
     styles: {
       '--cover-align-items': 'flex-end',
       '--cover-primary-text-align': 'right',
@@ -116,8 +116,8 @@ export const TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   },
   {
-    id: 'center-bottom-right',
-    name: 'Center + Bottom Right',
+    id: 'right-footed',
+    name: 'Right Footed',
     styles: {
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
@@ -135,8 +135,8 @@ export const TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   },
   {
-    id: 'center-bottom-left',
-    name: 'Center + Bottom Left',
+    id: 'left-footed',
+    name: 'Left Footed',
     styles: {
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
