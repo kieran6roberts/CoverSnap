@@ -55,8 +55,11 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
 
             <DownloadButton isLoading={isLoading} downloadImage={downloadImage} visibleFrom="md" />
           </Flex>
-          <Text ta="center" size="sm" fw={500}>
-            Download size is 1600 x 840
+          <Text visibleFrom="md" ta="center" size="sm" component="span" c="dimmed" fw={500} px="xs">
+            Download size is 1600 x 840. <br />{' '}
+            <Text size="sm" component="span" c="dimmed" fw={500}>
+              Note: Currently for the best results, edit & download on desktop.
+            </Text>
           </Text>
         </Box>
       </Box>

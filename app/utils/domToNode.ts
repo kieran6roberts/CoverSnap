@@ -10,20 +10,28 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
 
   try {
     const originalRect = node.getBoundingClientRect();
-    const canvas = await html2canvas(node, {
-      onclone: (_doc, el) => {
-        el.style.borderRadius = '0';
-      }
-    });
 
     const scaleFactorWidth = TARGET_WIDTH / originalRect.width;
     const scaleFactorHeight = TARGET_HEIGHT / originalRect.height;
     const SCALE_FACTOR = Math.min(scaleFactorWidth, scaleFactorHeight);
 
+    const canvas = await html2canvas(node, {
+      onclone: (_doc, el) => {
+        el.style.borderRadius = '0';
+      },
+      scale: SCALE_FACTOR,
+      useCORS: true,
+      logging: false
+    });
+
     const blob = await domToImage.toBlob(canvas, {
       width: TARGET_WIDTH,
       height: TARGET_HEIGHT,
-      scale: SCALE_FACTOR
+      scale: 1,
+      quality: 1,
+      style: {
+        'image-rendering': 'smooth'
+      }
     });
 
     fs.saveAs(blob, 'coverSnap-cover.png');
