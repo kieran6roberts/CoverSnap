@@ -6,9 +6,14 @@ import { saveDomNodeAsImage } from '~/utils/domToNode';
 
 interface UseImageDownloadProps {
   imageRef: React.RefObject<HTMLElement | null>;
+  cover: {
+    width: number;
+    height: number;
+    aspectRatio: number;
+  };
 }
 
-export const useImageDownload = ({ imageRef }: UseImageDownloadProps) => {
+export const useImageDownload = ({ imageRef, cover }: UseImageDownloadProps) => {
   const [visible, { open, close }] = useDisclosure(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -16,7 +21,7 @@ export const useImageDownload = ({ imageRef }: UseImageDownloadProps) => {
     open();
 
     if (imageRef.current) {
-      const result = await saveDomNodeAsImage(imageRef.current);
+      const result = await saveDomNodeAsImage(imageRef.current, cover);
 
       if (result.success) {
         setIsSuccessModalOpen(true);

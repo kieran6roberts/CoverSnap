@@ -1,7 +1,7 @@
 'use client';
 
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { Modal, Text, Stack, Button } from '@mantine/core';
+import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
 import type { EditorLoaderData } from '~/types/editor';
 
@@ -25,29 +25,18 @@ export function WelcomeModal() {
           fz="xl"
           title={
             <Text size="xl" fw={500}>
-              Welcome to CoverSnap!
+              Hey 👋
             </Text>
           }
           size="md"
         >
           <Stack>
+            <Image src="/welcome.png" radius="md" alt="Welcome to CoverSnap cover" width={400} height={200} />
             <Text>
-              Use the editing sidebar to adjust your content and design specifics. You can also drag and resize your
-              text using the cover image preview. More features coming soon!
+              Use the editing sidebar to adjust your content, layout, background and more. Several new templates are
+              coming soon.
             </Text>
-
-            <video
-              controls
-              width="100%"
-              autoPlay
-              loop
-              muted
-              style={{ maxWidth: 400, margin: '0 auto', borderRadius: '12px' }}
-            >
-              <source src="resize-demo.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-
+            <Text>When you are done, select your preferred download size and hit the download button. Enjoy!</Text>
             <Button variant="filled" fullWidth data-autofocus onClick={handleClose}>
               Start editing
             </Button>

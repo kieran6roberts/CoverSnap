@@ -8,12 +8,6 @@ export const CREATE_ROUTE = '/create';
 
 type AVAILABLE_THEMES = Exclude<MantineColorScheme, 'auto'>;
 
-export const TEXT_ALIGNMENT_OPTIONS = {
-  left: 'left',
-  center: 'center',
-  right: 'right'
-} as const;
-
 export const SITE_THEMES: Record<AVAILABLE_THEMES, AVAILABLE_THEMES> = {
   light: 'light',
   dark: 'dark'

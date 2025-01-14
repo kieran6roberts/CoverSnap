@@ -5,78 +5,52 @@ import { get, set, del } from 'idb-keyval';
 import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
-import { updateCSSVariable, updateCSSVariables } from '~/utils/styles';
-import type { TextAlignment } from '~/types/editor';
-import { TEXT_ALIGNMENT_OPTIONS } from '~/consts';
+import { updateCSSVariables } from '~/utils/styles';
+import { DEFAULT_EDITOR_STATE, TEMPLATES } from '~/consts/editor';
 
-interface BackgroundPattern {
-  url: string | null;
-  name: string | null;
+interface TextState {
+  content: string;
   color: string;
-  opacity: number;
+  fontSize: number | string;
+  font: string;
 }
 
-type EditorState = {
-  // Text
-  primaryTitle: string;
-  primaryTitleColor: string;
-  primaryTitleFontSize: number | string;
-  primaryTitleFont: string | null;
-  primaryTitleAlign: TextAlignment;
-  subTitle: string;
-  subTitleColor: string;
-  subTitleFontSize: number | string;
-  subTitleFont: string | null;
-  subTitleAlign: TextAlignment;
-  // Background
-  backgroundImage: string | null;
-  backgroundColor: string;
-  backgroundPattern: BackgroundPattern;
-};
+interface CoverState {
+  width: number;
+  height: number;
+  aspectRatio: number;
+}
+
+interface BackgroundState {
+  image: string | null;
+  color: string;
+  pattern: {
+    url: string | null;
+    name: string | null;
+    color: string;
+    opacity: number;
+  };
+}
+
+interface EditorState {
+  template: string;
+  primaryText: TextState;
+  secondaryText: TextState;
+  background: BackgroundState;
+  cover: CoverState;
+}
 
 type EditorActions = {
   setHasHydrated: (state: boolean) => void;
-  // Text
-  setPrimaryTitle: (title: string) => void;
-  setPrimaryTitleColor: (color: string) => void;
-  setPrimaryTitleFontSize: (size: number | string) => void;
-  setPrimaryTitleFont: (font: string | null) => void;
-  setPrimaryTitleAlign: (align: TextAlignment) => void;
-  setSubTitle: (title: string) => void;
-  setSubTitleColor: (color: string) => void;
-  setSubTitleFontSize: (size: number | string) => void;
-  setSubTitleFont: (font: string | null) => void;
-  setSubTitleAlign: (align: TextAlignment) => void;
-  // Background
-  setBackgroundColor: (color: string) => void;
-  setBackgroundImage: (url: string | null) => void;
-  setBackgroundPattern: (pattern: BackgroundPattern) => void;
-  // Reset
+  updatePrimaryText: (updates: Partial<TextState>) => void;
+  updateSecondaryText: (updates: Partial<TextState>) => void;
+  updateBackground: (updates: Partial<BackgroundState>) => void;
+  updateCover: (updates: CoverState) => void;
+  updateTemplate: (templateId: string) => void;
   resetEditor: () => void;
 };
 
-const defaultState: EditorState = {
-  // Text
-  primaryTitle: '10 Tips/Principles For Cleaner React Code.',
-  primaryTitleColor: 'rgba(255, 255, 255, 1)',
-  primaryTitleFontSize: 28,
-  primaryTitleFont: 'sans-serif (default)',
-  primaryTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
-  subTitle: '',
-  subTitleColor: 'rgba(255, 255, 255, 1)',
-  subTitleFontSize: 20,
-  subTitleFont: 'sans-serif (default)',
-  subTitleAlign: TEXT_ALIGNMENT_OPTIONS.center,
-  // Background
-  backgroundColor: 'rgba(51, 51, 51, 1)',
-  backgroundImage: null,
-  backgroundPattern: {
-    url: null,
-    color: '#ffffff',
-    name: null,
-    opacity: 1
-  }
-};
+const defaultState: EditorState = DEFAULT_EDITOR_STATE;
 
 const indexDBStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
@@ -97,63 +71,107 @@ export const useEditor = create(
       ...defaultState,
       setHasHydrated: (state) => set({ _hasHydrated: state }),
 
-      // Text
-      setPrimaryTitle: (title) => set({ primaryTitle: title }),
-      setPrimaryTitleColor: (color) => {
-        set({ primaryTitleColor: color });
-        updateCSSVariable({ name: '--cover-title-color', value: color });
-      },
-      setPrimaryTitleFontSize: (size) => {
-        set({ primaryTitleFontSize: size });
-        updateCSSVariable({ name: '--cover-title-font-size', value: `${size}px` });
-      },
-      setPrimaryTitleFont: (font) => {
-        set({ primaryTitleFont: font });
-        if (font) {
-          updateCSSVariable({ name: '--cover-title-font', value: font });
+      updatePrimaryText: (updates) => {
+        set((state) => {
+          return {
+            primaryText: { ...state.primaryText, ...updates }
+          };
+        });
+
+        const cssUpdates: Record<string, string> = {};
+
+        if (updates.color) {
+          cssUpdates['--cover-primary-text-color'] = updates.color;
+        }
+        if (updates.fontSize) {
+          cssUpdates['--cover-primary-text-font-size'] = `${updates.fontSize}px`;
+        }
+        if (updates.font) {
+          cssUpdates['--cover-primary-text-font'] = updates.font;
+        }
+
+        if (Object.keys(cssUpdates).length > 0) {
+          updateCSSVariables(cssUpdates);
         }
       },
-      setPrimaryTitleAlign: (align) => {
-        set({ primaryTitleAlign: align });
-        updateCSSVariable({ name: '--cover-title-align', value: align });
-      },
 
-      setSubTitle: (title) => set({ subTitle: title }),
-      setSubTitleColor: (color) => {
-        set({ subTitleColor: color });
-        updateCSSVariable({ name: '--cover-subtitle-color', value: color });
-      },
-      setSubTitleFontSize: (size) => {
-        set({ subTitleFontSize: size });
-        updateCSSVariable({ name: '--cover-subtitle-font-size', value: `${size}px` });
-      },
-      setSubTitleFont: (font) => {
-        set({ subTitleFont: font });
-        if (font) {
-          updateCSSVariable({ name: '--cover-subtitle-font', value: font });
+      updateSecondaryText: (updates) => {
+        set((state) => {
+          return {
+            secondaryText: { ...state.secondaryText, ...updates }
+          };
+        });
+
+        const cssUpdates: Record<string, string> = {};
+
+        if (updates.color) {
+          cssUpdates['--cover-secondary-text-color'] = updates.color;
+        }
+        if (updates.fontSize) {
+          cssUpdates['--cover-secondary-text-font-size'] = `${updates.fontSize}px`;
+        }
+        if (updates.font) {
+          cssUpdates['--cover-secondary-text-font'] = updates.font;
+        }
+
+        if (Object.keys(cssUpdates).length > 0) {
+          updateCSSVariables(cssUpdates);
         }
       },
-      setSubTitleAlign: (align) => {
-        set({ subTitleAlign: align });
-        updateCSSVariable({ name: '--cover-subtitle-align', value: align });
-      },
-      // Background
-      setBackgroundColor: (color) => {
-        set({ backgroundColor: color });
-        updateCSSVariable({ name: '--cover-background-color', value: color });
-      },
-      setBackgroundImage: (url) => {
-        set({ backgroundImage: url, backgroundPattern: { ...defaultState.backgroundPattern } });
-      },
-      setBackgroundPattern: (pattern) => {
-        set({ backgroundPattern: pattern });
+
+      updateBackground: (updates) => {
+        set((state) => {
+          const newState = {
+            background: { ...state.background, ...updates }
+          };
+
+          // Clear pattern when setting image
+          if (updates.image) {
+            newState.background.pattern = {
+              name: null,
+              url: null,
+              color: state.background.pattern.color,
+              opacity: state.background.pattern.opacity
+            };
+          }
+          return newState;
+        });
+
+        if (updates.color) {
+          updateCSSVariables({
+            '--cover-background-color': updates.color
+          });
+        }
       },
 
-      // Reset
+      updateCover: (updates) => {
+        set((state) => {
+          return {
+            cover: { ...state.cover, ...updates }
+          };
+        });
+
+        updateCSSVariables({ '--cover-aspect-ratio': `${updates.aspectRatio}` });
+      },
+
+      updateTemplate: (templateId) => {
+        set((state) => {
+          const template = TEMPLATES.find((t) => t.id === templateId);
+          if (!template) return state;
+
+          updateCSSVariables(template.styles);
+
+          return {
+            ...state,
+            template: templateId
+          };
+        });
+      },
+
       resetEditor: () => {
         const state = useEditor.getState();
-        if (state.backgroundImage?.startsWith('blob:')) {
-          URL.revokeObjectURL(state.backgroundImage);
+        if (state.background.image?.startsWith('blob:')) {
+          URL.revokeObjectURL(state.background.image);
         }
 
         toast.success('Cover reset.', {
@@ -161,18 +179,31 @@ export const useEditor = create(
           icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
         });
 
-        // Reset CSS variables
         updateCSSVariables({
-          '--cover-title-color': defaultState.primaryTitleColor,
-          '--cover-subtitle-color': defaultState.subTitleColor,
-          '--cover-title-font-size': `${defaultState.primaryTitleFontSize}px`,
-          '--cover-subtitle-font-size': `${defaultState.subTitleFontSize}px`,
-          '--cover-background-color': defaultState.backgroundColor,
+          /* Cover Wrapper */
+          '--cover-display': 'flex',
+          '--cover-justify-content': 'center',
+          '--cover-align-items': 'center',
+
+          /* Cover Primary Text */
+          '--cover-primary-text-color': defaultState.primaryText.color,
+          '--cover-primary-text-font-size': `${defaultState.primaryText.fontSize}px`,
+          '--cover-primary-text-font': defaultState.primaryText.font,
+          '--cover-primary-text-align': 'center',
+
+          /* Cover Primary Text */
+          '--cover-secondary-text-color': defaultState.secondaryText.color,
+          '--cover-secondary-text-font-size': `${defaultState.secondaryText.fontSize}px`,
+          '--cover-secondary-text-font': defaultState.secondaryText.font,
+          '--cover-secondary-text-align': 'center',
+          '--cover-secondary-bottom': 'unset',
+          '--cover-secondary-right': 'unset',
+          '--cover-secondary-left': 'unset',
+          '--cover-secondary-position': 'relative',
+
+          /* Cover Background (overlay) */
           '--cover-color-overlay-opacity': '0%',
-          '--cover-title-font': defaultState.primaryTitleFont ?? 'sans-serif',
-          '--cover-subtitle-font': defaultState.subTitleFont ?? 'sans-serif',
-          '--cover-title-align': defaultState.primaryTitleAlign,
-          '--cover-subtitle-align': defaultState.subTitleAlign
+          '--cover-background-color': defaultState.background.color
         });
 
         set({ _hasHydrated: true, ...defaultState });
@@ -183,18 +214,14 @@ export const useEditor = create(
       storage: createJSONStorage(() => indexDBStorage),
       // @ts-expect-error fix: todo
       partialize: (state) => ({
-        primaryTitle: state.primaryTitle,
-        primaryTitleColor: state.primaryTitleColor,
-        primaryTitleFontSize: state.primaryTitleFontSize,
-        primaryTitleAlign: state.primaryTitleAlign,
-        subTitle: state.subTitle,
-        subTitleColor: state.subTitleColor,
-        subTitleFontSize: state.subTitleFontSize,
-        subTitleAlign: state.subTitleAlign,
-        backgroundColor: state.backgroundColor,
-        primaryTitleFont: state.primaryTitleFont,
-        subTitleFont: state.subTitleFont,
-        backgroundPattern: state.backgroundPattern
+        template: state.template,
+        primaryText: state.primaryText,
+        secondaryText: state.secondaryText,
+        background: {
+          color: state.background.color,
+          pattern: state.background.pattern
+        },
+        cover: state.cover
       }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
@@ -215,23 +242,47 @@ export const useEditor = create(
   )
 );
 
-// Wapper component for hydration
 export function EditorHydration({ children, skeleton }: { children: React.ReactNode; skeleton?: React.ReactNode }) {
   const hasHydrated = useEditor((state) => state._hasHydrated);
 
   useEffect(() => {
     if (hasHydrated) {
       const state = useEditor.getState();
+      const template = TEMPLATES.find((t) => t.id === state.template);
+
       updateCSSVariables({
-        '--cover-title-color': state.primaryTitleColor,
-        '--cover-subtitle-color': state.subTitleColor,
-        '--cover-title-font-size': `${state.primaryTitleFontSize}px`,
-        '--cover-subtitle-font-size': `${state.subTitleFontSize}px`,
-        '--cover-background-color': state.backgroundColor,
-        '--cover-title-font': state.primaryTitleFont ?? 'sans-serif',
-        '--cover-subtitle-font': state.subTitleFont ?? 'sans-serif',
-        '--cover-title-align': state.primaryTitleAlign,
-        '--cover-subtitle-align': state.subTitleAlign
+        /* Cover Wrapper */
+        '--cover-align-items': 'center',
+
+        /* Cover Primary Text */
+        '--cover-primary-text-color': state.primaryText.color,
+        '--cover-primary-text-font-size': `${state.primaryText.fontSize}px`,
+        '--cover-primary-text-font': state.primaryText.font,
+
+        /* Cover Secondary Text */
+        '--cover-secondary-text-color': state.secondaryText.color,
+        '--cover-secondary-text-font-size': `${state.secondaryText.fontSize}px`,
+        '--cover-secondary-text-font': state.secondaryText.font,
+
+        /* 
+          Cover Background (overlay)
+
+          Note: For now the image & bg opacity is not persisted.
+         */
+        '--cover-background-color': state.background.color,
+
+        /*
+        '--cover-align-items
+        '--cover-primary-text-align
+        '--cover-secondary-position
+        '--cover-secondary-bottom
+        '--cover-secondary-right
+        '--cover-secondary-left
+        '--cover-secondary-text-align
+        */
+        ...template?.styles,
+        /* Cover Aspect Ratio */
+        '--cover-aspect-ratio': `${(state.cover.width / state.cover.height).toFixed(1)}`
       });
     }
   }, [hasHydrated]);

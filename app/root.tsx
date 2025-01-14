@@ -31,6 +31,33 @@ const theme = createTheme({
   primaryColor: 'indigo',
   primaryShade: 7,
   components: {
+    InputLabel: {
+      defaultProps: {
+        mb: 2
+      }
+    },
+    Fieldset: {
+      defaultProps: {
+        variant: 'unstyled'
+      },
+      styles: {
+        root: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--mantine-spacing-md)'
+        },
+        legend: {
+          fontSize: 'var(--mantine-font-size-lg)',
+          fontWeight: 500,
+          opacity: 0.6
+        }
+      }
+    },
+    InputDescription: {
+      defaultProps: {
+        mb: 8
+      }
+    },
     Text: {
       defaultProps: {
         c: 'var(--mantine-color-text)'
