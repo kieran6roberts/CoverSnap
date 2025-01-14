@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import classes from '~/components/DrawerEditing/TemplatePreview.module.css';
+import * as patterns from 'hero-patterns';
 
 export const PRIMARY_TEXT_LENGTH = 100;
 export const SECONDARY_TEXT_LENGTH = 80;
@@ -18,50 +19,6 @@ export const fonts = [
   'Georgia',
   'Courier New'
 ];
-
-const DEFAULT_PRIMARY_TEXT_CONTENT = 'Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.';
-const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
-const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
-const DEFAULT_SECONDARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
-const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
-const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
-const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
-const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
-const DEFAULT_TEMPLATE = 'centered';
-const DEFAULT_BACKGROUND_COLOR = 'rgba(51, 51, 51, 1)';
-const DEFAULT_PATTERN = {
-  url: null,
-  name: null,
-  color: '#ffffff',
-  opacity: 0.1
-};
-
-export const TEXT_ALIGNMENT_OPTIONS = {
-  left: 'left',
-  center: 'center',
-  right: 'right'
-} as const;
-
-export const DEFAULT_EDITOR_STATE = {
-  template: DEFAULT_TEMPLATE,
-  primaryText: {
-    content: DEFAULT_PRIMARY_TEXT_CONTENT,
-    color: DEFAULT_PRIMARY_TEXT_COLOR,
-    fontSize: DEFAULT_PRIMARY_TEXT_FONT_SIZE,
-    font: DEFAULT_PRIMARY_TEXT_FONT
-  },
-  secondaryText: {
-    content: DEFAULT_SECONDARY_TEXT_CONTENT,
-    color: DEFAULT_SECONDARY_TEXT_COLOR,
-    fontSize: DEFAULT_SECONDARY_TEXT_FONT_SIZE,
-    font: DEFAULT_SECONDARY_TEXT_FONT
-  },
-  background: {
-    image: null,
-    color: DEFAULT_BACKGROUND_COLOR,
-    pattern: DEFAULT_PATTERN
-  }
-};
 
 export const TEMPLATES = [
   {
@@ -154,3 +111,50 @@ export const TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   }
 ];
+
+const DEFAULT_PRIMARY_TEXT_CONTENT = 'Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.';
+const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
+const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
+const DEFAULT_SECONDARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
+const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
+const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
+const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
+const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
+const DEFAULT_TEMPLATE = TEMPLATES[0].id;
+const DEFAULT_BACKGROUND_COLOR = 'rgba(81, 133, 196, 1)';
+const DEFAULT_PATTERN_COLOR = '#ffffff';
+const DEFAULT_PATTERN_OPACITY = 0.1;
+
+export const DEFAULT_PATTERN = {
+  url: patterns.architect(DEFAULT_PATTERN_COLOR, DEFAULT_PATTERN_OPACITY),
+  name: 'architect',
+  color: DEFAULT_PATTERN_COLOR,
+  opacity: DEFAULT_PATTERN_OPACITY
+};
+
+export const TEXT_ALIGNMENT_OPTIONS = {
+  left: 'left',
+  center: 'center',
+  right: 'right'
+} as const;
+
+export const DEFAULT_EDITOR_STATE = {
+  template: DEFAULT_TEMPLATE,
+  primaryText: {
+    content: DEFAULT_PRIMARY_TEXT_CONTENT,
+    color: DEFAULT_PRIMARY_TEXT_COLOR,
+    fontSize: DEFAULT_PRIMARY_TEXT_FONT_SIZE,
+    font: DEFAULT_PRIMARY_TEXT_FONT
+  },
+  secondaryText: {
+    content: DEFAULT_SECONDARY_TEXT_CONTENT,
+    color: DEFAULT_SECONDARY_TEXT_COLOR,
+    fontSize: DEFAULT_SECONDARY_TEXT_FONT_SIZE,
+    font: DEFAULT_SECONDARY_TEXT_FONT
+  },
+  background: {
+    image: null,
+    color: DEFAULT_BACKGROUND_COLOR,
+    pattern: DEFAULT_PATTERN
+  }
+};

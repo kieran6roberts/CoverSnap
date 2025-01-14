@@ -43,7 +43,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
           style={{
             position: 'absolute',
             inset: 0,
-            zIndex: 0,
+            zIndex: 1,
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
@@ -53,15 +53,26 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
                 }
               : backgroundImage
                 ? {
-                    background: `linear-gradient(
-                      rgba(51, 51, 51, var(--cover-color-overlay-opacity)),
-                      rgba(51, 51, 51, var(--cover-color-overlay-opacity))
-                    ), url(${backgroundImage}) center/cover no-repeat`,
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
                     backgroundColor: 'transparent'
                   }
                 : {})
           }}
-        />
+        >
+          {backgroundImage && (
+            <Box
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundColor: 'var(--cover-background-color)',
+                opacity: 'var(--cover-color-overlay-opacity)'
+              }}
+            />
+          )}
+        </Box>
 
         {primaryText.content && (
           <span
@@ -76,7 +87,8 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
               fontWeight: 600,
               margin: 0,
               letterSpacing: 'normal',
-              zIndex: 1
+              position: 'relative',
+              zIndex: 2
             }}
           >
             {primaryText.content}
@@ -100,7 +112,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
               right: 'var(--cover-secondary-right, unset)',
               left: 'var(--cover-secondary-left, unset)',
               letterSpacing: 'normal',
-              zIndex: 1
+              zIndex: 2
             }}
           >
             {secondaryText.content}

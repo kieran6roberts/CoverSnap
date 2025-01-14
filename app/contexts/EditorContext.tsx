@@ -119,7 +119,12 @@ export const useEditor = create(
 
           // Clear pattern when setting image
           if (updates.image) {
-            newState.background.pattern = defaultState.background.pattern;
+            newState.background.pattern = {
+              name: null,
+              url: null,
+              color: state.background.pattern.color,
+              opacity: state.background.pattern.opacity
+            };
           }
           return newState;
         });

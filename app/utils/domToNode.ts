@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import domToImage from 'dom-to-image-more';
 import fs from 'file-saver';
 import html2canvas from 'html2canvas';
@@ -30,6 +29,7 @@ export async function saveDomNodeAsImage(node: React.RefObject<HTMLElement>['cur
     fs.saveAs(blob, 'coverSnap-cover.png');
     return { success: true, blob };
   } catch (_error) {
+    console.error(_error);
     return { success: false, blob: null };
   }
 }

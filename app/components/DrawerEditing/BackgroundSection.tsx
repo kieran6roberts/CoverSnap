@@ -37,14 +37,14 @@ export function DrawerBackgroundSection() {
       updateBackground({ image: imageUrl });
     } else {
       updateBackground({ image: null });
-      updateCSSVariables({ name: '--cover-color-overlay-opacity', value: '0%' });
+      updateCSSVariables({ '--cover-color-overlay-opacity': '0%' });
     }
   };
 
   const onPatternChange = (name: string) => {
     if (backgroundImage) {
       onBackgroundImageChange(null);
-      updateCSSVariables({ name: '--cover-color-overlay-opacity', value: '0%' });
+      updateCSSVariables({ '--cover-color-overlay-opacity': '0%' });
     }
     if (name === backgroundPattern.name) {
       updateBackground({
@@ -75,7 +75,7 @@ export function DrawerBackgroundSection() {
           label="Background color"
           description="Accepts RGBA"
           value={backgroundColor}
-          onChange={(value) => updateBackground({ color: value })}
+          onChangeEnd={(value) => updateBackground({ color: value })}
         />
       </Fieldset>
       <Fieldset legend="Images">
@@ -118,14 +118,14 @@ export function DrawerBackgroundSection() {
             onChange={(value) => {
               // Convert decimal to percentage for color-mix
               const percentage = value ? Number(value) * 100 : 0;
-              updateCSSVariables({ name: '--cover-color-overlay-opacity', value: `${percentage}%` });
+              updateCSSVariables({ '--cover-color-overlay-opacity': `${percentage}%` });
             }}
             label="Overlay opacity"
             allowNegative={false}
           />
         ) : null}
       </Fieldset>
-      <Fieldset legend="Patterns">
+      <Fieldset legend="Patterns" disabled={!!backgroundImage}>
         <ColorInput
           disabled={!!backgroundImage}
           format="hex"
@@ -173,12 +173,23 @@ export function DrawerBackgroundSection() {
                   component="span"
                   fw={600}
                   ta="center"
-                  c={isSelected ? 'var(--mantine-color-primary-filled)' : 'var(--mantine-color-dimmed)'}
+                  c={
+                    isSelected && !backgroundImage
+                      ? 'var(--mantine-color-primary-filled)'
+                      : 'var(--mantine-color-dimmed)'
+                  }
+                  style={{
+                    whiteSpace: 'nowrap'
+                  }}
                 >
                   {key}
                 </Text>
 
-                <UnstyledButton aria-label={`Select ${key} background pattern`} onClick={() => onPatternChange(key)}>
+                <UnstyledButton
+                  aria-label={`Select ${key} background pattern`}
+                  onClick={() => onPatternChange(key)}
+                  style={{ cursor: !backgroundImage ? 'pointer' : 'not-allowed' }}
+                >
                   <Paper
                     radius="md"
                     className={classes.patternCard}
@@ -189,7 +200,7 @@ export function DrawerBackgroundSection() {
                         : '1px solid var(--mantine-color-default-border)'
                     }}
                   >
-                    {isSelected && (
+                    {isSelected && !backgroundImage && (
                       <Center className={classes['patternCard-selected']}>
                         <Center component="span" w={40} h={40} bg="white" style={{ borderRadius: '100%' }}>
                           <Check width={32} height={32} color="var(--mantine-color-blue-filled)" />
