@@ -3,6 +3,7 @@
 import { Box, Flex, Button, LoadingOverlay, Select } from '@mantine/core';
 import type { ButtonProps } from '@mantine/core';
 import { Download, Restart } from 'iconoir-react';
+import { lazy } from 'react';
 
 import { useEditor } from '~/contexts/EditorContext';
 import classes from './CoverImage.module.css';
@@ -11,6 +12,8 @@ import { useImageDownload } from '~/hooks/useImageDownload';
 import { CoverImageEditor } from './CoverImageEditor';
 import { IMAGE_DOWNLOAD_SIZES } from '~/consts/editor';
 import { updateCSSVariables } from '~/utils/styles';
+
+const Confetti = lazy(() => import('./Confetti'));
 
 const DownloadButton = ({
   isLoading,
@@ -85,6 +88,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
         </Box>
       </Box>
       {isSuccessModalOpen && <DownloadSuccessModal close={closeSuccessModal} />}
+      {isSuccessModalOpen && <Confetti />}
     </>
   );
 }
