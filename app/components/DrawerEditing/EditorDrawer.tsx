@@ -1,7 +1,28 @@
 'use client';
 
-import { Text, Accordion, Flex, Button, Box, ScrollArea, LoadingOverlay, Skeleton, Badge } from '@mantine/core';
-import { Text as IconText, MediaImage, AlignBottomBox, UploadSquare, Pentagon, Download } from 'iconoir-react';
+import {
+  Text,
+  Accordion,
+  Flex,
+  Button,
+  Box,
+  ScrollArea,
+  LoadingOverlay,
+  Skeleton,
+  Badge,
+  Title,
+  ThemeIcon,
+  ActionIcon
+} from '@mantine/core';
+import {
+  Text as IconText,
+  MediaImage,
+  AlignBottomBox,
+  UploadSquare,
+  Pentagon,
+  Download,
+  ArrowLeftTag
+} from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import type { EditorLoaderData } from '~/types/editor';
@@ -13,33 +34,53 @@ import { useEditor, EditorHydration } from '~/contexts/EditorContext';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
 import { CREATE_ROUTE } from '~/consts';
-
+import { useSidebarStore } from '~/components/Layout/EditorArea';
 const editSections = [
   {
     title: 'Template',
     content: () => <DrawerTemplateSection />,
-    icon: <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
+        <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />
+      </ThemeIcon>
+    )
   },
   {
     title: 'Text',
     content: () => <DrawerTextSection />,
-    icon: <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
+        <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
+      </ThemeIcon>
+    )
   },
   {
     title: 'Background',
     content: () => <DrawerBackgroundSection />,
-    icon: <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
+        <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
+      </ThemeIcon>
+    )
   },
   {
     title: 'Elements',
     content: () => null,
-    icon: <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
+        <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />
+      </ThemeIcon>
+    ),
     isDisabled: true
   },
   {
     title: 'Uploads',
     content: () => null,
-    icon: <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />,
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
+        <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />
+      </ThemeIcon>
+    ),
     isDisabled: true
   }
 ];
@@ -52,6 +93,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
   const currentOpenItems = fetcher.formData ? fetcher.formData.get('openItems')?.toString().split(',') : openItems;
 
   const { resetEditor, cover } = useEditor();
+  const { toggleDrawer } = useSidebarStore();
 
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
     imageRef: imageNodeRef,
@@ -75,10 +117,10 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
         skeleton={
           <Flex h={53} w="100%" justify="space-between" align="center" p="md">
             <Flex gap="sm" align="center">
-              <Skeleton circle height={24} width={24} animate />
-              <Skeleton height={16} width={125} animate />
+              <Skeleton radius="md" height={34} width={34} animate />
+              <Skeleton radius="md" height={16} width={125} animate />
             </Flex>
-            <Skeleton height={16} circle width={16} animate />
+            <Skeleton radius="md" height={16} circle width={16} animate />
           </Flex>
         }
       >
@@ -109,7 +151,27 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
   return (
     <>
       <Box component="aside" className={classes.sidebar} pos="relative">
-        <ScrollArea visibleFrom="md" h="calc(100vh - 69px)">
+        <Flex
+          justify="space-between"
+          align="center"
+          p="md"
+          style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
+        >
+          <Title size="sm" order={2}>
+            Cover settings
+          </Title>
+          <ActionIcon
+            visibleFrom="md"
+            onClick={toggleDrawer}
+            variant="default"
+            size={28}
+            title="Close sidebar"
+            aria-label="Close sidebar"
+          >
+            <ArrowLeftTag width={18} height={18} />
+          </ActionIcon>
+        </Flex>
+        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px)">
           <Accordion radius="md" multiple value={currentOpenItems} onChange={handleAccordionChange} variant="default">
             {items}
           </Accordion>

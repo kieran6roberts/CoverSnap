@@ -138,9 +138,16 @@ export default function Create() {
           </Flex>
         </Flex>
       </Box>
-      <main>
+      <Box
+        component="main"
+        style={{
+          height: 'calc(100vh - 69px)',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <EditorArea />
-      </main>
+      </Box>
     </>
   );
 }
