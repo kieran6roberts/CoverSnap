@@ -9,7 +9,7 @@ export function DrawerTemplateSection() {
 
   return (
     <Stack gap="xl">
-      <SimpleGrid cols={{ base: 1, sm: 3, md: 1, lg: 2 }} spacing="xs" verticalSpacing="xl" component="section">
+      <SimpleGrid cols={{ base: 1, xs: 3, md: 2 }} spacing="xs" verticalSpacing="xl" component="section">
         {TEMPLATES.map((t) => {
           const isSelected = template === t.id;
           return (

@@ -16,6 +16,7 @@ interface TextState {
 }
 
 interface CoverState {
+  id: string;
   width: number;
   height: number;
   aspectRatio: number;

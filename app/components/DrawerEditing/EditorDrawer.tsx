@@ -34,7 +34,6 @@ import { useEditor, EditorHydration } from '~/contexts/EditorContext';
 import { useImageDownload } from '~/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
 import { CREATE_ROUTE } from '~/consts';
-import { useSidebarStore } from '~/components/Layout/EditorArea';
 const editSections = [
   {
     title: 'Template',
@@ -93,16 +92,25 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
   const currentOpenItems = fetcher.formData ? fetcher.formData.get('openItems')?.toString().split(',') : openItems;
 
   const { resetEditor, cover } = useEditor();
-  const { toggleDrawer } = useSidebarStore();
 
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
     imageRef: imageNodeRef,
     cover
   });
 
-  const handleAccordionChange = (values: string[]) => {
+  const onAccordionChange = (values: string[]) => {
     fetcher.submit(
       { openItems: values, intent: 'updateOpenItems' },
+      {
+        method: 'post',
+        action: CREATE_ROUTE
+      }
+    );
+  };
+
+  const onHideSidebar = () => {
+    fetcher.submit(
+      { sidebarState: 'closed', intent: 'updateSidebarState' },
       {
         method: 'post',
         action: CREATE_ROUTE
@@ -162,7 +170,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           </Title>
           <ActionIcon
             visibleFrom="md"
-            onClick={toggleDrawer}
+            onClick={onHideSidebar}
             variant="default"
             size={28}
             title="Close sidebar"
@@ -172,7 +180,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           </ActionIcon>
         </Flex>
         <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px)">
-          <Accordion radius="md" multiple value={currentOpenItems} onChange={handleAccordionChange} variant="default">
+          <Accordion radius="md" multiple value={currentOpenItems} onChange={onAccordionChange} variant="default">
             {items}
           </Accordion>
         </ScrollArea>
@@ -181,7 +189,7 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           radius="md"
           multiple
           value={currentOpenItems}
-          onChange={handleAccordionChange}
+          onChange={onAccordionChange}
           variant="default"
           pb={80}
         >

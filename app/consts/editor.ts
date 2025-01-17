@@ -158,6 +158,7 @@ export const DEFAULT_EDITOR_STATE = {
     pattern: DEFAULT_PATTERN
   },
   cover: {
+    id: 'hashnode',
     width: 1600,
     height: 840,
     aspectRatio: 1.9

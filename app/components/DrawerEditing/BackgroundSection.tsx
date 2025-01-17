@@ -164,7 +164,7 @@ export function DrawerBackgroundSection() {
           label="Pattern opacity"
           allowNegative={false}
         />
-        <SimpleGrid cols={{ base: 1, sm: 3, md: 1, lg: 2 }} spacing="sm" verticalSpacing="xl" component="section">
+        <SimpleGrid cols={{ base: 1, xs: 3, md: 2 }} spacing="sm" verticalSpacing="xl" component="section">
           {Object.entries(patterns).map(([key, value]) => {
             const isSelected = backgroundPattern.name === key;
             return (
