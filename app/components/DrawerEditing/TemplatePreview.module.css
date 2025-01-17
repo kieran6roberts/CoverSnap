@@ -28,6 +28,24 @@
   justify-content: center;
 }
 
+.previewContainer--centered-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewContainer--end {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.previewContainer--top {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
 .previewContainer--left {
   flex-direction: column;
   align-items: flex-start;
@@ -41,7 +59,7 @@
 }
 
 .previewBar {
-  height: 12px;
+  height: 20%;
   border-radius: 4px;
 }
 
@@ -52,8 +70,13 @@
 
 .previewBar--narrow {
   width: 40%;
-  height: 8px;
+  height: 8%;
   background: var(--mantine-color-gray-5);
+}
+
+.previewBar--thick {
+  height: 40%;
+  width: 100%;
 }
 
 .previewBar--bottom-right {

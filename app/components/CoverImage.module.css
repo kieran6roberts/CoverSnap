@@ -2,6 +2,7 @@
   /* Cover Wrapper */
   --cover-display: flex;
   --cover-justify-content: center;
+  --cover-flex-direction: column;
   --cover-align-items: center;
   --cover-aspect-ratio: 1.9;
   /* Cover Primary Text */
