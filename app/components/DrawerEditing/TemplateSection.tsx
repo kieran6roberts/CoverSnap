@@ -1,4 +1,4 @@
-import { Text, SimpleGrid, UnstyledButton, Stack } from '@mantine/core';
+import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
 
 import { useEditor } from '~/contexts/EditorContext';
 import { TEMPLATES } from '~/consts/editor';
@@ -8,15 +8,16 @@ export function DrawerTemplateSection() {
   const { template, updateTemplate } = useEditor();
 
   return (
-    <Stack gap="xl">
-      <SimpleGrid cols={2} spacing="sm" verticalSpacing="xl" component="section">
+    <Fieldset legend="Text layout">
+      <SimpleGrid cols={{ base: 1, xs: 3, md: 2 }} spacing="xs" verticalSpacing="xl" component="section">
         {TEMPLATES.map((t) => {
           const isSelected = template === t.id;
           return (
-            <Stack key={t.id} gap={2} component="article">
+            <Stack key={t.id} gap={4} component="article">
               <Text
                 component="span"
                 fw={600}
+                fz={{ base: 18, sm: 14 }}
                 ta="center"
                 c={isSelected ? 'var(--mantine-color-primary-filled)' : 'var(--mantine-color-dimmed)'}
               >
@@ -43,6 +44,6 @@ export function DrawerTemplateSection() {
           );
         })}
       </SimpleGrid>
-    </Stack>
+    </Fieldset>
   );
 }

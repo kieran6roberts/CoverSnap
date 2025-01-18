@@ -4,8 +4,8 @@
   background-color: var(--mantine-color-white);
 
   @media (min-width: em(992px)) {
-    height: calc(100vh - 75px);
-    width: 425px;
+    height: calc(100vh - 69px);
+    width: 400px;
     border-right: 1px solid var(--mantine-color-default-border);
   }
 }

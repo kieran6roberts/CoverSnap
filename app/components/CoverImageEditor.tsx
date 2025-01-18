@@ -14,13 +14,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
   } = useEditor();
 
   return (
-    <EditorHydration
-      skeleton={
-        <Skeleton radius={12} animate>
-          <span className={classes.coverSkeleton} />
-        </Skeleton>
-      }
-    >
+    <EditorHydration skeleton={<Skeleton radius={12} className={classes.coverSkeleton} animate />}>
       <Box
         ref={imageNodeRef}
         style={{
@@ -29,7 +23,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
           justifyContent: 'var(--cover-justify-content)',
           alignItems: 'var(--cover-align-items)',
           position: 'relative',
-          flexDirection: 'column',
+          flexDirection: 'var(--cover-flex-direction)' as React.CSSProperties['flexDirection'],
           gap: '1rem',
           overflow: 'hidden',
           width: 'min(calc(90vw - 360px), 900px)',
@@ -37,7 +31,8 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
           minWidth: '320px',
           aspectRatio: cover.aspectRatio,
           borderRadius: '12px',
-          letterSpacing: 'normal'
+          letterSpacing: 'normal',
+          margin: '0 auto'
         }}
       >
         <Box

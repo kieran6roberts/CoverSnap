@@ -25,6 +25,7 @@ export const TEMPLATES = [
     id: 'hero',
     name: 'Hero',
     styles: {
+      '--cover-flex-direction': 'column',
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
       '--cover-secondary-position': 'relative',
@@ -42,6 +43,7 @@ export const TEMPLATES = [
     id: 'left-handed',
     name: 'Left Handed',
     styles: {
+      '--cover-flex-direction': 'column',
       '--cover-align-items': 'flex-start',
       '--cover-primary-text-align': 'left',
       '--cover-secondary-position': 'relative',
@@ -59,6 +61,7 @@ export const TEMPLATES = [
     id: 'right-handed',
     name: 'Right Handed',
     styles: {
+      '--cover-flex-direction': 'column',
       '--cover-align-items': 'flex-end',
       '--cover-primary-text-align': 'right',
       '--cover-secondary-position': 'relative',
@@ -76,6 +79,7 @@ export const TEMPLATES = [
     id: 'right-footed',
     name: 'Right Footed',
     styles: {
+      '--cover-flex-direction': 'column',
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
       '--cover-secondary-position': 'absolute',
@@ -95,6 +99,7 @@ export const TEMPLATES = [
     id: 'left-footed',
     name: 'Left Footed',
     styles: {
+      '--cover-flex-direction': 'column',
       '--cover-align-items': 'center',
       '--cover-primary-text-align': 'center',
       '--cover-secondary-position': 'absolute',
@@ -107,6 +112,60 @@ export const TEMPLATES = [
       cover: classnames(classes['previewContainer--centered']),
       primaryText: classnames(classes['previewBar--wide']),
       secondaryText: classnames(classes['previewBar--bottom-left'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'high-life',
+    name: 'The High Life',
+    styles: {
+      '--cover-align-items': 'flex-start',
+      '--cover-flex-direction': 'row',
+      '--cover-primary-text-align': 'left',
+      '--cover-secondary-position': 'static',
+      '--cover-secondary-top': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-text-align': 'right'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--top']),
+      primaryText: classnames(classes['previewBar--thick'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'row-your-boat',
+    name: 'Row Your Boat',
+    styles: {
+      '--cover-align-items': 'center',
+      '--cover-flex-direction': 'row',
+      '--cover-primary-text-align': 'left',
+      '--cover-secondary-position': 'static',
+      '--cover-secondary-top': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-text-align': 'right'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--centered-row']),
+      primaryText: classnames(classes['previewBar--thick'])
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'the-deep',
+    name: 'The Deep',
+    styles: {
+      '--cover-align-items': 'flex-end',
+      '--cover-flex-direction': 'row',
+      '--cover-primary-text-align': 'left',
+      '--cover-secondary-position': 'static',
+      '--cover-secondary-top': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-text-align': 'right'
+    } as Record<string, string>,
+    previewStyles: {
+      cover: classnames(classes['previewContainer--end']),
+      primaryText: classnames(classes['previewBar--thick'])
     },
     preview: ({ children }: { children: React.ReactNode }) => children
   }
@@ -158,6 +217,7 @@ export const DEFAULT_EDITOR_STATE = {
     pattern: DEFAULT_PATTERN
   },
   cover: {
+    id: 'hashnode',
     width: 1600,
     height: 840,
     aspectRatio: 1.9

@@ -16,6 +16,7 @@ interface TextState {
 }
 
 interface CoverState {
+  id: string;
   width: number;
   height: number;
   aspectRatio: number;
@@ -184,6 +185,7 @@ export const useEditor = create(
           '--cover-display': 'flex',
           '--cover-justify-content': 'center',
           '--cover-align-items': 'center',
+          '--cover-flex-direction': 'column',
 
           /* Cover Primary Text */
           '--cover-primary-text-color': defaultState.primaryText.color,
@@ -251,9 +253,6 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
       const template = TEMPLATES.find((t) => t.id === state.template);
 
       updateCSSVariables({
-        /* Cover Wrapper */
-        '--cover-align-items': 'center',
-
         /* Cover Primary Text */
         '--cover-primary-text-color': state.primaryText.color,
         '--cover-primary-text-font-size': `${state.primaryText.fontSize}px`,

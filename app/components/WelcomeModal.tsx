@@ -12,7 +12,7 @@ export function WelcomeModal() {
   const hasVisitedEditor = fetcher.formData ? fetcher.formData.get('hasVisited') === 'true' : hasVisited;
 
   const handleClose = () => {
-    fetcher.submit({ hasVisited: 'true' }, { method: 'post' });
+    fetcher.submit({ hasVisited: 'true', intent: 'updateHasVisited' }, { method: 'post' });
   };
 
   return (

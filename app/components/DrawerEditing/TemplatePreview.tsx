@@ -16,12 +16,7 @@ export const TemplatePreview = ({
   isSelected: boolean;
 }) => {
   return (
-    <Paper
-      withBorder
-      bg="var(--mantine-primary-color-filled)"
-      radius="md"
-      className={classnames(classes.previewContainer, coverClasses)}
-    >
+    <Paper radius="md" className={classnames(classes.previewContainer, coverClasses)}>
       <div className={classnames(classes.previewBar, classes['previewBar--wide'], previewPrimaryBarClasses)} />
       <div className={classnames(classes.previewBar, classes['previewBar--narrow'], previewSecondaryBarClasses)} />
       {isSelected && (

@@ -9,21 +9,26 @@ import { GitHubStarButton } from '~/components/GitHubStarButton';
 import { ColorSchemeToggle } from '~/components/ThemeToggle';
 import { MobileGithubButton } from '~/components/MobileGithubButton';
 import { EditorArea } from '~/components/Layout/EditorArea';
-import { editorOpenStateCookie, welcomeCookie } from '~/routes/create/cookies';
+import { editorOpenStateCookie, editorSidebarStateCookie, welcomeCookie } from '~/routes/create/cookies';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie');
   const editorCookie = (await editorOpenStateCookie.parse(cookieHeader)) || {};
   const _welcomeCookie = (await welcomeCookie.parse(cookieHeader)) || {};
+  const editorSidebarCookie = (await editorSidebarStateCookie.parse(cookieHeader)) || {};
 
-  return { openItems: editorCookie.openItems, hasVisited: _welcomeCookie.hasVisited };
+  return {
+    openItems: editorCookie.openItems,
+    hasVisited: _welcomeCookie.hasVisited,
+    sidebarState: editorSidebarCookie.sidebarState
+  };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const cookieHeader = request.headers.get('Cookie');
 
-  if (formData.get('openItems')) {
+  if (formData.get('intent') === 'updateOpenItems') {
     const editorCookie = (await editorOpenStateCookie.parse(cookieHeader)) || {};
     editorCookie.openItems = formData.get('openItems');
 
@@ -34,13 +39,24 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  if (formData.get('hasVisited')) {
+  if (formData.get('intent') === 'updateHasVisited') {
     const _welcomeCookie = (await welcomeCookie.parse(cookieHeader)) || {};
     _welcomeCookie.hasVisited = 'true';
 
     return new Response('', {
       headers: {
         'Set-Cookie': await welcomeCookie.serialize(_welcomeCookie)
+      }
+    });
+  }
+
+  if (formData.get('intent') === 'updateSidebarState') {
+    const editorSidebarCookie = (await editorSidebarStateCookie.parse(cookieHeader)) || {};
+    editorSidebarCookie.sidebarState = formData.get('sidebarState');
+
+    return new Response('', {
+      headers: {
+        'Set-Cookie': await editorSidebarStateCookie.serialize(editorSidebarCookie)
       }
     });
   }
@@ -138,9 +154,16 @@ export default function Create() {
           </Flex>
         </Flex>
       </Box>
-      <main>
+      <Box
+        component="main"
+        style={{
+          height: 'calc(100vh - 69px)',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <EditorArea />
-      </main>
+      </Box>
     </>
   );
 }

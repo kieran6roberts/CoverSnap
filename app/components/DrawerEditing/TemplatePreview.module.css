@@ -9,6 +9,13 @@
   gap: 8px;
   overflow: hidden;
   transition: opacity 0.2s ease-in-out;
+  background: white;
+  border: 1px solid var(--mantine-color-default-border);
+}
+
+[data-mantine-color-scheme='dark'] .previewContainer {
+  background: var(--mantine-color-dark-9);
+  border: 2px solid var(--mantine-color-dark-8);
 }
 
 .previewContainer:hover {
@@ -19,6 +26,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.previewContainer--centered-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewContainer--end {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.previewContainer--top {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .previewContainer--left {
@@ -34,21 +59,24 @@
 }
 
 .previewBar {
-  height: 12px;
+  height: 20%;
   border-radius: 4px;
 }
 
 .previewBar--wide {
   width: 60%;
-  background: #ffffff;
-  opacity: 0.8;
+  background: var(--mantine-color-gray-6);
 }
 
 .previewBar--narrow {
   width: 40%;
-  height: 8px;
-  background: #ffffff;
-  opacity: 0.6;
+  height: 8%;
+  background: var(--mantine-color-gray-5);
+}
+
+.previewBar--thick {
+  height: 40%;
+  width: 100%;
 }
 
 .previewBar--bottom-right {
