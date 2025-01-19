@@ -1,6 +1,5 @@
-import domToImage from 'dom-to-image-more';
 import fs from 'file-saver';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 
 export async function saveDomNodeAsImage(
   node: React.RefObject<HTMLElement>['current'],
@@ -12,33 +11,21 @@ export async function saveDomNodeAsImage(
   const TARGET_HEIGHT = cover.height;
 
   try {
-    const originalRect = node.getBoundingClientRect();
-
-    const scaleFactorWidth = TARGET_WIDTH / originalRect.width;
-    const scaleFactorHeight = TARGET_HEIGHT / originalRect.height;
-    const SCALE_FACTOR = Math.min(scaleFactorWidth, scaleFactorHeight);
-
-    const canvas = await html2canvas(node, {
-      onclone: (_doc, el) => {
-        el.style.borderRadius = '0';
-      },
-      scale: SCALE_FACTOR,
-      useCORS: true,
-      logging: false,
-      // Otherwise there is a white looking border on the right side of the image
-      backgroundColor: null
-    });
-
-    const blob = await domToImage.toBlob(canvas, {
-      width: TARGET_WIDTH,
-      height: TARGET_HEIGHT,
-      scale: 1,
+    const blob = await htmlToImage.toBlob(node, {
       quality: 1,
+      // Gives double the expected size otherwise
+      canvasWidth: TARGET_WIDTH / 2,
+      canvasHeight: TARGET_HEIGHT / 2,
       style: {
-        'image-rendering': 'smooth'
+        margin: '0',
+        border: '0',
+        borderRadius: '0'
       }
     });
 
+    if (!blob) {
+      throw new Error('Failed to generate blob');
+    }
     fs.saveAs(blob, 'coverSnap-cover.png');
     return { success: true, blob };
   } catch (_error) {

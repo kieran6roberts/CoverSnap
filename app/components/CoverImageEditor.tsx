@@ -4,21 +4,26 @@ import { Box, Skeleton } from '@mantine/core';
 
 import { EditorHydration, useEditor } from '~/contexts/EditorContext';
 import classes from './CoverImage.module.css';
+import { BACKGROUND_TEMPLATES } from '~/consts/editor';
 
 export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
+    template: { backgroundId },
     primaryText,
     secondaryText,
     background: { image: backgroundImage, pattern: backgroundPattern },
     cover
   } = useEditor();
 
+  const backgroundTemplate = BACKGROUND_TEMPLATES.find((t) => t.id === backgroundId);
+  const { sections: backgroundSections } = backgroundTemplate ?? {};
+
   return (
     <EditorHydration skeleton={<Skeleton radius={12} className={classes.coverSkeleton} animate />}>
       <Box
         ref={imageNodeRef}
         style={{
-          backgroundColor: 'var(--cover-background-color)',
+          backgroundColor: 'var(--cover-background-color-1)',
           display: 'var(--cover-display)',
           justifyContent: 'var(--cover-justify-content)',
           alignItems: 'var(--cover-align-items)',
@@ -35,6 +40,20 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
           margin: '0 auto'
         }}
       >
+        {/* Background sections */}
+        {backgroundSections?.map((section, index) => (
+          <Box
+            key={index}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 1,
+              backgroundColor: `var(--cover-background-color-${index + 1})`,
+              clipPath: section.clipPath
+            }}
+          />
+        ))}
+
         <Box
           style={{
             position: 'absolute',
@@ -63,7 +82,7 @@ export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObje
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundColor: 'var(--cover-background-color)',
+                backgroundColor: 'var(--cover-background-color-1)',
                 opacity: 'var(--cover-color-overlay-opacity)'
               }}
             />

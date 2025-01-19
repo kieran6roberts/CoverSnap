@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
 import { updateCSSVariables } from '~/utils/styles';
-import { DEFAULT_EDITOR_STATE, TEMPLATES } from '~/consts/editor';
+import { BACKGROUND_TEMPLATES, DEFAULT_EDITOR_STATE, LAYOUT_TEMPLATES } from '~/consts/editor';
 
 interface TextState {
   content: string;
@@ -24,7 +24,10 @@ interface CoverState {
 
 interface BackgroundState {
   image: string | null;
-  color: string;
+  colors: {
+    color1: string;
+    color2: string;
+  };
   pattern: {
     url: string | null;
     name: string | null;
@@ -33,8 +36,13 @@ interface BackgroundState {
   };
 }
 
+interface TemplateState {
+  layoutId: string;
+  backgroundId: string;
+}
+
 interface EditorState {
-  template: string;
+  template: TemplateState;
   primaryText: TextState;
   secondaryText: TextState;
   background: BackgroundState;
@@ -47,7 +55,7 @@ type EditorActions = {
   updateSecondaryText: (updates: Partial<TextState>) => void;
   updateBackground: (updates: Partial<BackgroundState>) => void;
   updateCover: (updates: CoverState) => void;
-  updateTemplate: (templateId: string) => void;
+  updateTemplate: (updates: Partial<TemplateState>) => void;
   resetEditor: () => void;
 };
 
@@ -135,14 +143,16 @@ export const useEditor = create(
               opacity: state.background.pattern.opacity
             };
           }
+
+          if (updates.colors) {
+            updateCSSVariables({
+              ...(updates.colors.color1 ? { '--cover-background-color-1': updates.colors.color1 } : {}),
+              ...(updates.colors.color2 ? { '--cover-background-color-2': updates.colors.color2 } : {})
+            });
+          }
+
           return newState;
         });
-
-        if (updates.color) {
-          updateCSSVariables({
-            '--cover-background-color': updates.color
-          });
-        }
       },
 
       updateCover: (updates) => {
@@ -155,32 +165,37 @@ export const useEditor = create(
         updateCSSVariables({ '--cover-aspect-ratio': `${updates.aspectRatio}` });
       },
 
-      updateTemplate: (templateId) => {
-        set((state) => {
-          const template = TEMPLATES.find((t) => t.id === templateId);
-          if (!template) return state;
+      updateTemplate: (updates) => {
+        const state = useEditor.getState();
+        const newState = { ...state };
 
-          updateCSSVariables(template.styles);
+        if (updates.backgroundId) {
+          newState.template.backgroundId = updates.backgroundId;
+        }
 
-          return {
-            ...state,
-            template: templateId
-          };
-        });
+        if (updates.layoutId) {
+          const layoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === updates.layoutId);
+          newState.template.layoutId = updates.layoutId;
+
+          // Update layout CSS variables
+          updateCSSVariables({
+            ...(layoutTemplate?.styles || {})
+          });
+        }
+
+        set(newState);
       },
 
-      resetEditor: () => {
+      resetEditor: async () => {
         const state = useEditor.getState();
         if (state.background.image?.startsWith('blob:')) {
           URL.revokeObjectURL(state.background.image);
         }
 
-        toast.success('Cover reset.', {
-          id: 'reset-cover',
-          icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
-        });
+        const defaultLayoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === DEFAULT_EDITOR_STATE.template.layoutId);
 
         updateCSSVariables({
+          ...defaultLayoutTemplate?.styles,
           /* Cover Wrapper */
           '--cover-display': 'flex',
           '--cover-justify-content': 'center',
@@ -188,27 +203,45 @@ export const useEditor = create(
           '--cover-flex-direction': 'column',
 
           /* Cover Primary Text */
-          '--cover-primary-text-color': defaultState.primaryText.color,
-          '--cover-primary-text-font-size': `${defaultState.primaryText.fontSize}px`,
-          '--cover-primary-text-font': defaultState.primaryText.font,
+          '--cover-primary-text-color': DEFAULT_EDITOR_STATE.primaryText.color,
+          '--cover-primary-text-font-size': `${DEFAULT_EDITOR_STATE.primaryText.fontSize}px`,
+          '--cover-primary-text-font': DEFAULT_EDITOR_STATE.primaryText.font,
           '--cover-primary-text-align': 'center',
 
-          /* Cover Primary Text */
-          '--cover-secondary-text-color': defaultState.secondaryText.color,
-          '--cover-secondary-text-font-size': `${defaultState.secondaryText.fontSize}px`,
-          '--cover-secondary-text-font': defaultState.secondaryText.font,
+          /* Cover Secondary Text */
+          '--cover-secondary-text-color': DEFAULT_EDITOR_STATE.secondaryText.color,
+          '--cover-secondary-text-font-size': `${DEFAULT_EDITOR_STATE.secondaryText.fontSize}px`,
+          '--cover-secondary-text-font': DEFAULT_EDITOR_STATE.secondaryText.font,
           '--cover-secondary-text-align': 'center',
           '--cover-secondary-bottom': 'unset',
           '--cover-secondary-right': 'unset',
           '--cover-secondary-left': 'unset',
           '--cover-secondary-position': 'relative',
 
-          /* Cover Background (overlay) */
+          /* Cover Background */
           '--cover-color-overlay-opacity': '0%',
-          '--cover-background-color': defaultState.background.color
+          '--cover-background-color-1': DEFAULT_EDITOR_STATE.background.colors.color1,
+          '--cover-background-color-2': DEFAULT_EDITOR_STATE.background.colors.color2,
+
+          /* Cover Aspect Ratio */
+          '--cover-aspect-ratio': `${(DEFAULT_EDITOR_STATE.cover.width / DEFAULT_EDITOR_STATE.cover.height).toFixed(1)}`
         });
 
-        set({ _hasHydrated: true, ...defaultState });
+        await indexDBStorage.removeItem('editor-storage');
+
+        set(() => ({
+          _hasHydrated: true,
+          ...defaultState,
+          template: {
+            layoutId: LAYOUT_TEMPLATES[0].id,
+            backgroundId: BACKGROUND_TEMPLATES[0].id
+          }
+        }));
+
+        toast.success('Cover reset.', {
+          id: 'reset-cover',
+          icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />
+        });
       }
     }),
     {
@@ -220,7 +253,7 @@ export const useEditor = create(
         primaryText: state.primaryText,
         secondaryText: state.secondaryText,
         background: {
-          color: state.background.color,
+          colors: state.background.colors,
           pattern: state.background.pattern
         },
         cover: state.cover
@@ -250,7 +283,8 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
   useEffect(() => {
     if (hasHydrated) {
       const state = useEditor.getState();
-      const template = TEMPLATES.find((t) => t.id === state.template);
+      const layoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === state.template.layoutId);
+      // const backgroundTemplate = BACKGROUND_TEMPLATES.find((t) => t.id === state.template.backgroundId);
 
       updateCSSVariables({
         /* Cover Primary Text */
@@ -268,8 +302,8 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
 
           Note: For now the image & bg opacity is not persisted.
          */
-        '--cover-background-color': state.background.color,
-
+        '--cover-background-color-1': state.background.colors.color1,
+        '--cover-background-color-2': state.background.colors.color2,
         /*
         '--cover-align-items
         '--cover-primary-text-align
@@ -279,7 +313,7 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
         '--cover-secondary-left
         '--cover-secondary-text-align
         */
-        ...template?.styles,
+        ...layoutTemplate?.styles,
         /* Cover Aspect Ratio */
         '--cover-aspect-ratio': `${(state.cover.width / state.cover.height).toFixed(1)}`
       });
