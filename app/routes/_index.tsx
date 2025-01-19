@@ -7,9 +7,10 @@ import { Footer } from '~/components/Layout/Footer';
 import { GitHubStarButton } from '~/components/GitHubStarButton';
 
 export const meta: MetaFunction = () => {
-  const title = 'CoverSnap - Build free blog post cover images in seconds.';
+  const title = 'CoverSnap - Get your free blog post cover images.';
   const description =
-    'CoverSnap lets you easily generate good looking cover images for your blog posts, without the design headache.';
+    // eslint-disable-next-line quotes
+    "CoverSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.";
   const image = '/home-dark.png';
   const url = 'https://coversnap.pages.dev';
   const domain = 'coversnap.pages.dev';

@@ -9,20 +9,11 @@ import {
   ScrollArea,
   LoadingOverlay,
   Skeleton,
-  Badge,
   Title,
   ThemeIcon,
   ActionIcon
 } from '@mantine/core';
-import {
-  Text as IconText,
-  MediaImage,
-  AlignBottomBox,
-  UploadSquare,
-  Pentagon,
-  Download,
-  ArrowLeftTag
-} from 'iconoir-react';
+import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag } from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import type { EditorLoaderData } from '~/types/editor';
@@ -61,26 +52,6 @@ const editSections = [
         <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
       </ThemeIcon>
     )
-  },
-  {
-    title: 'Elements',
-    content: () => null,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
-        <Pentagon width={24} height={24} color="var(--mantine-primary-color-8)" />
-      </ThemeIcon>
-    ),
-    isDisabled: true
-  },
-  {
-    title: 'Uploads',
-    content: () => null,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
-        <UploadSquare width={24} height={24} color="var(--mantine-primary-color-8)" />
-      </ThemeIcon>
-    ),
-    isDisabled: true
   }
 ];
 
@@ -136,14 +107,12 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           <Accordion.Control
             aria-label={`Toggle ${item.title.toLowerCase()} editing`}
             icon={item.icon}
-            disabled={!!item.isDisabled}
             className={classes.accordionControl}
           >
             <Flex gap="xs" align="center">
               <Text size="md" fw={500}>
                 {item.title}
               </Text>
-              {item.isDisabled && <Badge size="xs">Coming soon</Badge>}
             </Flex>
           </Accordion.Control>
           <Accordion.Panel px="sm">

@@ -65,7 +65,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export const meta: MetaFunction = () => {
   const title = 'CoverSnap - Create';
   const description =
-    "Use CoverSnap's simple editing tools to donwload free cover images for your blog without the design headache.";
+    "Use CoverSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
   const image = '/editor-dark.png';
   const url = 'https://coversnap.pages.dev/create';
   const domain = 'coversnap.pages.dev';
