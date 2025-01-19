@@ -146,8 +146,8 @@ export const useEditor = create(
 
           if (updates.colors) {
             updateCSSVariables({
-              ...(updates.colors.color1 ? { '--cover-background-color-1': updates.colors.color1 } : {}),
-              ...(updates.colors.color2 ? { '--cover-background-color-2': updates.colors.color2 } : {})
+              ...(updates.colors?.color1 ? { '--cover-background-color-1': updates.colors.color1 } : {}),
+              ...(updates.colors?.color2 ? { '--cover-background-color-2': updates.colors.color2 } : {})
             });
           }
 
@@ -220,8 +220,8 @@ export const useEditor = create(
 
           /* Cover Background */
           '--cover-color-overlay-opacity': '0%',
-          '--cover-background-color-1': DEFAULT_EDITOR_STATE.background.colors.color1,
-          '--cover-background-color-2': DEFAULT_EDITOR_STATE.background.colors.color2,
+          '--cover-background-color-1': DEFAULT_EDITOR_STATE.background.colors?.color1,
+          '--cover-background-color-2': DEFAULT_EDITOR_STATE.background.colors?.color2,
 
           /* Cover Aspect Ratio */
           '--cover-aspect-ratio': `${(DEFAULT_EDITOR_STATE.cover.width / DEFAULT_EDITOR_STATE.cover.height).toFixed(1)}`
