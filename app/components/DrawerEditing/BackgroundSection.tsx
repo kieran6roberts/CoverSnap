@@ -22,9 +22,12 @@ import classes from './BackgroundSection.module.css';
 
 export function DrawerBackgroundSection() {
   const {
-    background: { image: backgroundImage, color: backgroundColor, pattern: backgroundPattern },
+    template,
+    background: { image: backgroundImage, colors: backgroundColors, pattern: backgroundPattern },
     updateBackground
   } = useEditor();
+
+  const hasSplitTemplate = !!template.backgroundId;
 
   const onBackgroundImageChange = (file: File | null) => {
     // Revoke old image if it's a blob
@@ -72,11 +75,21 @@ export function DrawerBackgroundSection() {
       <Fieldset legend="Colors">
         <ColorInput
           format="rgba"
-          label="Background color"
+          label="Background color 1"
           description="Accepts RGBA"
-          value={backgroundColor}
-          onChangeEnd={(value) => updateBackground({ color: value })}
+          value={backgroundColors.color1}
+          onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value } })}
         />
+
+        {hasSplitTemplate ? (
+          <ColorInput
+            format="rgba"
+            label="Background color 2"
+            description="Accepts RGBA"
+            value={backgroundColors.color2}
+            onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value } })}
+          />
+        ) : null}
       </Fieldset>
       <Fieldset legend="Images">
         {backgroundImage ? (

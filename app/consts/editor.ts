@@ -20,7 +20,7 @@ export const fonts = [
   'Courier New'
 ];
 
-export const TEMPLATES = [
+export const LAYOUT_TEMPLATES = [
   {
     id: 'hero',
     name: 'Hero',
@@ -171,6 +171,81 @@ export const TEMPLATES = [
   }
 ];
 
+export const BACKGROUND_TEMPLATES = [
+  {
+    id: 'diagonal',
+    name: 'Diagonal Split',
+    sections: [
+      {
+        clipPath: 'polygon(0 0, 60% 0, 40% 100%, 0 100%)'
+      },
+      {
+        clipPath: 'polygon(60% 0, 100% 0, 100% 100%, 40% 100%)'
+      }
+    ],
+    previewStyles: {
+      section1: classes['previewSection--diagonal-left']
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'diagonal-reverse',
+    name: 'Diagonal Split (Reverse)',
+    sections: [
+      {
+        clipPath: 'polygon(0 0, 40% 0, 60% 100%, 0 100%)'
+      },
+      {
+        clipPath: 'polygon(40% 0, 100% 0, 100% 100%, 60% 100%)'
+      }
+    ],
+    previewStyles: {
+      section1: classes['previewSection--diagonal-left-reverse']
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'solid',
+    name: 'Solid',
+    previewStyles: {
+      cover: classes['previewSection--solid']
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'horizontal',
+    name: 'Horizontal Split',
+    sections: [
+      {
+        clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 50%)'
+      },
+      {
+        clipPath: 'polygon(0 50%, 100% 50%, 100% 100%, 0 100%)'
+      }
+    ],
+    previewStyles: {
+      section1: classes['previewSection--horizontal-top']
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'vertical',
+    name: 'Vertical Split',
+    sections: [
+      {
+        clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)'
+      },
+      {
+        clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)'
+      }
+    ],
+    previewStyles: {
+      section1: classes['previewSection--vertical-left']
+    },
+    preview: ({ children }: { children: React.ReactNode }) => children
+  }
+];
+
 const DEFAULT_PRIMARY_TEXT_CONTENT = 'Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.';
 const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
 const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
@@ -179,8 +254,7 @@ const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
 const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
 const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
 const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
-const DEFAULT_TEMPLATE = TEMPLATES[0].id;
-const DEFAULT_BACKGROUND_COLOR = 'rgba(81, 133, 196, 1)';
+
 const DEFAULT_PATTERN_COLOR = '#ffffff';
 const DEFAULT_PATTERN_OPACITY = 0.1;
 
@@ -198,7 +272,10 @@ export const TEXT_ALIGNMENT_OPTIONS = {
 } as const;
 
 export const DEFAULT_EDITOR_STATE = {
-  template: DEFAULT_TEMPLATE,
+  template: {
+    layoutId: LAYOUT_TEMPLATES[0].id,
+    backgroundId: BACKGROUND_TEMPLATES[0].id
+  },
   primaryText: {
     content: DEFAULT_PRIMARY_TEXT_CONTENT,
     color: DEFAULT_PRIMARY_TEXT_COLOR,
@@ -213,7 +290,10 @@ export const DEFAULT_EDITOR_STATE = {
   },
   background: {
     image: null,
-    color: DEFAULT_BACKGROUND_COLOR,
+    colors: {
+      color1: 'rgba(81, 133, 196, 1)',
+      color2: 'rgba(51, 51, 51, 1)'
+    },
     pattern: DEFAULT_PATTERN
   },
   cover: {

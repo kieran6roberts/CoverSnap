@@ -5,6 +5,7 @@
   --cover-flex-direction: column;
   --cover-align-items: center;
   --cover-aspect-ratio: 1.9;
+
   /* Cover Primary Text */
   --cover-primary-text-color: #ffffff;
   --cover-primary-text-font-size: 28px;
@@ -19,7 +20,8 @@
 
   /* Cover Background (overlay */
   --cover-color-overlay-opacity: 0%;
-  --cover-background-color: #333333;
+  --cover-background-color-1: #333333;
+  --cover-background-color-2: #eae3e3;
 
   /* Cover Secondary Text */
   --cover-secondary-bottom: unset;
