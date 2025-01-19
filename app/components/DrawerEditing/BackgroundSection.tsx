@@ -77,7 +77,7 @@ export function DrawerBackgroundSection() {
           format="rgba"
           label="Background color 1"
           description="Accepts RGBA"
-          value={backgroundColors.color1}
+          value={backgroundColors?.color1 ?? 'rgba(255, 255, 255, 1)'}
           onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value } })}
         />
 
@@ -86,7 +86,7 @@ export function DrawerBackgroundSection() {
             format="rgba"
             label="Background color 2"
             description="Accepts RGBA"
-            value={backgroundColors.color2}
+            value={backgroundColors?.color2 ?? 'rgba(255, 255, 255, 1)'}
             onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value } })}
           />
         ) : null}
