@@ -302,8 +302,8 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
 
           Note: For now the image & bg opacity is not persisted.
          */
-        '--cover-background-color-1': state.background.colors.color1,
-        '--cover-background-color-2': state.background.colors.color2,
+        '--cover-background-color-1': state.background.colors?.color1 ?? 'rgba(81, 133, 196, 1)',
+        '--cover-background-color-2': state.background.colors?.color2 ?? 'rgba(51, 51, 51, 1)',
         /*
         '--cover-align-items
         '--cover-primary-text-align
