@@ -99,18 +99,18 @@ export default function Index() {
           <Stack justify="center" gap="xs">
             <Title
               ta="center"
-              fz={{ base: '2.4rem', sm: '4rem' }}
+              fz={{ base: '2.4rem', sm: '4.5rem' }}
               style={{ lineHeight: '1', zIndex: 1 }}
               fw={700}
               aria-label="CoverSnap"
               maw={{ base: 500, sm: 700 }}
               mx="auto"
             >
-              Publish articles{' '}
+              Publish blog posts{' '}
               <Mark fz="0.95em" style={{ zIndex: -1 }}>
                 faster
               </Mark>{' '}
-              without cover design mental block
+              without cover image design hassle
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
