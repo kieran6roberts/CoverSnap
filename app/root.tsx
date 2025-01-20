@@ -128,9 +128,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        {process.env.NODE_ENV === 'production' ? (
+        {/* {process.env.NODE_ENV === 'production' ? (
           <script data-domain="cvrsnap.com" data-api="/discover/anl/event" src="/discover/anl/script.js" />
-        ) : null}
+        ) : null} */}
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
