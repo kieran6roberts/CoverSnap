@@ -1,9 +1,7 @@
-'use client';
-
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
-import type { EditorLoaderData } from '~/types/editor';
+import type { EditorLoaderData } from '~/features/preview/types/editor';
 
 export function WelcomeModal() {
   const fetcher = useFetcher();

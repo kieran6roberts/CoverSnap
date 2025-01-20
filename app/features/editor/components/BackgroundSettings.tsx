@@ -16,11 +16,11 @@ import {
 import { MediaImageFolder, Check } from 'iconoir-react';
 import * as patterns from 'hero-patterns';
 
-import { useEditor } from '~/contexts/EditorContext';
-import { updateCSSVariables } from '~/utils/styles';
-import classes from './BackgroundSection.module.css';
+import { useEditor } from '~/shared/contexts/EditorContext';
+import { updateCSSVariables } from '~/shared/utils/styles';
+import classes from '~/features/editor/styles/BackgroundSection.module.css';
 
-export function DrawerBackgroundSection() {
+export function BackgroundSettings() {
   const {
     template,
     background: { image: backgroundImage, colors: backgroundColors, pattern: backgroundPattern },

@@ -1,22 +1,20 @@
-'use client';
-
 import { Box, Flex, Button, LoadingOverlay, Select, ActionIcon, Skeleton } from '@mantine/core';
 import type { ButtonProps } from '@mantine/core';
 import { ArrowRightTag, Download, Restart } from 'iconoir-react';
 import { lazy } from 'react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
-import { useEditor } from '~/contexts/EditorContext';
-import classes from './CoverImage.module.css';
-import { DownloadSuccessModal } from './DownloadSuccessModal';
-import { useImageDownload } from '~/hooks/useImageDownload';
-import { CoverImageEditor } from './CoverImageEditor';
-import { IMAGE_DOWNLOAD_SIZES } from '~/consts/editor';
-import { updateCSSVariables } from '~/utils/styles';
-import { EditorLoaderData } from '~/types/editor';
-import { CREATE_ROUTE } from '~/consts';
+import { useEditor } from '~/shared/contexts/EditorContext';
+import classes from '~/features/preview/styles/CoverImage.module.css';
+import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
+import { useImageDownload } from '~/shared/hooks/useImageDownload';
+import { ImagePreview } from '~/features/preview/components/ImagePreview';
+import { IMAGE_DOWNLOAD_SIZES } from '~/features/editor/consts';
+import { updateCSSVariables } from '~/shared/utils/styles';
+import { EditorLoaderData } from '~/features/preview/types/editor';
+import { CREATE_ROUTE } from '~/config/consts';
 
-const Confetti = lazy(() => import('./Confetti'));
+const Confetti = lazy(() => import('~/features/preview/components/Confetti'));
 
 const DownloadButton = ({
   isLoading,
@@ -107,7 +105,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             checkIconPosition="right"
           />
         </Skeleton>
-        <CoverImageEditor imageNodeRef={imageNodeRef} />
+        <ImagePreview imageNodeRef={imageNodeRef} />
         <Flex gap="xs" justify="center" wrap="wrap">
           <Button
             visibleFrom="md"

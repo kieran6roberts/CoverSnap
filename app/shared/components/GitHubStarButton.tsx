@@ -1,10 +1,8 @@
-'use client';
-
 import { Flex, Button, ButtonProps } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import { Github } from 'iconoir-react';
 
-import { GITHUB_URL } from '~/consts';
+import { GITHUB_URL } from '~/config/consts';
 
 export function GitHubStarButton({
   size = 'md',

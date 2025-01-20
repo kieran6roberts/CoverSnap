@@ -1,6 +1,6 @@
 import { CloseButton, ColorInput, Stack, TextInput, NumberInput, Select, Fieldset } from '@mantine/core';
 
-import { useEditor } from '~/contexts/EditorContext';
+import { useEditor } from '~/shared/contexts/EditorContext';
 import {
   PRIMARY_TEXT_LENGTH,
   SECONDARY_TEXT_LENGTH,
@@ -9,9 +9,9 @@ import {
   SECONDARY_TEXT_FONT_SIZE_MIN,
   SECONDARY_TEXT_FONT_SIZE_MAX,
   fonts
-} from '~/consts/editor';
+} from '~/features/editor/consts';
 
-export function DrawerTextSection() {
+export function TextSettings() {
   const {
     primaryText: {
       content: primaryText,

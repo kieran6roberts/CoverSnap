@@ -22,7 +22,7 @@
   opacity: 1;
 }
 
-/* Text templates */
+/* Layout templates */
 
 .previewContainer--centered {
   flex-direction: column;
@@ -94,6 +94,7 @@
 }
 
 /* Background templates */
+
 .previewSection {
   position: absolute;
   inset: 0;

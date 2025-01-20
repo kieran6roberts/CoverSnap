@@ -2,9 +2,9 @@ import type { MetaFunction } from '@remix-run/cloudflare';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
 import { Link } from '@remix-run/react';
 
-import { ColorSchemeToggle } from '~/components/ThemeToggle';
-import { Footer } from '~/components/Layout/Footer';
-import { GitHubStarButton } from '~/components/GitHubStarButton';
+import { ThemeToggle } from '~/shared/components/ThemeToggle';
+import { Footer } from '~/shared/layouts/Footer';
+import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
 
 export const meta: MetaFunction = () => {
   const title = 'CvrSnap - Get your free blog post cover images.';
@@ -90,7 +90,7 @@ export default function Index() {
             <Anchor size="sm" fz={{ base: '1.3rem', sm: '1.5rem' }} fw={500} variant="text" component={Link} to="/">
               CvrSnap
             </Anchor>
-            <ColorSchemeToggle />
+            <ThemeToggle />
           </Flex>
         </Container>
       </Box>

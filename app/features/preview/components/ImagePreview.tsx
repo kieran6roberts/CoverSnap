@@ -1,12 +1,10 @@
-'use client';
-
 import { Box, Skeleton } from '@mantine/core';
 
-import { EditorHydration, useEditor } from '~/contexts/EditorContext';
-import classes from './CoverImage.module.css';
-import { BACKGROUND_TEMPLATES } from '~/consts/editor';
+import { EditorHydration, useEditor } from '~/shared/contexts/EditorContext';
+import classes from '~/features/preview/styles/CoverImage.module.css';
+import { BACKGROUND_TEMPLATES } from '~/features/editor/consts';
 
-export function CoverImageEditor({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
+export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
     template: { backgroundId },
     primaryText,

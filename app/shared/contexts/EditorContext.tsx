@@ -5,8 +5,8 @@ import { get, set, del } from 'idb-keyval';
 import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
-import { updateCSSVariables } from '~/utils/styles';
-import { BACKGROUND_TEMPLATES, DEFAULT_EDITOR_STATE, LAYOUT_TEMPLATES } from '~/consts/editor';
+import { updateCSSVariables } from '~/shared/utils/styles';
+import { BACKGROUND_TEMPLATES, DEFAULT_EDITOR_STATE, LAYOUT_TEMPLATES } from '~/features/editor/consts';
 
 interface TextState {
   content: string;
