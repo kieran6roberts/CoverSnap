@@ -6,9 +6,9 @@ CoverSnap empowers you to create great looking cover images for your blog posts 
 
 ## Screenshots
 
-<img width="1440" alt="CoverSnap landing page screenshot" src="https://github.com/user-attachments/assets/0c64e602-a63e-4f80-828e-b9359c34a33b" />
+![CoverSnap landing page screenshot](https://github.com/user-attachments/assets/22ce296f-187e-4dd1-b51d-4413ba9bb204)
 
-<img width="1440" alt="CoverSnap editor screenshot" src="https://github.com/user-attachments/assets/d92dc658-6cc9-4dd5-b6d5-3f1d3a513b77" />
+![CoverSnap editor page screenshot](https://github.com/user-attachments/assets/03c0492c-c468-48a9-8c0b-7f549abf6bf1)
 
 ## Features
 
