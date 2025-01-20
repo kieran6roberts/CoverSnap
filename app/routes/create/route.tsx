@@ -69,7 +69,7 @@ export const meta: MetaFunction = () => {
   const title = 'CvrSnap - Create';
   const description =
     "Use CvrSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
-  const image = '/editor-dark.png';
+  const image = '/editor-dark.webp';
   const url = 'https://cvrsnap.com/create';
   const domain = 'cvrsnap.com';
 

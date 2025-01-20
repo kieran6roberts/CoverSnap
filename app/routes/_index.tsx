@@ -5,15 +5,18 @@ import { Link } from '@remix-run/react';
 import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { Footer } from '~/shared/layouts/Footer';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
+import editorLight from '~/images/editor-light.webp';
+import editorDark from '~/images/editor-dark.webp';
+import { DOMAIN } from '~/config/consts';
 
 export const meta: MetaFunction = () => {
   const title = 'CvrSnap - Get your free blog post cover images.';
   const description =
     // eslint-disable-next-line quotes
     "CvrSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.";
-  const image = '/home-dark.png';
-  const url = 'https://cvrsnap.com';
-  const domain = 'cvrsnap.com';
+  const image = editorDark;
+  const url = `https://${DOMAIN}`;
+  const domain = DOMAIN;
 
   return [
     { title },
@@ -77,8 +80,8 @@ export const meta: MetaFunction = () => {
 };
 
 const heroImages = {
-  light: '/editor-light.png',
-  dark: '/editor-dark.png'
+  light: editorLight,
+  dark: editorDark
 } as const;
 
 export default function Index() {
