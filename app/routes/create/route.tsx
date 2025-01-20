@@ -17,8 +17,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const _welcomeCookie = (await welcomeCookie.parse(cookieHeader)) || {};
   const editorSidebarCookie = (await editorSidebarStateCookie.parse(cookieHeader)) || {};
 
+  const openItems = editorCookie.openItems ? editorCookie.openItems.split(',') : [];
+
   return {
-    openItems: editorCookie.openItems,
+    openItems,
     hasVisited: _welcomeCookie.hasVisited,
     sidebarState: editorSidebarCookie.sidebarState
   };
@@ -30,7 +32,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (formData.get('intent') === 'updateOpenItems') {
     const editorCookie = (await editorOpenStateCookie.parse(cookieHeader)) || {};
-    editorCookie.openItems = formData.get('openItems');
+    const newItems = formData.get('openItems')?.toString().split(',') || [];
+    const uniqueItems = [...new Set(newItems)].filter((item) => !!item);
+    editorCookie.openItems = uniqueItems.join(',');
 
     return new Response('', {
       headers: {
@@ -65,7 +69,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export const meta: MetaFunction = () => {
   const title = 'CoverSnap - Create';
   const description =
-    "Use CoverSnap's simple editing tools to donwload free cover images for your blog without the design headache.";
+    "Use CoverSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
   const image = '/editor-dark.png';
   const url = 'https://coversnap.pages.dev/create';
   const domain = 'coversnap.pages.dev';

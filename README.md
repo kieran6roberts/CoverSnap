@@ -1,6 +1,6 @@
 # CoverSnap
 
-CoverSnap empowers you to create great looking cover images for your blog posts in seconds using easy to use editing tools. No design skills required and it's completely free to download your image.
+CoverSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
@@ -10,28 +10,33 @@ CoverSnap empowers you to create great looking cover images for your blog posts 
 
 <img width="1440" alt="CoverSnap editor screenshot" src="https://github.com/user-attachments/assets/d92dc658-6cc9-4dd5-b6d5-3f1d3a513b77" />
 
-
 ## Features
 
 - Cover image editing tools
   - Add titles/subtitles and customize their font size/color/font etc.
-  - Drag and resize your text to your needs
-  - Add background images using colors or user uploaded images.
-  - Much more to come...
+  - Pick from text layout presets desgined to make you cover standout
+  - Pick a background template from a selection of presets
+  - Add backgrounds using colors, a user uploaded image, or a pattern.
+  - Mix patterns and colors
+- Editor state is persisted
 - Cover image PNG download
-  - Download set to 1600x840px currently. More options to come.
-- Light/dark mode toggle
+  - Choose from a list common blog post cover sizes
+    - 1600x840px
+    - 1500x750px
+    - 1000x420px
+    - 2500x1250px
+- Light/dark mode theme
 
 ## Tech Stack
 
 - React
-- Remix
+- Remix.run
 - TypeScript
 - MantineUI
 
 ## Contributing
 
-Contributions are currently not open, but will be soon. Stay tuned.
+Contributions are currently not open, but I'm open to it in the future.
 
 ## Development
 
@@ -53,7 +58,7 @@ If you have any feedback, please reach out to me at [@Kieran6Dev](https://x.com/
 
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://kieranroberts.dev)
 
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kieran-roberts-00517b178/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kieran6roberts/)
 
 ## License
 
