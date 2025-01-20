@@ -13,13 +13,15 @@ export async function saveDomNodeAsImage(
   try {
     const blob = await htmlToImage.toBlob(node, {
       quality: 1,
-      // Gives double the expected size otherwise
-      canvasWidth: TARGET_WIDTH / 2,
-      canvasHeight: TARGET_HEIGHT / 2,
+      pixelRatio: 1,
+      canvasWidth: TARGET_WIDTH,
+      canvasHeight: TARGET_HEIGHT,
       style: {
         margin: '0',
         border: '0',
-        borderRadius: '0'
+        borderRadius: '0',
+        transform: 'scale(1)',
+        transformOrigin: 'top left'
       }
     });
 
