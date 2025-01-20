@@ -1,5 +1,3 @@
-'use client';
-
 import { ActionIcon } from '@mantine/core';
 import { Github } from 'iconoir-react';
 

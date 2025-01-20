@@ -4,10 +4,10 @@ import { useRef } from 'react';
 import { Flex } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 
-import { EditorDrawer } from '~/components/DrawerEditing/EditorDrawer';
-import { CoverImage } from '~/components/CoverImage';
+import { Drawer } from '~/features/editor/components/Drawer';
+import { CoverImage } from '~/features/preview/components/CoverImage';
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { EditorLoaderData } from '~/types/editor';
+import { EditorLoaderData } from '~/features/preview/types/editor';
 
 export function EditorArea() {
   const fetcher = useFetcher();
@@ -28,7 +28,7 @@ export function EditorArea() {
         align="center"
         h={{ base: 'auto', md: '100%' }}
       >
-        {showDrawer ? <EditorDrawer imageNodeRef={coverImageNodeRef} /> : null}
+        {showDrawer ? <Drawer imageNodeRef={coverImageNodeRef} /> : null}
         <CoverImage imageNodeRef={coverImageNodeRef} />
       </Flex>
     </>

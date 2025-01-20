@@ -2,9 +2,9 @@
 
 import { ActionIcon, Box, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { SunLight, HalfMoon } from 'iconoir-react';
-import { SITE_THEMES } from '~/consts';
+import { SITE_THEMES } from '~/config/consts';
 
-export function ColorSchemeToggle() {
+export function ThemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme(SITE_THEMES.light, { getInitialValueInEffect: true });
 

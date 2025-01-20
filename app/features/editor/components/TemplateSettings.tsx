@@ -1,10 +1,11 @@
 import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
 
-import { useEditor } from '~/contexts/EditorContext';
-import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/consts/editor';
-import { TemplatePreview } from './TemplatePreview';
-import { BackgroundTemplatePreview } from './BackgroundTemplatePreview';
-export function DrawerTemplateSection() {
+import { useEditor } from '~/shared/contexts/EditorContext';
+import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts';
+import { LayoutTemplatePreview } from '~/features/editor/components/LayoutTemplatePreview';
+import { BackgroundTemplatePreview } from '~/features/editor/components/BackgroundTemplatePreview';
+
+export function TemplateSettings() {
   const { template, updateTemplate } = useEditor();
 
   return (
@@ -68,7 +69,7 @@ export function DrawerTemplateSection() {
                 >
                   {t.preview({
                     children: (
-                      <TemplatePreview
+                      <LayoutTemplatePreview
                         coverClasses={t.previewStyles.cover}
                         previewPrimaryBarClasses={t.previewStyles?.primaryText ?? ''}
                         previewSecondaryBarClasses={t.previewStyles?.secondaryText ?? ''}

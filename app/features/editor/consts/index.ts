@@ -1,6 +1,6 @@
 import classnames from 'classnames';
-import classes from '~/components/DrawerEditing/TemplatePreview.module.css';
 import * as patterns from 'hero-patterns';
+import classes from '~/features/editor/styles/TemplatePreview.module.css';
 
 export const PRIMARY_TEXT_LENGTH = 100;
 export const SECONDARY_TEXT_LENGTH = 80;

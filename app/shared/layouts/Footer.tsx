@@ -1,5 +1,6 @@
 import { Anchor, Box, Container, Stack, Text } from '@mantine/core';
-import { GITHUB_URL } from '~/consts';
+
+import { GITHUB_URL } from '~/config/consts';
 
 export function Footer() {
   return (

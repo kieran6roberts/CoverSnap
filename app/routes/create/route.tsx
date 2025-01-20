@@ -1,14 +1,13 @@
 /* eslint-disable quotes */
 import { Flex, Anchor, Box, Image } from '@mantine/core';
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/cloudflare';
-
 import { Link, MetaFunction } from '@remix-run/react';
 
-import { WelcomeModal } from '~/components/WelcomeModal';
-import { GitHubStarButton } from '~/components/GitHubStarButton';
-import { ColorSchemeToggle } from '~/components/ThemeToggle';
-import { MobileGithubButton } from '~/components/MobileGithubButton';
-import { EditorArea } from '~/components/Layout/EditorArea';
+import { WelcomeModal } from '~/features/preview/components/WelcomeModal';
+import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
+import { ThemeToggle } from '~/shared/components/ThemeToggle';
+import { MobileGithubButton } from '~/shared/components/MobileGitHubButton';
+import { EditorArea } from '~/shared/layouts/EditorArea';
 import { editorOpenStateCookie, editorSidebarStateCookie, welcomeCookie } from '~/routes/create/cookies';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -152,7 +151,7 @@ export default function Create() {
             <Image src="/favicon.ico" width={36} height={36} alt="CvrSnap logo" />
           </Anchor>
           <Flex gap="xs">
-            <ColorSchemeToggle />
+            <ThemeToggle />
             <GitHubStarButton visibleFrom="md" size="sm" variant="light" />
             <MobileGithubButton />
           </Flex>

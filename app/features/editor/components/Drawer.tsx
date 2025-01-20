@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Text,
   Accordion,
@@ -16,19 +14,20 @@ import {
 import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag } from 'iconoir-react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
-import type { EditorLoaderData } from '~/types/editor';
-import classes from './EditorDrawer.module.css';
-import { DrawerTextSection } from '~/components/DrawerEditing/TextSection';
-import { DrawerBackgroundSection } from '~/components/DrawerEditing/BackgroundSection';
-import { DrawerTemplateSection } from '~/components/DrawerEditing/TemplateSection';
-import { useEditor, EditorHydration } from '~/contexts/EditorContext';
-import { useImageDownload } from '~/hooks/useImageDownload';
-import { DownloadSuccessModal } from '~/components/DownloadSuccessModal';
-import { CREATE_ROUTE } from '~/consts';
+import type { EditorLoaderData } from '~/features/preview/types/editor';
+import classes from '~/features/editor/styles/EditorDrawer.module.css';
+import { TextSettings } from '~/features/editor/components/TextSettings';
+import { BackgroundSettings } from '~/features/editor/components/BackgroundSettings';
+import { TemplateSettings } from '~/features/editor/components/TemplateSettings';
+import { useEditor, EditorHydration } from '~/shared/contexts/EditorContext';
+import { useImageDownload } from '~/shared/hooks/useImageDownload';
+import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
+import { CREATE_ROUTE } from '~/config/consts';
+
 const editSections = [
   {
     title: 'Template',
-    content: () => <DrawerTemplateSection />,
+    content: () => <TemplateSettings />,
     icon: (
       <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
         <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />
@@ -37,7 +36,7 @@ const editSections = [
   },
   {
     title: 'Text',
-    content: () => <DrawerTextSection />,
+    content: () => <TextSettings />,
     icon: (
       <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
         <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
@@ -46,7 +45,7 @@ const editSections = [
   },
   {
     title: 'Background',
-    content: () => <DrawerBackgroundSection />,
+    content: () => <BackgroundSettings />,
     icon: (
       <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
         <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
@@ -55,7 +54,7 @@ const editSections = [
   }
 ];
 
-export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
+export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const fetcher = useFetcher();
   const { openItems } = useLoaderData<EditorLoaderData>();
 

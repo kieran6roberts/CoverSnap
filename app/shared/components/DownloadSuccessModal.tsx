@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
-import { GitHubStarButton } from './GitHubStarButton';
-import { GITHUB_URL } from '~/consts';
+import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
+import { GITHUB_URL } from '~/config/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { saveDomNodeAsImage } from '~/utils/domToNode';
+import { saveDomNodeAsImage } from '~/shared/utils/domToNode';
 
 interface UseImageDownloadProps {
   imageRef: React.RefObject<HTMLElement | null>;
