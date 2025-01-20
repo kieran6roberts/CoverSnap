@@ -7,7 +7,7 @@ export function Footer() {
       <Container size="xl">
         <Stack gap="xs" justify="center" align="center">
           <Text ta="center" size="sm">
-            CoverSnap on{' '}
+            CvrSnap on{' '}
             <Anchor href={GITHUB_URL} underline="always" target="_blank">
               GitHub
             </Anchor>

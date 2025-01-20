@@ -67,12 +67,12 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export const meta: MetaFunction = () => {
-  const title = 'CoverSnap - Create';
+  const title = 'CvrSnap - Create';
   const description =
-    "Use CoverSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
+    "Use CvrSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
   const image = '/editor-dark.png';
-  const url = 'https://coversnap.pages.dev/create';
-  const domain = 'coversnap.pages.dev';
+  const url = 'https://cvrsnap.com/create';
+  const domain = 'cvrsnap.com';
 
   return [
     { title },
@@ -148,8 +148,8 @@ export default function Create() {
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor component={Link} to="/" aria-label="CoverSnap logo">
-            <Image src="/favicon.ico" width={36} height={36} alt="CoverSnap logo" />
+          <Anchor component={Link} to="/" aria-label="CvrSnap logo">
+            <Image src="/favicon.ico" width={36} height={36} alt="CvrSnap logo" />
           </Anchor>
           <Flex gap="xs">
             <ColorSchemeToggle />
