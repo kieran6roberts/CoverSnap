@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
-import { GITHUB_URL } from '~/config/consts';
+import { GITHUB_URL, SITE_NAME } from '~/config/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
   useEffect(() => {
@@ -19,7 +19,7 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
   }, []);
 
   return (
-    <Modal opened onClose={close} centered title="Thanks for using CvrSnap!">
+    <Modal opened onClose={close} centered title={`Thanks for using ${SITE_NAME}!`}>
       <Stack>
         <Divider />
         <Text mb="md">

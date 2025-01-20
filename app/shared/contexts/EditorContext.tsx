@@ -6,7 +6,8 @@ import { toast } from 'sonner';
 import { Check } from 'iconoir-react';
 
 import { updateCSSVariables } from '~/shared/utils/styles';
-import { BACKGROUND_TEMPLATES, DEFAULT_EDITOR_STATE, LAYOUT_TEMPLATES } from '~/features/editor/consts';
+import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
+import { DEFAULT_EDITOR_STATE } from '~/features/editor/consts';
 
 interface TextState {
   content: string;

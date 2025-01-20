@@ -4,20 +4,12 @@ import classnames from 'classnames';
 
 import classes from '~/features/editor/styles/TemplatePreview.module.css';
 
-export const BackgroundTemplatePreview = ({
-  coverClasses,
-  previewSection1Classes,
-  isSelected
-}: {
-  coverClasses: string;
-  previewSection1Classes?: string;
-  isSelected: boolean;
-}) => {
+export const BackgroundTemplatePreview = ({ styles, isSelected }: { styles: string; isSelected: boolean }) => {
   return (
-    <Paper radius="md" className={classnames(classes.previewContainer, coverClasses)}>
-      <div className={classnames(classes.previewSection, previewSection1Classes)} />
+    <Paper radius="md" className={classes.previewContainer}>
+      <div className={classnames(classes.previewSection, styles)} />
       {isSelected && (
-        <Center pos="absolute" inset={0} bg="rgba(0, 0, 0, 0.5)">
+        <Center component="span" pos="absolute" inset={0} bg="rgba(0, 0, 0, 0.5)">
           <Center component="span" w={40} h={40} bg="white" style={{ borderRadius: '100%' }}>
             <Check width={32} height={32} color="var(--mantine-color-blue-filled)" />
           </Center>

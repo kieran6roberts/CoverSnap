@@ -19,6 +19,7 @@ import * as patterns from 'hero-patterns';
 import { useEditor } from '~/shared/contexts/EditorContext';
 import { updateCSSVariables } from '~/shared/utils/styles';
 import classes from '~/features/editor/styles/BackgroundSection.module.css';
+import { decimalToPercentage } from '~/features/editor/utils';
 
 export function BackgroundSettings() {
   const {
@@ -129,8 +130,7 @@ export function BackgroundSettings() {
             step={0.1}
             decimalScale={1}
             onChange={(value) => {
-              // Convert decimal to percentage for color-mix
-              const percentage = value ? Number(value) * 100 : 0;
+              const percentage = value ? decimalToPercentage(Number(value)) : 0;
               updateCSSVariables({ '--cover-color-overlay-opacity': `${percentage}%` });
             }}
             label="Overlay opacity"

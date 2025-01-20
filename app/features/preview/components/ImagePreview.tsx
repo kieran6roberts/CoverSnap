@@ -2,7 +2,7 @@ import { Box, Skeleton } from '@mantine/core';
 
 import { EditorHydration, useEditor } from '~/shared/contexts/EditorContext';
 import classes from '~/features/preview/styles/CoverImage.module.css';
-import { BACKGROUND_TEMPLATES } from '~/features/editor/consts';
+import { BACKGROUND_TEMPLATES } from '~/features/editor/consts/templates';
 
 export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const {
