@@ -26,7 +26,7 @@ export async function saveDomNodeAsImage(
     if (!blob) {
       throw new Error('Failed to generate blob');
     }
-    fs.saveAs(blob, 'coverSnap-cover.png');
+    fs.saveAs(blob, 'cvrsnap-cover.png');
     return { success: true, blob };
   } catch (_error) {
     console.error(_error);

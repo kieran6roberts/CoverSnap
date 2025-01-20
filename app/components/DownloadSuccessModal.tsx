@@ -19,7 +19,7 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
   }, []);
 
   return (
-    <Modal opened onClose={close} centered title="Thanks for using CoverSnap!">
+    <Modal opened onClose={close} centered title="Thanks for using CvrSnap!">
       <Stack>
         <Divider />
         <Text mb="md">

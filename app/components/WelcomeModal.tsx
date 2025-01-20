@@ -31,7 +31,7 @@ export function WelcomeModal() {
           size="md"
         >
           <Stack>
-            <Image src="/welcome.png" radius="md" alt="Welcome to CoverSnap cover" width={400} height={200} />
+            <Image src="/welcome.png" radius="md" alt="Welcome to CvrSnap cover" width={400} height={200} />
             <Text>
               Use the editing sidebar to adjust your content, layout, background and more. Several new templates are
               coming soon.

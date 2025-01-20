@@ -1,14 +1,14 @@
-# CoverSnap
+# CvrSnap
 
-CoverSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.
+CvrSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 ## Screenshots
 
-![CoverSnap landing page screenshot](https://github.com/user-attachments/assets/22ce296f-187e-4dd1-b51d-4413ba9bb204)
+![CvrSnap landing page screenshot](https://github.com/user-attachments/assets/22ce296f-187e-4dd1-b51d-4413ba9bb204)
 
-![CoverSnap editor page screenshot](https://github.com/user-attachments/assets/03c0492c-c468-48a9-8c0b-7f549abf6bf1)
+![CvrSnap editor page screenshot](https://github.com/user-attachments/assets/03c0492c-c468-48a9-8c0b-7f549abf6bf1)
 
 ## Features
 

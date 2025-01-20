@@ -7,13 +7,13 @@ import { Footer } from '~/components/Layout/Footer';
 import { GitHubStarButton } from '~/components/GitHubStarButton';
 
 export const meta: MetaFunction = () => {
-  const title = 'CoverSnap - Get your free blog post cover images.';
+  const title = 'CvrSnap - Get your free blog post cover images.';
   const description =
     // eslint-disable-next-line quotes
-    "CoverSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.";
+    "CvrSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.";
   const image = '/home-dark.png';
-  const url = 'https://coversnap.pages.dev';
-  const domain = 'coversnap.pages.dev';
+  const url = 'https://cvrsnap.com';
+  const domain = 'cvrsnap.com';
 
   return [
     { title },
@@ -88,7 +88,7 @@ export default function Index() {
         <Container size="lg">
           <Flex component="nav" justify="space-between" align="center">
             <Anchor size="sm" fz={{ base: '1.3rem', sm: '1.5rem' }} fw={500} variant="text" component={Link} to="/">
-              CoverSnap
+              CvrSnap
             </Anchor>
             <ColorSchemeToggle />
           </Flex>
@@ -102,7 +102,7 @@ export default function Index() {
               fz={{ base: '2.4rem', sm: '4.5rem' }}
               style={{ lineHeight: '1', zIndex: 1 }}
               fw={700}
-              aria-label="CoverSnap"
+              aria-label="CvrSnap"
               maw={{ base: 500, sm: 700 }}
               mx="auto"
             >
@@ -114,8 +114,8 @@ export default function Index() {
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
-              CoverSnap empowers you to create great looking cover images for your blog posts in seconds using easy to
-              use editing tools. No design skills required and it's completely free to download your image.
+              CvrSnap empowers you to create great looking cover images for your blog posts in seconds using easy to use
+              editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
               <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">
@@ -144,14 +144,14 @@ export default function Index() {
             <Image
               lightHidden
               src={heroImages['dark']}
-              alt="CoverSnap create page screenshot"
+              alt="CvrSnap create page screenshot"
               radius="md"
               loading="eager"
             />
             <Image
               darkHidden
               src={heroImages['light']}
-              alt="CoverSnap create page screenshot"
+              alt="CvrSnap create page screenshot"
               radius="md"
               loading="eager"
             />
