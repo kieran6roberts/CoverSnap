@@ -149,7 +149,14 @@ export function EditorDrawer({ imageNodeRef }: { imageNodeRef: React.RefObject<H
           </ActionIcon>
         </Flex>
         <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px)">
-          <Accordion radius="md" multiple value={currentOpenItems} onChange={onAccordionChange} variant="default">
+          <Accordion
+            transitionDuration={0}
+            radius="md"
+            multiple
+            value={currentOpenItems}
+            onChange={onAccordionChange}
+            variant="default"
+          >
             {items}
           </Accordion>
         </ScrollArea>
