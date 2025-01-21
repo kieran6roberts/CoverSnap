@@ -1,3 +1,5 @@
+'use client';
+
 import { useDisclosure } from '@mantine/hooks';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -84,8 +86,7 @@ export const useImageDownload = ({ imageRef, cover }: UseImageDownloadProps) => 
           label: errorLabel,
           onClick: errorAction
         },
-        duration: 15000,
-        position: 'top-center'
+        duration: 15000
       });
 
       if (!canRetry) {

@@ -1,3 +1,4 @@
+'use client';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
