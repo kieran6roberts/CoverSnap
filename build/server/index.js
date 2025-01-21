@@ -172,7 +172,7 @@ function Layout({ children }) {
       /* @__PURE__ */ jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
       /* @__PURE__ */ jsx(Meta, {}),
       /* @__PURE__ */ jsx(Links, {}),
-      isProd ? /* @__PURE__ */ jsx("script", { "data-domain": "cvrsnap.com", "data-api": "/discover/anl/event", src: "/discover/anl/script.js" }) : null,
+      isProd ? /* @__PURE__ */ jsx("script", { defer: true, "data-domain": "cvrsnap.com", "data-api": "/anl/event", src: "/anl/script.js" }) : null,
       /* @__PURE__ */ jsx(ColorSchemeScript, { defaultColorScheme: "dark" })
     ] }),
     /* @__PURE__ */ jsxs("body", { children: [
@@ -191,6 +191,55 @@ const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   Layout,
   default: App,
   links
+}, Symbol.toStringTag, { value: "Module" }));
+const loader$2 = () => {
+  const content = `
+		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>https://cvrsnap.com/</loc>
+	<lastmod>2025-01-21T17:28:53+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://cvrsnap.com/create</loc>
+	<lastmod>2025-01-21T17:28:53+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+</urlset>
+   `;
+  return new Response(content, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/xml",
+      "xml-version": "1.0",
+      encoding: "UTF-8"
+    }
+  });
+};
+const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  loader: loader$2
+}, Symbol.toStringTag, { value: "Module" }));
+const loader$1 = () => {
+  const robotText = `
+     User-agent: Googlebot
+     Disallow: /nogooglebot/
+ 
+     User-agent: *
+     Allow: /
+ 
+     Sitemap: http://www.taco-it.com/sitemap.xml
+     `;
+  return new Response(robotText, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain"
+    }
+  });
+};
+const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  loader: loader$1
 }, Symbol.toStringTag, { value: "Module" }));
 const GITHUB_URL = "https://github.com/kieran6roberts/CoverSnap";
 const DOMAIN = "cvrsnap.com";
@@ -386,7 +435,7 @@ function Index() {
     /* @__PURE__ */ jsx(Footer, {})
   ] });
 }
-const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Index,
   meta: meta$1
@@ -420,9 +469,9 @@ function WelcomeModal() {
 function MobileGithubButton() {
   return /* @__PURE__ */ jsx(ActionIcon, { "aria-label": `${SITE_NAME} GitHub repo`, hiddenFrom: "md", variant: "outline", size: "lg", children: /* @__PURE__ */ jsx(Github, {}) });
 }
-const sidebar = "_sidebar_ekrm8_1";
-const accordionControl = "_accordionControl_ekrm8_13";
-const mobileFooter = "_mobileFooter_ekrm8_36";
+const sidebar = "_sidebar_cxuen_1";
+const accordionControl = "_accordionControl_cxuen_13";
+const mobileFooter = "_mobileFooter_cxuen_36";
 const classes$3 = {
   sidebar,
   accordionControl,
@@ -434,33 +483,29 @@ const updateCSSVariables = (variables) => {
     root.style.setProperty(key, value);
   });
 };
-const previewContainer = "_previewContainer_1amov_12";
-const previewBar = "_previewBar_1amov_74";
-const previewSection = "_previewSection_1amov_109";
+const previewContainer = "_previewContainer_ajiey_12";
+const previewBar = "_previewBar_ajiey_74";
+const previewSection = "_previewSection_ajiey_109";
 const classes$2 = {
   previewContainer,
-  "previewContainer--centered": "_previewContainer--centered_1amov_38",
-  "previewContainer--centered-row": "_previewContainer--centered-row_1amov_44",
-  "previewContainer--end": "_previewContainer--end_1amov_50",
-  "previewContainer--top": "_previewContainer--top_1amov_56",
-  "previewContainer--left": "_previewContainer--left_1amov_62",
-  "previewContainer--right": "_previewContainer--right_1amov_68",
+  "previewContainer--centered": "_previewContainer--centered_ajiey_38",
+  "previewContainer--centered-row": "_previewContainer--centered-row_ajiey_44",
+  "previewContainer--end": "_previewContainer--end_ajiey_50",
+  "previewContainer--top": "_previewContainer--top_ajiey_56",
+  "previewContainer--left": "_previewContainer--left_ajiey_62",
+  "previewContainer--right": "_previewContainer--right_ajiey_68",
   previewBar,
-  "previewBar--wide": "_previewBar--wide_1amov_79",
-  "previewBar--narrow": "_previewBar--narrow_1amov_84",
-  "previewBar--thick": "_previewBar--thick_1amov_90",
-  "previewBar--bottom-right": "_previewBar--bottom-right_1amov_95",
-  "previewBar--bottom-left": "_previewBar--bottom-left_1amov_101",
+  "previewBar--wide": "_previewBar--wide_ajiey_79",
+  "previewBar--narrow": "_previewBar--narrow_ajiey_84",
+  "previewBar--thick": "_previewBar--thick_ajiey_90",
+  "previewBar--bottom-right": "_previewBar--bottom-right_ajiey_95",
+  "previewBar--bottom-left": "_previewBar--bottom-left_ajiey_101",
   previewSection,
-  "previewSection--diagonal-left": "_previewSection--diagonal-left_1amov_115",
-  "previewSection--vertical-left": "_previewSection--vertical-left_1amov_120",
-  "previewSection--solid": "_previewSection--solid_1amov_125",
-  "previewSection--diagonal-right": "_previewSection--diagonal-right_1amov_135",
-  "previewSection--vertical-right": "_previewSection--vertical-right_1amov_136",
-  "previewSection--diagonal-left-reverse": "_previewSection--diagonal-left-reverse_1amov_141",
-  "previewSection--horizontal-top": "_previewSection--horizontal-top_1amov_147",
-  "previewSection--diagonal-right-reverse": "_previewSection--diagonal-right-reverse_1amov_158",
-  "previewSection--horizontal-bottom": "_previewSection--horizontal-bottom_1amov_159"
+  "previewSection--diagonal-left": "_previewSection--diagonal-left_ajiey_115",
+  "previewSection--vertical-left": "_previewSection--vertical-left_ajiey_120",
+  "previewSection--solid": "_previewSection--solid_ajiey_125",
+  "previewSection--diagonal-left-reverse": "_previewSection--diagonal-left-reverse_ajiey_141",
+  "previewSection--horizontal-top": "_previewSection--horizontal-top_ajiey_147"
 };
 const LAYOUT_TEMPLATES = [
   {
@@ -1737,8 +1782,8 @@ function Drawer({ imageNodeRef }) {
     isSuccessModalOpen && /* @__PURE__ */ jsx(DownloadSuccessModal, { close: closeSuccessModal })
   ] });
 }
-const coverWrapper = "_coverWrapper_6ufh5_33";
-const coverSkeleton = "_coverSkeleton_6ufh5_58";
+const coverWrapper = "_coverWrapper_2n55a_33";
+const coverSkeleton = "_coverSkeleton_2n55a_58";
 const classes = {
   coverWrapper,
   coverSkeleton
@@ -2192,14 +2237,14 @@ function Create() {
     )
   ] });
 }
-const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   action,
   default: Create,
   loader,
   meta
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client--f8KK9x-.js", "imports": ["/assets/components-Dm8HcSpN.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-B_9_hCqA.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/index-Ci_gLne_.js", "/assets/MantineThemeProvider-Yo6tZTPa.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-D9X51C5_.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/GitHubStarButton-BN6r5uxL.js", "/assets/MantineThemeProvider-Yo6tZTPa.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-BsT9hbfP.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/GitHubStarButton-BN6r5uxL.js", "/assets/MantineThemeProvider-Yo6tZTPa.js", "/assets/index-Ci_gLne_.js"], "css": ["/assets/route-X_nsH9s_.css"] } }, "url": "/assets/manifest-90f1a554.js", "version": "90f1a554" };
+const serverManifest = { "entry": { "module": "/assets/entry.client-CXkucgRz.js", "imports": ["/assets/components-fHzBU2kK.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-Ik1AVTDL.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/index-B8fQzo4f.js", "/assets/MantineThemeProvider-DUeGmxmj.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/[sitemap.xml]": { "id": "routes/[sitemap.xml]", "parentId": "root", "path": "sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_sitemap.xml_-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/[robots.txt]": { "id": "routes/[robots.txt]", "parentId": "root", "path": "robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_robots.txt_-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-B9lQj0Xd.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/GitHubStarButton-De_rH7gA.js", "/assets/MantineThemeProvider-DUeGmxmj.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-C_Vp8-B3.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/GitHubStarButton-De_rH7gA.js", "/assets/MantineThemeProvider-DUeGmxmj.js", "/assets/index-B8fQzo4f.js"], "css": ["/assets/route-BOoxyA9w.css"] } }, "url": "/assets/manifest-4e8bb775.js", "version": "4e8bb775" };
 const mode = "production";
 const assetsBuildDirectory = "build/client";
 const basename = "/";
@@ -2216,13 +2261,29 @@ const routes = {
     caseSensitive: void 0,
     module: route0
   },
+  "routes/[sitemap.xml]": {
+    id: "routes/[sitemap.xml]",
+    parentId: "root",
+    path: "sitemap.xml",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route1
+  },
+  "routes/[robots.txt]": {
+    id: "routes/[robots.txt]",
+    parentId: "root",
+    path: "robots.txt",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route2
+  },
   "routes/_index": {
     id: "routes/_index",
     parentId: "root",
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route1
+    module: route3
   },
   "routes/create": {
     id: "routes/create",
@@ -2230,7 +2291,7 @@ const routes = {
     path: "create",
     index: void 0,
     caseSensitive: void 0,
-    module: route2
+    module: route4
   }
 };
 export {
