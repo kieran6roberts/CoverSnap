@@ -8,6 +8,8 @@ import { Check } from 'iconoir-react';
 import { updateCSSVariables } from '~/shared/utils/styles';
 import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
 import { DEFAULT_EDITOR_STATE } from '~/features/editor/consts';
+import { CSSVariableKey } from '~/shared/types/styles';
+import { PREVIEW_VARIABLE_NAMES } from '~/config/consts/styles';
 
 interface TextState {
   content: string;
@@ -88,16 +90,16 @@ export const useEditor = create(
           };
         });
 
-        const cssUpdates: Record<string, string> = {};
+        const cssUpdates: Partial<Record<CSSVariableKey, string>> = {};
 
         if (updates.color) {
-          cssUpdates['--cover-primary-text-color'] = updates.color;
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.color] = updates.color;
         }
         if (updates.fontSize) {
-          cssUpdates['--cover-primary-text-font-size'] = `${updates.fontSize}px`;
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.fontSize] = `${updates.fontSize}px`;
         }
         if (updates.font) {
-          cssUpdates['--cover-primary-text-font'] = updates.font;
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.font] = updates.font;
         }
 
         if (Object.keys(cssUpdates).length > 0) {
@@ -112,7 +114,7 @@ export const useEditor = create(
           };
         });
 
-        const cssUpdates: Record<string, string> = {};
+        const cssUpdates: Partial<Record<CSSVariableKey, string>> = {};
 
         if (updates.color) {
           cssUpdates['--cover-secondary-text-color'] = updates.color;
@@ -145,11 +147,17 @@ export const useEditor = create(
             };
           }
 
-          if (updates.colors) {
-            updateCSSVariables({
-              ...(updates.colors?.color1 ? { '--cover-background-color-1': updates.colors.color1 } : {}),
-              ...(updates.colors?.color2 ? { '--cover-background-color-2': updates.colors.color2 } : {})
-            });
+          const cssUpdates: Partial<Record<CSSVariableKey, string>> = {};
+
+          if (updates.colors?.color1) {
+            cssUpdates['--cover-background-color-1'] = updates.colors?.color1;
+          }
+          if (updates.colors?.color2) {
+            cssUpdates['--cover-background-color-2'] = updates.colors?.color2;
+          }
+
+          if (Object.keys(cssUpdates).length > 0) {
+            updateCSSVariables(cssUpdates);
           }
 
           return newState;

@@ -1,5 +1,8 @@
-export const updateCSSVariables = (variables: Record<string, string>) => {
-  Object.entries(variables).forEach(([name, value]) => {
-    document.documentElement.style.setProperty(name, value);
+import { CSSVariableKey } from '~/shared/types/styles';
+
+export const updateCSSVariables = (variables: Partial<Record<CSSVariableKey, string>>) => {
+  const root = document.documentElement;
+  (Object.entries(variables) as [CSSVariableKey, string][]).forEach(([key, value]) => {
+    root.style.setProperty(key, value);
   });
 };
