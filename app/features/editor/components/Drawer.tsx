@@ -14,7 +14,7 @@ import {
   ActionIcon
 } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag } from 'iconoir-react';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from 'react-router';
 
 import type { EditorLoaderData } from '~/features/preview/types/editor';
 import classes from '~/features/editor/styles/EditorDrawer.module.css';

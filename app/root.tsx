@@ -1,7 +1,7 @@
 import '@mantine/core/styles.css';
 import sonnerStyles from 'sonner/dist/styles.css?url';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/cloudflare';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import type { LinksFunction } from 'react-router';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
 

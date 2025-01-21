@@ -9,7 +9,7 @@ import cypressPlugin from 'eslint-plugin-cypress';
 
 export default [
   {
-    ignores: ['node_modules/**', 'build/**', '!**/.server/**', '!**/.client/**']
+    ignores: ['node_modules/**', 'build/**', '.react-router/**']
   },
   {
     languageOptions: {

@@ -1,11 +1,13 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
-import { RemixServer, Outlet, Meta, Links, ScrollRestoration, Scripts, Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { PassThrough } from "node:stream";
+import { createReadableStreamFromReadable } from "@react-router/node";
+import { ServerRouter, useParams, useLoaderData, useActionData, useMatches, Meta, Links, ScrollRestoration, Scripts, Outlet, Link, useFetcher, createCookie } from "react-router";
 import { isbot } from "isbot";
-import { renderToReadableStream } from "react-dom/server";
+import { renderToPipeableStream } from "react-dom/server";
+import { createElement, useEffect, useState, useRef, lazy } from "react";
 import { createTheme, ColorSchemeScript, MantineProvider, useMantineColorScheme, useComputedColorScheme, ActionIcon, Box, Container, Stack, Text, Anchor, Button, Flex, Title, Mark, Image, Modal, Fieldset, TextInput, CloseButton, ColorInput, Select, NumberInput, FileInput, SimpleGrid, UnstyledButton, Paper, Center, Divider, Skeleton, Accordion, ScrollArea, LoadingOverlay, ThemeIcon } from "@mantine/core";
 import { Toaster, toast } from "sonner";
 import { SunLight, HalfMoon, Github, Check, MediaImageFolder, ArrowLeftTag, Download, AlignBottomBox, Text as Text$1, MediaImage, Restart, ArrowRightTag } from "iconoir-react";
-import { useEffect, useState, useRef, lazy } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -14,62 +16,83 @@ import classnames from "classnames";
 import * as patterns from "hero-patterns";
 import fs from "file-saver";
 import * as htmlToImage from "html-to-image";
-import { createCookie } from "@remix-run/cloudflare";
-const ABORT_DELAY = 5e3;
-async function handleRequest(request, responseStatusCode, responseHeaders, remixContext) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), ABORT_DELAY);
-  const body = await renderToReadableStream(
-    /* @__PURE__ */ jsx(RemixServer, { context: remixContext, url: request.url, abortDelay: ABORT_DELAY }),
-    {
-      signal: controller.signal,
-      onError(error) {
-        if (!controller.signal.aborted) {
-          console.error(error);
+const streamTimeout = 5e3;
+function handleRequest(request, responseStatusCode, responseHeaders, routerContext, loadContext) {
+  return new Promise((resolve, reject) => {
+    let shellRendered = false;
+    let userAgent = request.headers.get("user-agent");
+    let readyOption = userAgent && isbot(userAgent) || routerContext.isSpaMode ? "onAllReady" : "onShellReady";
+    const { pipe, abort } = renderToPipeableStream(
+      /* @__PURE__ */ jsx(ServerRouter, { context: routerContext, url: request.url }),
+      {
+        [readyOption]() {
+          shellRendered = true;
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
+          responseHeaders.set("Content-Type", "text/html");
+          resolve(
+            new Response(stream, {
+              headers: responseHeaders,
+              status: responseStatusCode
+            })
+          );
+          pipe(body);
+        },
+        onShellError(error) {
+          reject(error);
+        },
+        onError(error) {
+          responseStatusCode = 500;
+          if (shellRendered) {
+            console.error(error);
+          }
         }
-        responseStatusCode = 500;
       }
-    }
-  );
-  body.allReady.then(() => clearTimeout(timeoutId));
-  if (isbot(request.headers.get("user-agent") || "")) {
-    await body.allReady;
-  }
-  responseHeaders.set("Content-Type", "text/html");
-  return new Response(body, {
-    headers: responseHeaders,
-    status: responseStatusCode
+    );
+    setTimeout(abort, streamTimeout + 1e3);
   });
 }
 const entryServer = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: handleRequest
+  default: handleRequest,
+  streamTimeout
 }, Symbol.toStringTag, { value: "Module" }));
+function withComponentProps(Component) {
+  return function Wrapped() {
+    const props = {
+      params: useParams(),
+      loaderData: useLoaderData(),
+      actionData: useActionData(),
+      matches: useMatches()
+    };
+    return createElement(Component, props);
+  };
+}
 const sonnerStyles = "/assets/styles-CnXtE4LB.css";
 const ToastProvider = () => {
   return /* @__PURE__ */ jsx(Toaster, { closeButton: true, position: "top-center" });
 };
-const links = () => [
-  {
-    rel: "apple-touch-icon",
-    href: "/apple-touch-icon.png",
-    sizes: "180x180"
-  },
-  {
-    rel: "icon",
-    type: "image/png",
-    href: "/favicon-32x32.png",
-    sizes: "32x32"
-  },
-  {
-    rel: "icon",
-    type: "image/png",
-    href: "/favicon-16x16.png",
-    sizes: "16x16"
-  },
-  { rel: "manifest", href: "/site.webmanifest" },
-  { rel: "stylesheet", href: sonnerStyles }
-];
+const links = () => [{
+  rel: "apple-touch-icon",
+  href: "/apple-touch-icon.png",
+  sizes: "180x180"
+}, {
+  rel: "icon",
+  type: "image/png",
+  href: "/favicon-32x32.png",
+  sizes: "32x32"
+}, {
+  rel: "icon",
+  type: "image/png",
+  href: "/favicon-16x16.png",
+  sizes: "16x16"
+}, {
+  rel: "manifest",
+  href: "/site.webmanifest"
+}, {
+  rel: "stylesheet",
+  href: sonnerStyles
+}];
 const theme = createTheme({
   autoContrast: true,
   luminanceThreshold: 0.3,
@@ -164,82 +187,42 @@ const theme = createTheme({
   },
   defaultRadius: "md"
 });
-function Layout({ children }) {
+function Layout({
+  children
+}) {
   const isProd = process.env.NODE_ENV === "production";
-  return /* @__PURE__ */ jsxs("html", { lang: "en", children: [
-    /* @__PURE__ */ jsxs("head", { children: [
-      /* @__PURE__ */ jsx("meta", { charSet: "utf-8" }),
-      /* @__PURE__ */ jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
-      /* @__PURE__ */ jsx(Meta, {}),
-      /* @__PURE__ */ jsx(Links, {}),
-      isProd ? /* @__PURE__ */ jsx("script", { defer: true, "data-domain": "cvrsnap.com", "data-api": "/anl/event", src: "/anl/script.js" }) : null,
-      /* @__PURE__ */ jsx(ColorSchemeScript, { defaultColorScheme: "dark" })
-    ] }),
-    /* @__PURE__ */ jsxs("body", { children: [
-      /* @__PURE__ */ jsx(MantineProvider, { theme, children }),
-      /* @__PURE__ */ jsx(ToastProvider, {}),
-      /* @__PURE__ */ jsx(ScrollRestoration, {}),
-      /* @__PURE__ */ jsx(Scripts, {})
-    ] })
-  ] });
+  return /* @__PURE__ */ jsxs("html", {
+    lang: "en",
+    children: [/* @__PURE__ */ jsxs("head", {
+      children: [/* @__PURE__ */ jsx("meta", {
+        charSet: "utf-8"
+      }), /* @__PURE__ */ jsx("meta", {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1"
+      }), /* @__PURE__ */ jsx(Meta, {}), /* @__PURE__ */ jsx(Links, {}), isProd ? /* @__PURE__ */ jsx("script", {
+        defer: true,
+        "data-domain": "cvrsnap.com",
+        "data-api": "/anl/event",
+        src: "/anl/script.js"
+      }) : null, /* @__PURE__ */ jsx(ColorSchemeScript, {
+        defaultColorScheme: "dark"
+      })]
+    }), /* @__PURE__ */ jsxs("body", {
+      children: [/* @__PURE__ */ jsx(MantineProvider, {
+        theme,
+        children
+      }), /* @__PURE__ */ jsx(ToastProvider, {}), /* @__PURE__ */ jsx(ScrollRestoration, {}), /* @__PURE__ */ jsx(Scripts, {})]
+    })]
+  });
 }
-function App() {
+const root = withComponentProps(function App() {
   return /* @__PURE__ */ jsx(Outlet, {});
-}
+});
 const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   Layout,
-  default: App,
+  default: root,
   links
-}, Symbol.toStringTag, { value: "Module" }));
-const loader$2 = () => {
-  const content = `
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-	<loc>https://cvrsnap.com/</loc>
-	<lastmod>2025-01-21T17:28:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://cvrsnap.com/create</loc>
-	<lastmod>2025-01-21T17:28:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-</urlset>
-   `;
-  return new Response(content, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/xml",
-      "xml-version": "1.0",
-      encoding: "UTF-8"
-    }
-  });
-};
-const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  loader: loader$2
-}, Symbol.toStringTag, { value: "Module" }));
-const loader$1 = () => {
-  const robotText = `
-     User-agent: Googlebot
-     Disallow: /nogooglebot/
- 
-     User-agent: *
-     Allow: /
- 
-     Sitemap: http://www.taco-it.com/sitemap.xml
-     `;
-  return new Response(robotText, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/plain"
-    }
-  });
-};
-const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  loader: loader$1
 }, Symbol.toStringTag, { value: "Module" }));
 const GITHUB_URL = "https://github.com/kieran6roberts/CoverSnap";
 const DOMAIN = "cvrsnap.com";
@@ -291,111 +274,165 @@ const meta$1 = () => {
   const image = editorDark;
   const url = `https://${DOMAIN}`;
   const domain = DOMAIN;
-  return [
-    { title },
-    {
-      name: "description",
-      content: description
-    },
-    {
-      property: "og:title",
-      content: title
-    },
-    {
-      property: "og:description",
-      content: description
-    },
-    {
-      property: "og:image",
-      content: image
-    },
-    {
-      property: "og:url",
-      content: url
-    },
-    {
-      property: "og:type",
-      content: "website"
-    },
-    {
-      property: "og:site_name",
-      content: domain
-    },
-    {
-      property: "twitter:card",
-      content: "summary_large_image"
-    },
-    {
-      property: "twitter:creator",
-      content: "@Kieran6Dev"
-    },
-    {
-      property: "twitter:title",
-      content: title
-    },
-    {
-      property: "twitter:description",
-      content: description
-    },
-    {
-      property: "twitter:image",
-      content: image
-    },
-    {
-      property: "twitter:url",
-      content: url
-    },
-    {
-      property: "twitter:domain",
-      content: domain
-    }
-  ];
+  return [{
+    title
+  }, {
+    name: "description",
+    content: description
+  }, {
+    property: "og:title",
+    content: title
+  }, {
+    property: "og:description",
+    content: description
+  }, {
+    property: "og:image",
+    content: image
+  }, {
+    property: "og:url",
+    content: url
+  }, {
+    property: "og:type",
+    content: "website"
+  }, {
+    property: "og:site_name",
+    content: domain
+  }, {
+    property: "twitter:card",
+    content: "summary_large_image"
+  }, {
+    property: "twitter:creator",
+    content: "@Kieran6Dev"
+  }, {
+    property: "twitter:title",
+    content: title
+  }, {
+    property: "twitter:description",
+    content: description
+  }, {
+    property: "twitter:image",
+    content: image
+  }, {
+    property: "twitter:url",
+    content: url
+  }, {
+    property: "twitter:domain",
+    content: domain
+  }];
 };
 const heroImages = {
   light: editorLight,
   dark: editorDark
 };
-function Index() {
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(Box, { component: "header", w: "100%", py: "md", children: /* @__PURE__ */ jsx(Container, { size: "lg", children: /* @__PURE__ */ jsxs(Flex, { component: "nav", justify: "space-between", align: "center", children: [
-      /* @__PURE__ */ jsx(Anchor, { size: "sm", fz: { base: "1.3rem", sm: "1.5rem" }, fw: 500, variant: "text", component: Link, to: "/", children: SITE_NAME }),
-      /* @__PURE__ */ jsx(ThemeToggle, {})
-    ] }) }) }),
-    /* @__PURE__ */ jsx(Container, { component: "main", size: "xl", children: /* @__PURE__ */ jsxs(Flex, { direction: "column", gap: "xl", align: "center", mt: { base: 80, sm: 100 }, children: [
-      /* @__PURE__ */ jsxs(Stack, { justify: "center", gap: "xs", children: [
-        /* @__PURE__ */ jsxs(
-          Title,
-          {
+const _index = withComponentProps(function Index() {
+  return /* @__PURE__ */ jsxs(Fragment, {
+    children: [/* @__PURE__ */ jsx(Box, {
+      component: "header",
+      w: "100%",
+      py: "md",
+      children: /* @__PURE__ */ jsx(Container, {
+        size: "lg",
+        children: /* @__PURE__ */ jsxs(Flex, {
+          component: "nav",
+          justify: "space-between",
+          align: "center",
+          children: [/* @__PURE__ */ jsx(Anchor, {
+            size: "sm",
+            fz: {
+              base: "1.3rem",
+              sm: "1.5rem"
+            },
+            fw: 500,
+            variant: "text",
+            component: Link,
+            to: "/",
+            children: SITE_NAME
+          }), /* @__PURE__ */ jsx(ThemeToggle, {})]
+        })
+      })
+    }), /* @__PURE__ */ jsx(Container, {
+      component: "main",
+      size: "xl",
+      children: /* @__PURE__ */ jsxs(Flex, {
+        direction: "column",
+        gap: "xl",
+        align: "center",
+        mt: {
+          base: 80,
+          sm: 100
+        },
+        children: [/* @__PURE__ */ jsxs(Stack, {
+          justify: "center",
+          gap: "xs",
+          children: [/* @__PURE__ */ jsxs(Title, {
             ta: "center",
-            fz: { base: "2.4rem", sm: "4.5rem" },
-            style: { lineHeight: "1", zIndex: 1 },
+            fz: {
+              base: "2.4rem",
+              sm: "4.5rem"
+            },
+            style: {
+              lineHeight: "1",
+              zIndex: 1
+            },
             fw: 700,
             "aria-label": SITE_NAME,
-            maw: { base: 500, sm: 700 },
+            maw: {
+              base: 500,
+              sm: 700
+            },
             mx: "auto",
-            children: [
-              "Publish blog posts",
-              " ",
-              /* @__PURE__ */ jsx(Mark, { fz: "0.95em", style: { zIndex: -1 }, children: "faster" }),
-              " ",
-              "without cover image design hassle"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxs(Text, { c: "dimmed", fz: { base: "md", sm: "lg" }, ta: "center", maw: 580, mx: "auto", mt: "md", children: [
-          SITE_NAME,
-          " empowers you to create great looking cover images for your blog posts in seconds using easy to use editing tools. No design skills required and it's completely free to download your image."
-        ] }),
-        /* @__PURE__ */ jsxs(Flex, { direction: { base: "column", sm: "row" }, justify: "center", align: "center", gap: "md", mt: "xl", children: [
-          /* @__PURE__ */ jsx(Button, { hiddenFrom: "sm", component: Link, to: "/create", size: "lg", variant: "filled", children: "Build for free" }),
-          /* @__PURE__ */ jsx(Button, { visibleFrom: "sm", component: Link, to: "/create", size: "lg", variant: "filled", children: "Build for free" }),
-          /* @__PURE__ */ jsx(GitHubStarButton, { hiddenFrom: "sm", size: "md", variant: "outline" }),
-          /* @__PURE__ */ jsx(GitHubStarButton, { visibleFrom: "sm", size: "md", variant: "outline" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxs(
-        Box,
-        {
+            children: ["Publish blog posts", " ", /* @__PURE__ */ jsx(Mark, {
+              fz: "0.95em",
+              style: {
+                zIndex: -1
+              },
+              children: "faster"
+            }), " ", "without cover image design hassle"]
+          }), /* @__PURE__ */ jsxs(Text, {
+            c: "dimmed",
+            fz: {
+              base: "md",
+              sm: "lg"
+            },
+            ta: "center",
+            maw: 580,
+            mx: "auto",
+            mt: "md",
+            children: [SITE_NAME, " empowers you to create great looking cover images for your blog posts in seconds using easy to use editing tools. No design skills required and it's completely free to download your image."]
+          }), /* @__PURE__ */ jsxs(Flex, {
+            direction: {
+              base: "column",
+              sm: "row"
+            },
+            justify: "center",
+            align: "center",
+            gap: "md",
+            mt: "xl",
+            children: [/* @__PURE__ */ jsx(Button, {
+              hiddenFrom: "sm",
+              component: Link,
+              to: "/create",
+              size: "lg",
+              variant: "filled",
+              children: "Build for free"
+            }), /* @__PURE__ */ jsx(Button, {
+              visibleFrom: "sm",
+              component: Link,
+              to: "/create",
+              size: "lg",
+              variant: "filled",
+              children: "Build for free"
+            }), /* @__PURE__ */ jsx(GitHubStarButton, {
+              hiddenFrom: "sm",
+              size: "md",
+              variant: "outline"
+            }), /* @__PURE__ */ jsx(GitHubStarButton, {
+              visibleFrom: "sm",
+              size: "md",
+              variant: "outline"
+            })]
+          })]
+        }), /* @__PURE__ */ jsxs(Box, {
           style: {
             border: "1px solid var(--mantine-color-default-border)",
             borderRadius: "var(--mantine-radius-md)",
@@ -406,38 +443,31 @@ function Index() {
             height: "100%"
           },
           mt: "xl",
-          mb: { base: 50, sm: 100 },
-          children: [
-            /* @__PURE__ */ jsx(
-              Image,
-              {
-                lightHidden: true,
-                src: heroImages["dark"],
-                alt: `${SITE_NAME} create page screenshot`,
-                radius: "md",
-                loading: "eager"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Image,
-              {
-                darkHidden: true,
-                src: heroImages["light"],
-                alt: `${SITE_NAME} create page screenshot`,
-                radius: "md",
-                loading: "eager"
-              }
-            )
-          ]
-        }
-      )
-    ] }) }),
-    /* @__PURE__ */ jsx(Footer, {})
-  ] });
-}
-const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+          mb: {
+            base: 50,
+            sm: 100
+          },
+          children: [/* @__PURE__ */ jsx(Image, {
+            lightHidden: true,
+            src: heroImages["dark"],
+            alt: `${SITE_NAME} create page screenshot`,
+            radius: "md",
+            loading: "eager"
+          }), /* @__PURE__ */ jsx(Image, {
+            darkHidden: true,
+            src: heroImages["light"],
+            alt: `${SITE_NAME} create page screenshot`,
+            radius: "md",
+            loading: "eager"
+          })]
+        })]
+      })
+    }), /* @__PURE__ */ jsx(Footer, {})]
+  });
+});
+const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: Index,
+  default: _index,
   meta: meta$1
 }, Symbol.toStringTag, { value: "Module" }));
 const welcomeImage = "/assets/welcome-DB1tdOSb.webp";
@@ -469,43 +499,47 @@ function WelcomeModal() {
 function MobileGithubButton() {
   return /* @__PURE__ */ jsx(ActionIcon, { "aria-label": `${SITE_NAME} GitHub repo`, hiddenFrom: "md", variant: "outline", size: "lg", children: /* @__PURE__ */ jsx(Github, {}) });
 }
-const sidebar = "_sidebar_cxuen_1";
-const accordionControl = "_accordionControl_cxuen_13";
-const mobileFooter = "_mobileFooter_cxuen_36";
+const sidebar = "_sidebar_ekrm8_1";
+const accordionControl = "_accordionControl_ekrm8_13";
+const mobileFooter = "_mobileFooter_ekrm8_36";
 const classes$3 = {
   sidebar,
   accordionControl,
   mobileFooter
 };
 const updateCSSVariables = (variables) => {
-  const root = document.documentElement;
+  const root2 = document.documentElement;
   Object.entries(variables).forEach(([key, value]) => {
-    root.style.setProperty(key, value);
+    root2.style.setProperty(key, value);
   });
 };
-const previewContainer = "_previewContainer_ajiey_12";
-const previewBar = "_previewBar_ajiey_74";
-const previewSection = "_previewSection_ajiey_109";
+const previewContainer = "_previewContainer_1amov_12";
+const previewBar = "_previewBar_1amov_74";
+const previewSection = "_previewSection_1amov_109";
 const classes$2 = {
   previewContainer,
-  "previewContainer--centered": "_previewContainer--centered_ajiey_38",
-  "previewContainer--centered-row": "_previewContainer--centered-row_ajiey_44",
-  "previewContainer--end": "_previewContainer--end_ajiey_50",
-  "previewContainer--top": "_previewContainer--top_ajiey_56",
-  "previewContainer--left": "_previewContainer--left_ajiey_62",
-  "previewContainer--right": "_previewContainer--right_ajiey_68",
+  "previewContainer--centered": "_previewContainer--centered_1amov_38",
+  "previewContainer--centered-row": "_previewContainer--centered-row_1amov_44",
+  "previewContainer--end": "_previewContainer--end_1amov_50",
+  "previewContainer--top": "_previewContainer--top_1amov_56",
+  "previewContainer--left": "_previewContainer--left_1amov_62",
+  "previewContainer--right": "_previewContainer--right_1amov_68",
   previewBar,
-  "previewBar--wide": "_previewBar--wide_ajiey_79",
-  "previewBar--narrow": "_previewBar--narrow_ajiey_84",
-  "previewBar--thick": "_previewBar--thick_ajiey_90",
-  "previewBar--bottom-right": "_previewBar--bottom-right_ajiey_95",
-  "previewBar--bottom-left": "_previewBar--bottom-left_ajiey_101",
+  "previewBar--wide": "_previewBar--wide_1amov_79",
+  "previewBar--narrow": "_previewBar--narrow_1amov_84",
+  "previewBar--thick": "_previewBar--thick_1amov_90",
+  "previewBar--bottom-right": "_previewBar--bottom-right_1amov_95",
+  "previewBar--bottom-left": "_previewBar--bottom-left_1amov_101",
   previewSection,
-  "previewSection--diagonal-left": "_previewSection--diagonal-left_ajiey_115",
-  "previewSection--vertical-left": "_previewSection--vertical-left_ajiey_120",
-  "previewSection--solid": "_previewSection--solid_ajiey_125",
-  "previewSection--diagonal-left-reverse": "_previewSection--diagonal-left-reverse_ajiey_141",
-  "previewSection--horizontal-top": "_previewSection--horizontal-top_ajiey_147"
+  "previewSection--diagonal-left": "_previewSection--diagonal-left_1amov_115",
+  "previewSection--vertical-left": "_previewSection--vertical-left_1amov_120",
+  "previewSection--solid": "_previewSection--solid_1amov_125",
+  "previewSection--diagonal-right": "_previewSection--diagonal-right_1amov_135",
+  "previewSection--vertical-right": "_previewSection--vertical-right_1amov_136",
+  "previewSection--diagonal-left-reverse": "_previewSection--diagonal-left-reverse_1amov_141",
+  "previewSection--horizontal-top": "_previewSection--horizontal-top_1amov_147",
+  "previewSection--diagonal-right-reverse": "_previewSection--diagonal-right-reverse_1amov_158",
+  "previewSection--horizontal-bottom": "_previewSection--horizontal-bottom_1amov_159"
 };
 const LAYOUT_TEMPLATES = [
   {
@@ -1782,8 +1816,8 @@ function Drawer({ imageNodeRef }) {
     isSuccessModalOpen && /* @__PURE__ */ jsx(DownloadSuccessModal, { close: closeSuccessModal })
   ] });
 }
-const coverWrapper = "_coverWrapper_2n55a_33";
-const coverSkeleton = "_coverSkeleton_2n55a_58";
+const coverWrapper = "_coverWrapper_6ufh5_33";
+const coverSkeleton = "_coverSkeleton_6ufh5_58";
 const classes = {
   coverWrapper,
   coverSkeleton
@@ -2090,7 +2124,9 @@ const welcomeCookie = createCookie("welcome-status", {
   maxAge: 31536e3
   // 1 year in seconds
 });
-async function loader({ request }) {
+async function loader({
+  request
+}) {
   const cookieHeader = request.headers.get("Cookie");
   const editorCookie = await editorOpenStateCookie.parse(cookieHeader) || {};
   const _welcomeCookie = await welcomeCookie.parse(cookieHeader) || {};
@@ -2102,7 +2138,9 @@ async function loader({ request }) {
     sidebarState: editorSidebarCookie.sidebarState
   };
 }
-async function action({ request }) {
+async function action({
+  request
+}) {
   var _a;
   const formData = await request.formData();
   const cookieHeader = request.headers.get("Cookie");
@@ -2142,113 +2180,107 @@ const meta = () => {
   const image = "/editor-dark.webp";
   const url = `https://${DOMAIN}/create`;
   const domain = DOMAIN;
-  return [
-    { title },
-    {
-      name: "description",
-      content: description
-    },
-    {
-      property: "og:title",
-      content: title
-    },
-    {
-      property: "og:description",
-      content: description
-    },
-    {
-      property: "og:image",
-      content: image
-    },
-    {
-      property: "og:url",
-      content: url
-    },
-    {
-      property: "og:type",
-      content: "website"
-    },
-    {
-      property: "og:site_name",
-      content: domain
-    },
-    {
-      property: "twitter:card",
-      content: "summary_large_image"
-    },
-    {
-      property: "twitter:creator",
-      content: "@Kieran6Dev"
-    },
-    {
-      property: "twitter:title",
-      content: title
-    },
-    {
-      property: "twitter:description",
-      content: description
-    },
-    {
-      property: "twitter:image",
-      content: image
-    },
-    {
-      property: "twitter:url",
-      content: url
-    },
-    {
-      property: "twitter:domain",
-      content: domain
-    }
-  ];
+  return [{
+    title
+  }, {
+    name: "description",
+    content: description
+  }, {
+    property: "og:title",
+    content: title
+  }, {
+    property: "og:description",
+    content: description
+  }, {
+    property: "og:image",
+    content: image
+  }, {
+    property: "og:url",
+    content: url
+  }, {
+    property: "og:type",
+    content: "website"
+  }, {
+    property: "og:site_name",
+    content: domain
+  }, {
+    property: "twitter:card",
+    content: "summary_large_image"
+  }, {
+    property: "twitter:creator",
+    content: "@Kieran6Dev"
+  }, {
+    property: "twitter:title",
+    content: title
+  }, {
+    property: "twitter:description",
+    content: description
+  }, {
+    property: "twitter:image",
+    content: image
+  }, {
+    property: "twitter:url",
+    content: url
+  }, {
+    property: "twitter:domain",
+    content: domain
+  }];
 };
-function Create() {
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(WelcomeModal, {}),
-    /* @__PURE__ */ jsx(
-      Box,
-      {
-        component: "header",
-        w: "100%",
-        py: "md",
-        px: "lg",
-        style: { borderBottom: "1px solid var(--mantine-color-default-border)" },
-        children: /* @__PURE__ */ jsxs(Flex, { component: "nav", justify: "space-between", align: "center", children: [
-          /* @__PURE__ */ jsx(Anchor, { component: Link, to: "/", "aria-label": `${SITE_NAME} logo`, children: /* @__PURE__ */ jsx(Image, { src: "/favicon.ico", width: 36, height: 36, alt: `${SITE_NAME} logo` }) }),
-          /* @__PURE__ */ jsxs(Flex, { gap: "xs", children: [
-            /* @__PURE__ */ jsx(ThemeToggle, {}),
-            /* @__PURE__ */ jsx(GitHubStarButton, { visibleFrom: "md", size: "sm", variant: "light" }),
-            /* @__PURE__ */ jsx(MobileGithubButton, {})
-          ] })
-        ] })
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      Box,
-      {
-        component: "main",
-        style: {
-          height: "calc(100vh - 69px)",
-          display: "flex",
-          flexDirection: "column"
-        },
-        children: /* @__PURE__ */ jsx(EditorArea, {})
-      }
-    )
-  ] });
-}
-const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route = withComponentProps(function Create() {
+  return /* @__PURE__ */ jsxs(Fragment, {
+    children: [/* @__PURE__ */ jsx(WelcomeModal, {}), /* @__PURE__ */ jsx(Box, {
+      component: "header",
+      w: "100%",
+      py: "md",
+      px: "lg",
+      style: {
+        borderBottom: "1px solid var(--mantine-color-default-border)"
+      },
+      children: /* @__PURE__ */ jsxs(Flex, {
+        component: "nav",
+        justify: "space-between",
+        align: "center",
+        children: [/* @__PURE__ */ jsx(Anchor, {
+          component: Link,
+          to: "/",
+          "aria-label": `${SITE_NAME} logo`,
+          children: /* @__PURE__ */ jsx(Image, {
+            src: "/favicon.ico",
+            width: 36,
+            height: 36,
+            alt: `${SITE_NAME} logo`
+          })
+        }), /* @__PURE__ */ jsxs(Flex, {
+          gap: "xs",
+          children: [/* @__PURE__ */ jsx(ThemeToggle, {}), /* @__PURE__ */ jsx(GitHubStarButton, {
+            visibleFrom: "md",
+            size: "sm",
+            variant: "light"
+          }), /* @__PURE__ */ jsx(MobileGithubButton, {})]
+        })]
+      })
+    }), /* @__PURE__ */ jsx(Box, {
+      component: "main",
+      style: {
+        height: "calc(100vh - 69px)",
+        display: "flex",
+        flexDirection: "column"
+      },
+      children: /* @__PURE__ */ jsx(EditorArea, {})
+    })]
+  });
+});
+const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   action,
-  default: Create,
+  default: route,
   loader,
   meta
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-CXkucgRz.js", "imports": ["/assets/components-fHzBU2kK.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-Ik1AVTDL.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/index-B8fQzo4f.js", "/assets/MantineThemeProvider-DUeGmxmj.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/[sitemap.xml]": { "id": "routes/[sitemap.xml]", "parentId": "root", "path": "sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_sitemap.xml_-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/[robots.txt]": { "id": "routes/[robots.txt]", "parentId": "root", "path": "robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_robots.txt_-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-B9lQj0Xd.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/GitHubStarButton-De_rH7gA.js", "/assets/MantineThemeProvider-DUeGmxmj.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-C_Vp8-B3.js", "imports": ["/assets/components-fHzBU2kK.js", "/assets/GitHubStarButton-De_rH7gA.js", "/assets/MantineThemeProvider-DUeGmxmj.js", "/assets/index-B8fQzo4f.js"], "css": ["/assets/route-BOoxyA9w.css"] } }, "url": "/assets/manifest-4e8bb775.js", "version": "4e8bb775" };
-const mode = "production";
+const serverManifest = { "entry": { "module": "/assets/entry.client-vTr8iGI7.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-DBe0Axw0.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/MantineThemeProvider-D9umXcey.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-DaVuEIrK.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-3-Eucae3.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/route-X_nsH9s_.css"] } }, "url": "/assets/manifest-cb3fb2b0.js", "version": "cb3fb2b0" };
 const assetsBuildDirectory = "build/client";
 const basename = "/";
-const future = { "v3_fetcherPersist": true, "v3_relativeSplatPath": true, "v3_throwAbortReason": true, "v3_routeConfig": false, "v3_singleFetch": true, "v3_lazyRouteDiscovery": true, "unstable_optimizeDeps": false };
+const future = { "unstable_optimizeDeps": false };
 const isSpaMode = false;
 const publicPath = "/";
 const entry = { module: entryServer };
@@ -2261,29 +2293,13 @@ const routes = {
     caseSensitive: void 0,
     module: route0
   },
-  "routes/[sitemap.xml]": {
-    id: "routes/[sitemap.xml]",
-    parentId: "root",
-    path: "sitemap.xml",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route1
-  },
-  "routes/[robots.txt]": {
-    id: "routes/[robots.txt]",
-    parentId: "root",
-    path: "robots.txt",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route2
-  },
   "routes/_index": {
     id: "routes/_index",
     parentId: "root",
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route3
+    module: route1
   },
   "routes/create": {
     id: "routes/create",
@@ -2291,7 +2307,7 @@ const routes = {
     path: "create",
     index: void 0,
     caseSensitive: void 0,
-    module: route4
+    module: route2
   }
 };
 export {
@@ -2301,7 +2317,6 @@ export {
   entry,
   future,
   isSpaMode,
-  mode,
   publicPath,
   routes
 };

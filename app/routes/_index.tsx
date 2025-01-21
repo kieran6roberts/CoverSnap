@@ -1,6 +1,6 @@
-import type { MetaFunction } from '@remix-run/cloudflare';
+import type { MetaFunction } from 'react-router';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link } from 'react-router';
 
 import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { Footer } from '~/shared/layouts/Footer';

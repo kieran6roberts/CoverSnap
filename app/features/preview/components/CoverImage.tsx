@@ -3,7 +3,7 @@
 import { Box, ActionIcon } from '@mantine/core';
 import { ArrowRightTag } from 'iconoir-react';
 import { lazy } from 'react';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from 'react-router';
 
 import { useEditor } from '~/shared/contexts/EditorContext';
 import classes from '~/features/preview/styles/CoverImage.module.css';

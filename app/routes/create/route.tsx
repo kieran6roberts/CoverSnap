@@ -1,6 +1,6 @@
 import { Flex, Anchor, Box, Image } from '@mantine/core';
-import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/cloudflare';
-import { Link, MetaFunction } from '@remix-run/react';
+import { type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router';
+import { Link, MetaFunction } from 'react-router';
 
 import { WelcomeModal } from '~/features/preview/components/WelcomeModal';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';

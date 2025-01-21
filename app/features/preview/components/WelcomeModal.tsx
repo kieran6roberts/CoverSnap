@@ -1,5 +1,5 @@
 'use client';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from 'react-router';
 import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
 import type { EditorLoaderData } from '~/features/preview/types/editor';

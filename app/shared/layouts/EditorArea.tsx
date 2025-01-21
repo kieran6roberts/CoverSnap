@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mantine/hooks';
 
 import { Drawer } from '~/features/editor/components/Drawer';
 import { CoverImage } from '~/features/preview/components/CoverImage';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from 'react-router';
 import { EditorLoaderData } from '~/features/preview/types/editor';
 
 export function EditorArea() {
