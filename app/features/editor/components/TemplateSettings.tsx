@@ -1,3 +1,5 @@
+'use client';
+
 import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
 
 import { useEditor } from '~/shared/contexts/EditorContext';

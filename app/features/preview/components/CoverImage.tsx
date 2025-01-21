@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, ActionIcon } from '@mantine/core';
 import { ArrowRightTag } from 'iconoir-react';
 import { lazy } from 'react';

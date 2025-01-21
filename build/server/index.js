@@ -1,18 +1,19 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
-import { RemixServer, Outlet, Meta, Links, ScrollRestoration, Scripts, Link, useSearchParams, useFetcher, useLoaderData } from "@remix-run/react";
+import { RemixServer, Outlet, Meta, Links, ScrollRestoration, Scripts, Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
-import { createTheme, ColorSchemeScript, MantineProvider, useMantineColorScheme, useComputedColorScheme, ActionIcon, Box, Container, Stack, Text, Anchor, Button, Flex, Title, Mark, Image, Modal, Divider, TextInput, CloseButton, ColorInput, Select, NumberInput, FileInput, Skeleton, Accordion, ScrollArea, LoadingOverlay } from "@mantine/core";
-import toast$1, { Toaster, toast } from "react-hot-toast";
-import { SunLight, HalfMoon, Github, Check, MediaImageFolder, Download, Text as Text$1, MediaImage, AlignBottomBox, Pentagon, UploadSquare, Restart } from "iconoir-react";
-import { useState, useEffect, useRef } from "react";
+import { createTheme, ColorSchemeScript, MantineProvider, useMantineColorScheme, useComputedColorScheme, ActionIcon, Box, Container, Stack, Text, Anchor, Button, Flex, Title, Mark, Image, Modal, Fieldset, TextInput, CloseButton, ColorInput, Select, NumberInput, FileInput, SimpleGrid, UnstyledButton, Paper, Center, Divider, Skeleton, Accordion, ScrollArea, LoadingOverlay, ThemeIcon } from "@mantine/core";
+import { Toaster, toast } from "sonner";
+import { SunLight, HalfMoon, Github, Check, MediaImageFolder, ArrowLeftTag, Download, AlignBottomBox, Text as Text$1, MediaImage, Restart, ArrowRightTag } from "iconoir-react";
+import { useEffect, useState, useRef, lazy } from "react";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { get, set, del } from "idb-keyval";
-import { useDisclosure } from "@mantine/hooks";
-import domToImage from "dom-to-image-more";
+import classnames from "classnames";
+import * as patterns from "hero-patterns";
 import fs from "file-saver";
-import { Rnd } from "react-rnd";
+import * as htmlToImage from "html-to-image";
 import { createCookie } from "@remix-run/cloudflare";
 const ABORT_DELAY = 5e3;
 async function handleRequest(request, responseStatusCode, responseHeaders, remixContext) {
@@ -44,6 +45,10 @@ const entryServer = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineP
   __proto__: null,
   default: handleRequest
 }, Symbol.toStringTag, { value: "Module" }));
+const sonnerStyles = "/assets/styles-CnXtE4LB.css";
+const ToastProvider = () => {
+  return /* @__PURE__ */ jsx(Toaster, { closeButton: true, position: "top-center" });
+};
 const links = () => [
   {
     rel: "apple-touch-icon",
@@ -62,12 +67,42 @@ const links = () => [
     href: "/favicon-16x16.png",
     sizes: "16x16"
   },
-  { rel: "manifest", href: "/site.webmanifest" }
+  { rel: "manifest", href: "/site.webmanifest" },
+  { rel: "stylesheet", href: sonnerStyles }
 ];
 const theme = createTheme({
   autoContrast: true,
   luminanceThreshold: 0.3,
+  primaryColor: "indigo",
+  primaryShade: 7,
   components: {
+    InputLabel: {
+      defaultProps: {
+        mb: 2
+      }
+    },
+    Fieldset: {
+      defaultProps: {
+        variant: "unstyled"
+      },
+      styles: {
+        root: {
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--mantine-spacing-md)"
+        },
+        legend: {
+          fontSize: "var(--mantine-font-size-lg)",
+          fontWeight: 500,
+          opacity: 0.6
+        }
+      }
+    },
+    InputDescription: {
+      defaultProps: {
+        mb: 8
+      }
+    },
     Text: {
       defaultProps: {
         c: "var(--mantine-color-text)"
@@ -111,29 +146,40 @@ const theme = createTheme({
         scrollbarSize: 10
       }
     },
+    NumberInput: {
+      defaultProps: {
+        size: "md"
+      }
+    },
     FileInput: {
       defaultProps: {
         size: "md"
       }
+    },
+    SegmentedControl: {
+      defaultProps: {
+        radius: "md"
+      }
     }
   },
-  defaultRadius: "md",
-  primaryColor: "teal"
+  defaultRadius: "md"
 });
 function Layout({ children }) {
+  const isProd = process.env.NODE_ENV === "production";
   return /* @__PURE__ */ jsxs("html", { lang: "en", children: [
     /* @__PURE__ */ jsxs("head", { children: [
       /* @__PURE__ */ jsx("meta", { charSet: "utf-8" }),
       /* @__PURE__ */ jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
       /* @__PURE__ */ jsx(Meta, {}),
       /* @__PURE__ */ jsx(Links, {}),
+      isProd ? /* @__PURE__ */ jsx("script", { "data-domain": "cvrsnap.com", "data-api": "/discover/anl/event", src: "/discover/anl/script.js" }) : null,
       /* @__PURE__ */ jsx(ColorSchemeScript, { defaultColorScheme: "dark" })
     ] }),
     /* @__PURE__ */ jsxs("body", { children: [
       /* @__PURE__ */ jsx(MantineProvider, { theme, children }),
+      /* @__PURE__ */ jsx(ToastProvider, {}),
       /* @__PURE__ */ jsx(ScrollRestoration, {}),
-      /* @__PURE__ */ jsx(Scripts, {}),
-      /* @__PURE__ */ jsx(Toaster, {})
+      /* @__PURE__ */ jsx(Scripts, {})
     ] })
   ] });
 }
@@ -146,13 +192,21 @@ const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   default: App,
   links
 }, Symbol.toStringTag, { value: "Module" }));
-function ColorSchemeToggle() {
+const GITHUB_URL = "https://github.com/kieran6roberts/CoverSnap";
+const DOMAIN = "cvrsnap.com";
+const SITE_NAME = "CvrSnap";
+const CREATE_ROUTE = "/create";
+const SITE_THEMES = {
+  light: "light",
+  dark: "dark"
+};
+function ThemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
+  const computedColorScheme = useComputedColorScheme(SITE_THEMES.light, { getInitialValueInEffect: true });
   return /* @__PURE__ */ jsxs(
     ActionIcon,
     {
-      onClick: () => setColorScheme(computedColorScheme === "light" ? "dark" : "light"),
+      onClick: () => setColorScheme(computedColorScheme === SITE_THEMES.light ? SITE_THEMES.dark : SITE_THEMES.light),
       variant: "default",
       size: 36,
       "aria-label": "Toggle color scheme",
@@ -163,58 +217,100 @@ function ColorSchemeToggle() {
     }
   );
 }
-const GITHUB_URL = "https://github.com/kieran6roberts/CoverSnap";
 function Footer() {
   return /* @__PURE__ */ jsx(Box, { component: "footer", w: "100%", py: "xl", children: /* @__PURE__ */ jsx(Container, { size: "xl", children: /* @__PURE__ */ jsx(Stack, { gap: "xs", justify: "center", align: "center", children: /* @__PURE__ */ jsxs(Text, { ta: "center", size: "sm", children: [
-    "CoverSnap on",
+    SITE_NAME,
+    " on",
     " ",
     /* @__PURE__ */ jsx(Anchor, { href: GITHUB_URL, underline: "always", target: "_blank", children: "GitHub" })
   ] }) }) }) });
 }
 function GitHubStarButton({
   size = "md",
-  variant = "filled",
-  visibleFrom,
-  hiddenFrom,
-  isFullWidth = false
+  ...props
 }) {
-  return /* @__PURE__ */ jsx(
-    Button,
-    {
-      component: Link,
-      target: "_blank",
-      to: GITHUB_URL,
-      size,
-      variant,
-      color: "var(--mantine-primary-color-7)",
-      ...isFullWidth ? { fullWidth: true } : {},
-      ...visibleFrom ? { visibleFrom } : {},
-      ...hiddenFrom ? { hiddenFrom } : {},
-      children: /* @__PURE__ */ jsxs(Flex, { align: "center", gap: "xs", children: [
-        /* @__PURE__ */ jsx(Github, { width: 20 }),
-        " GitHub"
-      ] })
-    }
-  );
+  return /* @__PURE__ */ jsx(Button, { component: Link, target: "_blank", to: GITHUB_URL, size, ...props, children: /* @__PURE__ */ jsxs(Flex, { align: "center", gap: "xs", children: [
+    /* @__PURE__ */ jsx(Github, { width: 20 }),
+    " GitHub"
+  ] }) });
 }
+const editorLight = "/assets/editor-light-BHSUlEjz.webp";
+const editorDark = "/assets/editor-dark-DsGe0b8_.webp";
 const meta$1 = () => {
+  const title = `${SITE_NAME} - Get your free blog post cover images.`;
+  const description = `${SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.`;
+  const image = editorDark;
+  const url = `https://${DOMAIN}`;
+  const domain = DOMAIN;
   return [
-    { title: "CoverSnap" },
+    { title },
     {
       name: "description",
-      content: "CoverSnap lets you easily generate good looking cover images for your blog posts."
+      content: description
+    },
+    {
+      property: "og:title",
+      content: title
+    },
+    {
+      property: "og:description",
+      content: description
+    },
+    {
+      property: "og:image",
+      content: image
+    },
+    {
+      property: "og:url",
+      content: url
+    },
+    {
+      property: "og:type",
+      content: "website"
+    },
+    {
+      property: "og:site_name",
+      content: domain
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@Kieran6Dev"
+    },
+    {
+      property: "twitter:title",
+      content: title
+    },
+    {
+      property: "twitter:description",
+      content: description
+    },
+    {
+      property: "twitter:image",
+      content: image
+    },
+    {
+      property: "twitter:url",
+      content: url
+    },
+    {
+      property: "twitter:domain",
+      content: domain
     }
   ];
 };
 const heroImages = {
-  light: "/hero-light.png",
-  dark: "/hero-dark.png"
+  light: editorLight,
+  dark: editorDark
 };
 function Index() {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(Box, { component: "header", w: "100%", py: "md", children: /* @__PURE__ */ jsx(Container, { size: "lg", children: /* @__PURE__ */ jsxs(Flex, { component: "nav", justify: "space-between", align: "center", children: [
-      /* @__PURE__ */ jsx(Anchor, { size: "sm", fz: { base: "1.3rem", sm: "1.5rem" }, fw: 500, variant: "text", component: Link, to: "/", children: "CoverSnap" }),
-      /* @__PURE__ */ jsx(ColorSchemeToggle, {})
+      /* @__PURE__ */ jsx(Anchor, { size: "sm", fz: { base: "1.3rem", sm: "1.5rem" }, fw: 500, variant: "text", component: Link, to: "/", children: SITE_NAME }),
+      /* @__PURE__ */ jsx(ThemeToggle, {})
     ] }) }) }),
     /* @__PURE__ */ jsx(Container, { component: "main", size: "xl", children: /* @__PURE__ */ jsxs(Flex, { direction: "column", gap: "xl", align: "center", mt: { base: 80, sm: 100 }, children: [
       /* @__PURE__ */ jsxs(Stack, { justify: "center", gap: "xs", children: [
@@ -222,27 +318,30 @@ function Index() {
           Title,
           {
             ta: "center",
-            fz: { base: "2.4rem", sm: "4rem" },
+            fz: { base: "2.4rem", sm: "4.5rem" },
             style: { lineHeight: "1", zIndex: 1 },
             fw: 700,
-            "aria-label": "CoverSnap",
+            "aria-label": SITE_NAME,
             maw: { base: 500, sm: 700 },
             mx: "auto",
             children: [
-              "Publish articles",
+              "Publish blog posts",
               " ",
               /* @__PURE__ */ jsx(Mark, { fz: "0.95em", style: { zIndex: -1 }, children: "faster" }),
               " ",
-              "without cover design mental block"
+              "without cover image design hassle"
             ]
           }
         ),
-        /* @__PURE__ */ jsx(Text, { c: "dimmed", fz: { base: "md", sm: "lg" }, ta: "center", maw: 580, mx: "auto", mt: "md", children: "CoverSnap can help you create great looking cover images for your blog posts in seconds using simple editing tools. It's completely free to use! Give it a star on GitHub if you found it useful. Enjoy." }),
+        /* @__PURE__ */ jsxs(Text, { c: "dimmed", fz: { base: "md", sm: "lg" }, ta: "center", maw: 580, mx: "auto", mt: "md", children: [
+          SITE_NAME,
+          " empowers you to create great looking cover images for your blog posts in seconds using easy to use editing tools. No design skills required and it's completely free to download your image."
+        ] }),
         /* @__PURE__ */ jsxs(Flex, { direction: { base: "column", sm: "row" }, justify: "center", align: "center", gap: "md", mt: "xl", children: [
           /* @__PURE__ */ jsx(Button, { hiddenFrom: "sm", component: Link, to: "/create", size: "lg", variant: "filled", children: "Build for free" }),
           /* @__PURE__ */ jsx(Button, { visibleFrom: "sm", component: Link, to: "/create", size: "lg", variant: "filled", children: "Build for free" }),
-          /* @__PURE__ */ jsx(GitHubStarButton, { hiddenFrom: "sm", size: "md", variant: "light" }),
-          /* @__PURE__ */ jsx(GitHubStarButton, { visibleFrom: "sm", size: "md", variant: "light" })
+          /* @__PURE__ */ jsx(GitHubStarButton, { hiddenFrom: "sm", size: "md", variant: "outline" }),
+          /* @__PURE__ */ jsx(GitHubStarButton, { visibleFrom: "sm", size: "md", variant: "outline" })
         ] })
       ] }),
       /* @__PURE__ */ jsxs(
@@ -265,7 +364,7 @@ function Index() {
               {
                 lightHidden: true,
                 src: heroImages["dark"],
-                alt: "CoverSnap create page screenshot",
+                alt: `${SITE_NAME} create page screenshot`,
                 radius: "md",
                 loading: "eager"
               }
@@ -275,7 +374,7 @@ function Index() {
               {
                 darkHidden: true,
                 src: heroImages["light"],
-                alt: "CoverSnap create page screenshot",
+                alt: `${SITE_NAME} create page screenshot`,
                 radius: "md",
                 loading: "eager"
               }
@@ -292,77 +391,416 @@ const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   default: Index,
   meta: meta$1
 }, Symbol.toStringTag, { value: "Module" }));
+const welcomeImage = "/assets/welcome-DB1tdOSb.webp";
 function WelcomeModal() {
-  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
-  useEffect(() => {
-    const hasVisited = localStorage.getItem("hasVisitedEditor");
-    if (!hasVisited) {
-      localStorage.setItem("hasVisitedEditor", "true");
-      setIsWelcomeModalOpen(true);
-    }
-  }, []);
-  return /* @__PURE__ */ jsx(Fragment, { children: isWelcomeModalOpen && /* @__PURE__ */ jsx(
+  const fetcher = useFetcher();
+  const { hasVisited } = useLoaderData();
+  const hasVisitedEditor = fetcher.formData ? fetcher.formData.get("hasVisited") === "true" : hasVisited;
+  const handleClose = () => {
+    fetcher.submit({ hasVisited: "true", intent: "updateHasVisited" }, { method: "post" });
+  };
+  return /* @__PURE__ */ jsx(Fragment, { children: !hasVisitedEditor && /* @__PURE__ */ jsx(
     Modal,
     {
       centered: true,
-      opened: true,
-      onClose: () => setIsWelcomeModalOpen(false),
+      opened: !hasVisitedEditor,
+      onClose: handleClose,
       fz: "xl",
-      title: /* @__PURE__ */ jsx(Text, { size: "xl", fw: 500, children: "Welcome to CoverSnap!" }),
+      title: /* @__PURE__ */ jsx(Text, { size: "xl", fw: 500, children: "Hey 👋" }),
       size: "md",
       children: /* @__PURE__ */ jsxs(Stack, { children: [
-        /* @__PURE__ */ jsx(Text, { children: "Use the editing sidebar to adjust your content and design specifics. You can also drag and resize your text using the cover image preview. More features coming soon!" }),
-        /* @__PURE__ */ jsxs(
-          "video",
-          {
-            controls: true,
-            width: "100%",
-            autoPlay: true,
-            loop: true,
-            muted: true,
-            style: { maxWidth: 400, margin: "0 auto", borderRadius: "12px" },
-            children: [
-              /* @__PURE__ */ jsx("source", { src: "resize-demo.mp4", type: "video/mp4" }),
-              "Your browser does not support the video tag."
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsx(Button, { variant: "filled", fullWidth: true, "data-autofocus": true, onClick: () => setIsWelcomeModalOpen(false), children: "Start editing" })
+        /* @__PURE__ */ jsx(Image, { src: welcomeImage, radius: "md", alt: `Welcome to ${SITE_NAME} cover`, width: 400, height: 200 }),
+        /* @__PURE__ */ jsx(Text, { children: "Use the editing sidebar to adjust your content, layout, background and more. Several new templates are coming soon." }),
+        /* @__PURE__ */ jsx(Text, { children: "When you are done, select your preferred download size and hit the download button. Enjoy!" }),
+        /* @__PURE__ */ jsx(Button, { variant: "filled", fullWidth: true, "data-autofocus": true, onClick: handleClose, children: "Start editing" })
       ] })
     }
   ) });
 }
 function MobileGithubButton() {
-  return /* @__PURE__ */ jsx(ActionIcon, { "aria-label": "CoverSnap GitHub repo", hiddenFrom: "md", variant: "light", size: "lg", children: /* @__PURE__ */ jsx(Github, {}) });
+  return /* @__PURE__ */ jsx(ActionIcon, { "aria-label": `${SITE_NAME} GitHub repo`, hiddenFrom: "md", variant: "outline", size: "lg", children: /* @__PURE__ */ jsx(Github, {}) });
 }
-const sidebar = "_sidebar_187kf_1";
-const accordionControl = "_accordionControl_187kf_13";
-const classes$1 = {
+const sidebar = "_sidebar_ekrm8_1";
+const accordionControl = "_accordionControl_ekrm8_13";
+const mobileFooter = "_mobileFooter_ekrm8_36";
+const classes$3 = {
   sidebar,
-  accordionControl
-};
-const updateCSSVariable = ({ name, value }) => {
-  document.documentElement.style.setProperty(name, value);
+  accordionControl,
+  mobileFooter
 };
 const updateCSSVariables = (variables) => {
-  Object.entries(variables).forEach(([name, value]) => {
-    document.documentElement.style.setProperty(name, value);
+  const root = document.documentElement;
+  Object.entries(variables).forEach(([key, value]) => {
+    root.style.setProperty(key, value);
   });
 };
-const defaultState = {
-  // Text
-  primaryTitle: "10 Tips/Principles For Cleaner React Code.",
-  primaryTitleColor: "rgba(255, 255, 255, 1)",
-  primaryTitleFontSize: 28,
-  primaryTitleFont: "sans-serif (default)",
-  subTitle: "",
-  subTitleColor: "rgba(255, 255, 255, 1)",
-  subTitleFontSize: 20,
-  subTitleFont: "sans-serif (default)",
-  // Background
-  backgroundColor: "rgba(51, 51, 51, 1)",
-  backgroundImage: null
+const previewContainer = "_previewContainer_1amov_12";
+const previewBar = "_previewBar_1amov_74";
+const previewSection = "_previewSection_1amov_109";
+const classes$2 = {
+  previewContainer,
+  "previewContainer--centered": "_previewContainer--centered_1amov_38",
+  "previewContainer--centered-row": "_previewContainer--centered-row_1amov_44",
+  "previewContainer--end": "_previewContainer--end_1amov_50",
+  "previewContainer--top": "_previewContainer--top_1amov_56",
+  "previewContainer--left": "_previewContainer--left_1amov_62",
+  "previewContainer--right": "_previewContainer--right_1amov_68",
+  previewBar,
+  "previewBar--wide": "_previewBar--wide_1amov_79",
+  "previewBar--narrow": "_previewBar--narrow_1amov_84",
+  "previewBar--thick": "_previewBar--thick_1amov_90",
+  "previewBar--bottom-right": "_previewBar--bottom-right_1amov_95",
+  "previewBar--bottom-left": "_previewBar--bottom-left_1amov_101",
+  previewSection,
+  "previewSection--diagonal-left": "_previewSection--diagonal-left_1amov_115",
+  "previewSection--vertical-left": "_previewSection--vertical-left_1amov_120",
+  "previewSection--solid": "_previewSection--solid_1amov_125",
+  "previewSection--diagonal-right": "_previewSection--diagonal-right_1amov_135",
+  "previewSection--vertical-right": "_previewSection--vertical-right_1amov_136",
+  "previewSection--diagonal-left-reverse": "_previewSection--diagonal-left-reverse_1amov_141",
+  "previewSection--horizontal-top": "_previewSection--horizontal-top_1amov_147",
+  "previewSection--diagonal-right-reverse": "_previewSection--diagonal-right-reverse_1amov_158",
+  "previewSection--horizontal-bottom": "_previewSection--horizontal-bottom_1amov_159"
 };
+const LAYOUT_TEMPLATES = [
+  {
+    id: "hero",
+    name: "Hero",
+    styles: {
+      "--cover-flex-direction": "column",
+      "--cover-align-items": "center",
+      "--cover-primary-text-align": "center",
+      "--cover-secondary-position": "relative",
+      "--cover-secondary-text-align": "center",
+      "--cover-secondary-bottom": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-left": "unset"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--centered"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "left-handed",
+    name: "Left Handed",
+    styles: {
+      "--cover-flex-direction": "column",
+      "--cover-align-items": "flex-start",
+      "--cover-primary-text-align": "left",
+      "--cover-secondary-position": "relative",
+      "--cover-secondary-bottom": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-left": "unset",
+      "--cover-secondary-text-align": "left"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--left"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "right-handed",
+    name: "Right Handed",
+    styles: {
+      "--cover-flex-direction": "column",
+      "--cover-align-items": "flex-end",
+      "--cover-primary-text-align": "right",
+      "--cover-secondary-position": "relative",
+      "--cover-secondary-bottom": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-left": "unset",
+      "--cover-secondary-text-align": "right"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--right"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "right-footed",
+    name: "Right Footed",
+    styles: {
+      "--cover-flex-direction": "column",
+      "--cover-align-items": "center",
+      "--cover-primary-text-align": "center",
+      "--cover-secondary-position": "absolute",
+      "--cover-secondary-bottom": "1rem",
+      "--cover-secondary-right": "1rem",
+      "--cover-secondary-left": "unset",
+      "--cover-secondary-text-align": "right"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--centered"]),
+      primaryText: classnames(classes$2["previewBar--wide"]),
+      secondaryText: classnames(classes$2["previewBar--bottom-right"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "left-footed",
+    name: "Left Footed",
+    styles: {
+      "--cover-flex-direction": "column",
+      "--cover-align-items": "center",
+      "--cover-primary-text-align": "center",
+      "--cover-secondary-position": "absolute",
+      "--cover-secondary-bottom": "1rem",
+      "--cover-secondary-left": "1rem",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-text-align": "left"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--centered"]),
+      primaryText: classnames(classes$2["previewBar--wide"]),
+      secondaryText: classnames(classes$2["previewBar--bottom-left"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "high-life",
+    name: "The High Life",
+    styles: {
+      "--cover-align-items": "flex-start",
+      "--cover-flex-direction": "row",
+      "--cover-primary-text-align": "left",
+      "--cover-secondary-position": "static",
+      "--cover-secondary-top": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-text-align": "right"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--top"]),
+      primaryText: classnames(classes$2["previewBar--thick"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "row-your-boat",
+    name: "Row Your Boat",
+    styles: {
+      "--cover-align-items": "center",
+      "--cover-flex-direction": "row",
+      "--cover-primary-text-align": "left",
+      "--cover-secondary-position": "static",
+      "--cover-secondary-top": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-text-align": "right"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--centered-row"]),
+      primaryText: classnames(classes$2["previewBar--thick"])
+    },
+    preview: ({ children }) => children
+  },
+  {
+    id: "the-deep",
+    name: "The Deep",
+    styles: {
+      "--cover-align-items": "flex-end",
+      "--cover-flex-direction": "row",
+      "--cover-primary-text-align": "left",
+      "--cover-secondary-position": "static",
+      "--cover-secondary-top": "unset",
+      "--cover-secondary-right": "unset",
+      "--cover-secondary-text-align": "right"
+    },
+    previewStyles: {
+      cover: classnames(classes$2["previewContainer--end"]),
+      primaryText: classnames(classes$2["previewBar--thick"])
+    },
+    preview: ({ children }) => children
+  }
+];
+const BACKGROUND_TEMPLATES = [
+  {
+    id: "diagonal",
+    name: "Diagonal Split",
+    sections: [
+      {
+        clipPath: "var(--clip-path-diagonal-split-1)"
+      },
+      {
+        clipPath: "var(--clip-path-diagonal-split-2)"
+      }
+    ],
+    previewStyles: classes$2["previewSection--diagonal-left"],
+    preview: ({ children }) => children
+  },
+  {
+    id: "diagonal-reverse",
+    name: "Diagonal Split (Reverse)",
+    sections: [
+      {
+        clipPath: "var(--clip-path-diagonal-split-reverse-1)"
+      },
+      {
+        clipPath: "var(--clip-path-diagonal-split-reverse-2)"
+      }
+    ],
+    previewStyles: classes$2["previewSection--diagonal-left-reverse"],
+    preview: ({ children }) => children
+  },
+  {
+    id: "solid",
+    name: "Solid",
+    previewStyles: classes$2["previewSection--solid"],
+    preview: ({ children }) => children
+  },
+  {
+    id: "horizontal",
+    name: "Horizontal Split",
+    sections: [
+      {
+        clipPath: "var(--clip-path-horizontal-split-1)"
+      },
+      {
+        clipPath: "var(--clip-path-horizontal-split-2)"
+      }
+    ],
+    previewStyles: classes$2["previewSection--horizontal-top"],
+    preview: ({ children }) => children
+  },
+  {
+    id: "vertical",
+    name: "Vertical Split",
+    sections: [
+      {
+        clipPath: "var(--clip-path-vertical-split-1)"
+      },
+      {
+        clipPath: "var(--clip-path-vertical-split-2)"
+      }
+    ],
+    previewStyles: classes$2["previewSection--vertical-left"],
+    preview: ({ children }) => children
+  }
+];
+const PRIMARY_TEXT_LENGTH = 100;
+const SECONDARY_TEXT_LENGTH = 80;
+const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
+const PRIMARY_TEXT_FONT_SIZE_MAX = 60;
+const SECONDARY_TEXT_FONT_SIZE_MIN = 10;
+const SECONDARY_TEXT_FONT_SIZE_MAX = 40;
+const fonts = [
+  "Arial",
+  "Helvetica",
+  "Verdana",
+  "Tahoma",
+  "Trebuchet MS",
+  "Times New Roman",
+  "Georgia",
+  "Courier New"
+];
+const DEFAULT_PRIMARY_TEXT_CONTENT = "Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.";
+const DEFAULT_SECONDARY_TEXT_CONTENT = "by Kieran Roberts";
+const DEFAULT_PRIMARY_TEXT_COLOR = "rgba(255, 255, 255, 1)";
+const DEFAULT_SECONDARY_TEXT_COLOR = "rgba(255, 255, 255, 1)";
+const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
+const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
+const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
+const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
+const DEFAULT_PATTERN_COLOR = "#ffffff";
+const DEFAULT_PATTERN_OPACITY = 0.1;
+const DEFAULT_PATTERN = {
+  url: patterns.architect(DEFAULT_PATTERN_COLOR, DEFAULT_PATTERN_OPACITY),
+  name: "architect",
+  color: DEFAULT_PATTERN_COLOR,
+  opacity: DEFAULT_PATTERN_OPACITY
+};
+const DEFAULT_EDITOR_STATE = {
+  template: {
+    layoutId: LAYOUT_TEMPLATES[0].id,
+    backgroundId: BACKGROUND_TEMPLATES[0].id
+  },
+  primaryText: {
+    content: DEFAULT_PRIMARY_TEXT_CONTENT,
+    color: DEFAULT_PRIMARY_TEXT_COLOR,
+    fontSize: DEFAULT_PRIMARY_TEXT_FONT_SIZE,
+    font: DEFAULT_PRIMARY_TEXT_FONT
+  },
+  secondaryText: {
+    content: DEFAULT_SECONDARY_TEXT_CONTENT,
+    color: DEFAULT_SECONDARY_TEXT_COLOR,
+    fontSize: DEFAULT_SECONDARY_TEXT_FONT_SIZE,
+    font: DEFAULT_SECONDARY_TEXT_FONT
+  },
+  background: {
+    image: null,
+    colors: {
+      color1: "rgba(81, 133, 196, 1)",
+      color2: "rgba(51, 51, 51, 1)"
+    },
+    pattern: DEFAULT_PATTERN
+  },
+  cover: {
+    id: "hashnode",
+    width: 1600,
+    height: 840,
+    aspectRatio: 1.9
+  }
+};
+const IMAGE_DOWNLOAD_SIZES = {
+  hashnode: {
+    label: "(Hashnode)",
+    value: "hashnode:1.9:1600x840",
+    width: 1600,
+    height: 840,
+    aspectRatio: 1.9
+  },
+  devto: {
+    label: "(Dev)",
+    value: "dev:2.38:1000x420",
+    width: 1e3,
+    height: 420,
+    aspectRatio: 2.38
+  },
+  mediumRegular: {
+    label: "(Medium: standard)",
+    value: "medium-regular:2:1500x750",
+    width: 1500,
+    height: 750,
+    aspectRatio: 2
+  },
+  mediumLarge: {
+    label: "(Medium: large)",
+    value: "medium-large:2:2500x1250",
+    width: 2500,
+    height: 1250,
+    aspectRatio: 2
+  }
+};
+const PREVIEW_VARIABLE_NAMES = {
+  primaryText: {
+    color: "--cover-primary-text-color",
+    fontSize: "--cover-primary-text-font-size",
+    font: "--cover-primary-text-font",
+    align: "--cover-primary-text-align"
+  },
+  secondaryText: {
+    color: "--cover-secondary-text-color",
+    fontSize: "--cover-secondary-text-font-size",
+    font: "--cover-secondary-text-font",
+    align: "--cover-secondary-text-align",
+    bottom: "--cover-secondary-bottom",
+    right: "--cover-secondary-right",
+    left: "--cover-secondary-left",
+    position: "--cover-secondary-position"
+  },
+  background: {
+    color1: "--cover-background-color-1",
+    color2: "--cover-background-color-2",
+    opacity: "--cover-color-overlay-opacity"
+  },
+  cover: {
+    aspectRatio: "--cover-aspect-ratio",
+    display: "--cover-display",
+    justifyContent: "--cover-justify-content",
+    alignItems: "--cover-align-items",
+    flexDirection: "--cover-flex-direction"
+  }
+};
+const defaultState = DEFAULT_EDITOR_STATE;
 const indexDBStorage = {
   getItem: async (name) => {
     return await get(name) ?? null;
@@ -380,67 +818,144 @@ const useEditor = create(
       _hasHydrated: false,
       ...defaultState,
       setHasHydrated: (state) => set2({ _hasHydrated: state }),
-      // Text
-      setPrimaryTitle: (title2) => set2({ primaryTitle: title2 }),
-      setPrimaryTitleColor: (color) => {
-        set2({ primaryTitleColor: color });
-        updateCSSVariable({ name: "--cover-title-color", value: color });
-      },
-      setPrimaryTitleFontSize: (size) => {
-        set2({ primaryTitleFontSize: size });
-        updateCSSVariable({ name: "--cover-title-font-size", value: `${size}px` });
-      },
-      setPrimaryTitleFont: (font) => {
-        set2({ primaryTitleFont: font });
-        if (font) {
-          updateCSSVariable({ name: "--cover-title-font", value: font });
+      updatePrimaryText: (updates) => {
+        set2((state) => {
+          return {
+            primaryText: { ...state.primaryText, ...updates }
+          };
+        });
+        const cssUpdates = {};
+        if (updates.color) {
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.color] = updates.color;
+        }
+        if (updates.fontSize) {
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.fontSize] = `${updates.fontSize}px`;
+        }
+        if (updates.font) {
+          cssUpdates[PREVIEW_VARIABLE_NAMES.primaryText.font] = updates.font;
+        }
+        if (Object.keys(cssUpdates).length > 0) {
+          updateCSSVariables(cssUpdates);
         }
       },
-      setSubTitle: (title2) => set2({ subTitle: title2 }),
-      setSubTitleColor: (color) => {
-        set2({ subTitleColor: color });
-        updateCSSVariable({ name: "--cover-subtitle-color", value: color });
-      },
-      setSubTitleFontSize: (size) => {
-        set2({ subTitleFontSize: size });
-        updateCSSVariable({ name: "--cover-subtitle-font-size", value: `${size}px` });
-      },
-      setSubTitleFont: (font) => {
-        set2({ subTitleFont: font });
-        if (font) {
-          updateCSSVariable({ name: "--cover-subtitle-font", value: font });
+      updateSecondaryText: (updates) => {
+        set2((state) => {
+          return {
+            secondaryText: { ...state.secondaryText, ...updates }
+          };
+        });
+        const cssUpdates = {};
+        if (updates.color) {
+          cssUpdates["--cover-secondary-text-color"] = updates.color;
+        }
+        if (updates.fontSize) {
+          cssUpdates["--cover-secondary-text-font-size"] = `${updates.fontSize}px`;
+        }
+        if (updates.font) {
+          cssUpdates["--cover-secondary-text-font"] = updates.font;
+        }
+        if (Object.keys(cssUpdates).length > 0) {
+          updateCSSVariables(cssUpdates);
         }
       },
-      // Background
-      setBackgroundColor: (color) => {
-        set2({ backgroundColor: color });
-        updateCSSVariable({ name: "--cover-background-color", value: color });
+      updateBackground: (updates) => {
+        set2((state) => {
+          var _a, _b, _c, _d;
+          const newState = {
+            background: { ...state.background, ...updates }
+          };
+          if (updates.image) {
+            newState.background.pattern = {
+              name: null,
+              url: null,
+              color: state.background.pattern.color,
+              opacity: state.background.pattern.opacity
+            };
+          }
+          const cssUpdates = {};
+          if ((_a = updates.colors) == null ? void 0 : _a.color1) {
+            cssUpdates["--cover-background-color-1"] = (_b = updates.colors) == null ? void 0 : _b.color1;
+          }
+          if ((_c = updates.colors) == null ? void 0 : _c.color2) {
+            cssUpdates["--cover-background-color-2"] = (_d = updates.colors) == null ? void 0 : _d.color2;
+          }
+          if (Object.keys(cssUpdates).length > 0) {
+            updateCSSVariables(cssUpdates);
+          }
+          return newState;
+        });
       },
-      setBackgroundImage: (url) => {
-        set2({ backgroundImage: url });
+      updateCover: (updates) => {
+        set2((state) => {
+          return {
+            cover: { ...state.cover, ...updates }
+          };
+        });
+        updateCSSVariables({ "--cover-aspect-ratio": `${updates.aspectRatio}` });
       },
-      // Reset
-      resetEditor: () => {
-        var _a;
+      updateTemplate: (updates) => {
         const state = useEditor.getState();
-        if ((_a = state.backgroundImage) == null ? void 0 : _a.startsWith("blob:")) {
-          URL.revokeObjectURL(state.backgroundImage);
+        const newState = { ...state };
+        if (updates.backgroundId) {
+          newState.template.backgroundId = updates.backgroundId;
         }
+        if (updates.layoutId) {
+          const layoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === updates.layoutId);
+          newState.template.layoutId = updates.layoutId;
+          updateCSSVariables({
+            ...(layoutTemplate == null ? void 0 : layoutTemplate.styles) || {}
+          });
+        }
+        set2(newState);
+      },
+      resetEditor: async () => {
+        var _a, _b, _c;
+        const state = useEditor.getState();
+        if ((_a = state.background.image) == null ? void 0 : _a.startsWith("blob:")) {
+          URL.revokeObjectURL(state.background.image);
+        }
+        const defaultLayoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === DEFAULT_EDITOR_STATE.template.layoutId);
+        updateCSSVariables({
+          ...defaultLayoutTemplate == null ? void 0 : defaultLayoutTemplate.styles,
+          /* Cover Wrapper */
+          "--cover-display": "flex",
+          "--cover-justify-content": "center",
+          "--cover-align-items": "center",
+          "--cover-flex-direction": "column",
+          /* Cover Primary Text */
+          "--cover-primary-text-color": DEFAULT_EDITOR_STATE.primaryText.color,
+          "--cover-primary-text-font-size": `${DEFAULT_EDITOR_STATE.primaryText.fontSize}px`,
+          "--cover-primary-text-font": DEFAULT_EDITOR_STATE.primaryText.font,
+          "--cover-primary-text-align": "center",
+          /* Cover Secondary Text */
+          "--cover-secondary-text-color": DEFAULT_EDITOR_STATE.secondaryText.color,
+          "--cover-secondary-text-font-size": `${DEFAULT_EDITOR_STATE.secondaryText.fontSize}px`,
+          "--cover-secondary-text-font": DEFAULT_EDITOR_STATE.secondaryText.font,
+          "--cover-secondary-text-align": "center",
+          "--cover-secondary-bottom": "unset",
+          "--cover-secondary-right": "unset",
+          "--cover-secondary-left": "unset",
+          "--cover-secondary-position": "relative",
+          /* Cover Background */
+          "--cover-color-overlay-opacity": "0%",
+          "--cover-background-color-1": (_b = DEFAULT_EDITOR_STATE.background.colors) == null ? void 0 : _b.color1,
+          "--cover-background-color-2": (_c = DEFAULT_EDITOR_STATE.background.colors) == null ? void 0 : _c.color2,
+          /* Cover Aspect Ratio */
+          "--cover-aspect-ratio": `${(DEFAULT_EDITOR_STATE.cover.width / DEFAULT_EDITOR_STATE.cover.height).toFixed(1)}`
+        });
+        await indexDBStorage.removeItem("editor-storage");
+        set2(() => ({
+          _hasHydrated: true,
+          ...defaultState,
+          template: {
+            layoutId: LAYOUT_TEMPLATES[0].id,
+            backgroundId: BACKGROUND_TEMPLATES[0].id
+          }
+        }));
         toast.success("Cover reset.", {
           id: "reset-cover",
           icon: /* @__PURE__ */ jsx(Check, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" })
         });
-        updateCSSVariables({
-          "--cover-title-color": defaultState.primaryTitleColor,
-          "--cover-subtitle-color": defaultState.subTitleColor,
-          "--cover-title-font-size": `${defaultState.primaryTitleFontSize}px`,
-          "--cover-subtitle-font-size": `${defaultState.subTitleFontSize}px`,
-          "--cover-background-color": defaultState.backgroundColor,
-          "--cover-color-overlay-opacity": "0%",
-          "--cover-title-font": defaultState.primaryTitleFont,
-          "--cover-subtitle-font": defaultState.subTitleFont
-        });
-        set2({ _hasHydrated: true, ...defaultState });
       }
     }),
     {
@@ -448,22 +963,29 @@ const useEditor = create(
       storage: createJSONStorage(() => indexDBStorage),
       // @ts-expect-error fix: todo
       partialize: (state) => ({
-        primaryTitle: state.primaryTitle,
-        primaryTitleColor: state.primaryTitleColor,
-        primaryTitleFontSize: state.primaryTitleFontSize,
-        subTitle: state.subTitle,
-        subTitleColor: state.subTitleColor,
-        subTitleFontSize: state.subTitleFontSize,
-        backgroundColor: state.backgroundColor,
-        primaryTitleFont: state.primaryTitleFont,
-        subTitleFont: state.subTitleFont
+        template: state.template,
+        primaryText: state.primaryText,
+        secondaryText: state.secondaryText,
+        background: {
+          colors: state.background.colors,
+          pattern: state.background.pattern
+        },
+        cover: state.cover
       }),
-      onRehydrateStorage: () => (state) => {
-        if (!state) {
-          toast.error("Failed to hydrate editor state. Please refresh the page.");
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          setTimeout(() => {
+            toast.error("Failed to hydrate editor state. Please refresh the page.", {
+              action: {
+                label: "Refresh",
+                onClick: () => window.location.reload()
+              }
+            });
+          }, 0);
           return;
+        } else if (state) {
+          state.setHasHydrated(true);
         }
-        state.setHasHydrated(true);
       }
     }
   )
@@ -471,16 +993,38 @@ const useEditor = create(
 function EditorHydration({ children, skeleton }) {
   const hasHydrated = useEditor((state) => state._hasHydrated);
   useEffect(() => {
+    var _a, _b;
     if (hasHydrated) {
       const state = useEditor.getState();
+      const layoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === state.template.layoutId);
       updateCSSVariables({
-        "--cover-title-color": state.primaryTitleColor,
-        "--cover-subtitle-color": state.subTitleColor,
-        "--cover-title-font-size": `${state.primaryTitleFontSize}px`,
-        "--cover-subtitle-font-size": `${state.subTitleFontSize}px`,
-        "--cover-background-color": state.backgroundColor,
-        "--cover-title-font": state.primaryTitleFont ?? "sans-serif",
-        "--cover-subtitle-font": state.subTitleFont ?? "sans-serif"
+        /* Cover Primary Text */
+        "--cover-primary-text-color": state.primaryText.color,
+        "--cover-primary-text-font-size": `${state.primaryText.fontSize}px`,
+        "--cover-primary-text-font": state.primaryText.font,
+        /* Cover Secondary Text */
+        "--cover-secondary-text-color": state.secondaryText.color,
+        "--cover-secondary-text-font-size": `${state.secondaryText.fontSize}px`,
+        "--cover-secondary-text-font": state.secondaryText.font,
+        /* 
+                  Cover Background (overlay)
+        
+                  Note: For now the image & bg opacity is not persisted.
+                 */
+        "--cover-background-color-1": ((_a = state.background.colors) == null ? void 0 : _a.color1) ?? "rgba(81, 133, 196, 1)",
+        "--cover-background-color-2": ((_b = state.background.colors) == null ? void 0 : _b.color2) ?? "rgba(51, 51, 51, 1)",
+        /*
+        '--cover-align-items
+        '--cover-primary-text-align
+        '--cover-secondary-position
+        '--cover-secondary-bottom
+        '--cover-secondary-right
+        '--cover-secondary-left
+        '--cover-secondary-text-align
+        */
+        ...layoutTemplate == null ? void 0 : layoutTemplate.styles,
+        /* Cover Aspect Ratio */
+        "--cover-aspect-ratio": `${(state.cover.width / state.cover.height).toFixed(1)}`
       });
     }
   }, [hasHydrated]);
@@ -489,312 +1033,552 @@ function EditorHydration({ children, skeleton }) {
   }
   return /* @__PURE__ */ jsx(Fragment, { children });
 }
-function DrawerTextSection() {
-  const [searchParams] = useSearchParams();
-  const resetKey = searchParams.get("reset");
+function TextSettings() {
   const {
-    primaryTitle,
-    primaryTitleColor,
-    subTitle,
-    subTitleColor,
-    primaryTitleFontSize,
-    setPrimaryTitle,
-    setPrimaryTitleColor,
-    setSubTitle,
-    setPrimaryTitleFontSize,
-    subTitleFontSize,
-    setSubTitleFontSize,
-    setSubTitleColor,
-    primaryTitleFont,
-    setPrimaryTitleFont,
-    subTitleFont,
-    setSubTitleFont
+    primaryText: {
+      content: primaryText,
+      color: primaryTextColor,
+      font: primaryTextFont,
+      fontSize: primaryTextFontSize
+    },
+    secondaryText: {
+      content: secondaryText,
+      color: secondaryTextColor,
+      font: secondaryTextFont,
+      fontSize: secondaryTextFontSize
+    },
+    updatePrimaryText,
+    updateSecondaryText
   } = useEditor();
-  const hasPrimaryTitle = primaryTitle.length > 0;
-  const hasSubTitle = subTitle.length > 0;
-  return /* @__PURE__ */ jsxs(Stack, { children: [
-    /* @__PURE__ */ jsx(Divider, { label: "Primary title", labelPosition: "center" }),
-    /* @__PURE__ */ jsx(
-      TextInput,
-      {
-        value: primaryTitle,
-        onChange: (e) => setPrimaryTitle(e.target.value),
-        placeholder: "HTTP Security Headers and how to...",
-        error: primaryTitle.length > 80 ? "Maximum 80 characters" : null,
-        label: "Title",
-        description: "Maximum 80 characters",
-        rightSection: hasPrimaryTitle && /* @__PURE__ */ jsx(CloseButton, { size: "sm", variant: "subtle", onClick: () => setPrimaryTitle("") }),
-        maxLength: 80
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      ColorInput,
-      {
-        format: "rgba",
-        description: "Accepts RGBA",
-        value: primaryTitleColor,
-        label: "Color",
-        onChange: setPrimaryTitleColor
-      },
-      `title-color-${resetKey}`
-    ),
-    /* @__PURE__ */ jsx(
-      Select,
-      {
-        "aria-label": "Title font",
-        label: "Font",
-        placeholder: "Pick value",
-        data: [
-          "sans-serif (default)",
-          "serif (default)",
-          "monospace (default)",
-          "Arial",
-          "Helvetica",
-          "Verdana",
-          "Tahoma",
-          "Trebuchet MS",
-          "Times New Roman",
-          "Georgia",
-          "Courier New",
-          "system-ui"
-        ],
-        value: primaryTitleFont,
-        onChange: (value) => setPrimaryTitleFont(value),
-        allowDeselect: false,
-        checkIconPosition: "right"
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      NumberInput,
-      {
-        max: 80,
-        min: 10,
-        value: primaryTitleFontSize,
-        onChange: (value) => setPrimaryTitleFontSize(value),
-        label: "Font size (px)",
-        size: "md",
-        suffix: "px",
-        allowDecimal: false
-      },
-      `title-size-${resetKey}`
-    ),
-    /* @__PURE__ */ jsx(Divider, { label: "Subtitle", mt: 40, labelPosition: "center" }),
-    /* @__PURE__ */ jsx(
-      TextInput,
-      {
-        value: subTitle,
-        onChange: (e) => setSubTitle(e.target.value),
-        placeholder: "Let's dive into the world of...",
-        label: "Subtitle",
-        description: "Maximum 80 characters",
-        error: subTitle.length > 80 ? "Maximum 80 characters" : null,
-        rightSection: hasSubTitle && /* @__PURE__ */ jsx(CloseButton, { size: "sm", variant: "subtle", onClick: () => setSubTitle("") }),
-        maxLength: 80
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      ColorInput,
-      {
-        format: "rgba",
-        label: "Color",
-        description: "Accepts RGBA",
-        value: subTitleColor,
-        onChange: setSubTitleColor
-      },
-      `subtitle-color-${resetKey}`
-    ),
-    /* @__PURE__ */ jsx(
-      Select,
-      {
-        "aria-label": "Subtitle font",
-        label: "Font",
-        placeholder: "Pick value",
-        data: [
-          "sans-serif (default)",
-          "serif (default)",
-          "monospace (default)",
-          "Arial",
-          "Helvetica",
-          "Verdana",
-          "Tahoma",
-          "Trebuchet MS",
-          "Times New Roman",
-          "Georgia",
-          "Courier New",
-          "system-ui"
-        ],
-        value: subTitleFont,
-        onChange: (value) => setSubTitleFont(value),
-        allowDeselect: false,
-        checkIconPosition: "right"
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      NumberInput,
-      {
-        value: subTitleFontSize,
-        onChange: (value) => setSubTitleFontSize(value),
-        suffix: "px",
-        max: 50,
-        min: 10,
-        label: "Font size (px)",
-        size: "md",
-        allowDecimal: false
-      },
-      `subtitle-size-${resetKey}`
-    )
+  const hasPrimaryText = primaryText.length > 0;
+  const hasSecondaryText = secondaryText.length > 0;
+  return /* @__PURE__ */ jsxs(Stack, { gap: "xl", children: [
+    /* @__PURE__ */ jsxs(Fieldset, { legend: "Primary text", children: [
+      /* @__PURE__ */ jsx(
+        TextInput,
+        {
+          value: primaryText,
+          onChange: (e) => updatePrimaryText({ content: e.target.value }),
+          placeholder: "HTTP Security Headers and how to...",
+          error: primaryText.length > PRIMARY_TEXT_LENGTH ? `Maximum ${PRIMARY_TEXT_LENGTH} characters` : null,
+          label: "Content",
+          description: `Maximum ${PRIMARY_TEXT_LENGTH} characters`,
+          rightSection: hasPrimaryText && /* @__PURE__ */ jsx(CloseButton, { size: "sm", variant: "subtle", onClick: () => updatePrimaryText({ content: "" }) }),
+          maxLength: PRIMARY_TEXT_LENGTH
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        ColorInput,
+        {
+          format: "rgba",
+          description: "Accepts RGBA",
+          value: primaryTextColor,
+          label: "Color",
+          onChangeEnd: (value) => updatePrimaryText({ color: value })
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        Select,
+        {
+          "aria-label": "Content font",
+          label: "Font",
+          placeholder: "Pick value",
+          data: fonts,
+          value: primaryTextFont,
+          onChange: (value) => updatePrimaryText({ font: value ?? void 0 }),
+          allowDeselect: false,
+          checkIconPosition: "right"
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        NumberInput,
+        {
+          max: PRIMARY_TEXT_FONT_SIZE_MAX,
+          min: PRIMARY_TEXT_FONT_SIZE_MIN,
+          value: primaryTextFontSize,
+          onChange: (value) => updatePrimaryText({ fontSize: value }),
+          label: "Font size (px)",
+          size: "md",
+          suffix: "px",
+          allowDecimal: false
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxs(Fieldset, { legend: "Secondary text", mt: 24, children: [
+      /* @__PURE__ */ jsx(
+        TextInput,
+        {
+          value: secondaryText,
+          onChange: (e) => updateSecondaryText({ content: e.target.value }),
+          placeholder: "Let's dive into the world of...",
+          label: "Content",
+          description: `Maximum ${SECONDARY_TEXT_LENGTH} characters`,
+          error: secondaryText.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null,
+          rightSection: hasSecondaryText && /* @__PURE__ */ jsx(CloseButton, { size: "sm", variant: "subtle", onClick: () => updateSecondaryText({ content: "" }) }),
+          maxLength: SECONDARY_TEXT_LENGTH
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        ColorInput,
+        {
+          format: "rgba",
+          label: "Color",
+          description: "Accepts RGBA",
+          value: secondaryTextColor,
+          onChangeEnd: (value) => updateSecondaryText({ color: value })
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        Select,
+        {
+          "aria-label": "Content font",
+          label: "Font",
+          placeholder: "Pick value",
+          data: fonts,
+          value: secondaryTextFont,
+          onChange: (value) => updateSecondaryText({ font: value ?? void 0 }),
+          allowDeselect: false,
+          checkIconPosition: "right"
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        NumberInput,
+        {
+          value: secondaryTextFontSize,
+          onChange: (value) => updateSecondaryText({ fontSize: value }),
+          suffix: "px",
+          max: SECONDARY_TEXT_FONT_SIZE_MAX,
+          min: SECONDARY_TEXT_FONT_SIZE_MIN,
+          label: "Font size (px)",
+          size: "md",
+          allowDecimal: false
+        }
+      )
+    ] })
   ] });
 }
-function DrawerBackgroundSection() {
-  const [searchParams] = useSearchParams();
-  const resetKey = searchParams.get("reset");
-  const { backgroundImage, backgroundColor, setBackgroundColor, setBackgroundImage } = useEditor();
+const patternCard = "_patternCard_4w3kk_1";
+const classes$1 = {
+  patternCard,
+  "patternCard-selected": "_patternCard-selected_4w3kk_19"
+};
+const decimalToPercentage = (decimal) => decimal * 100;
+function BackgroundSettings() {
+  const {
+    template,
+    background: { image: backgroundImage, colors: backgroundColors, pattern: backgroundPattern },
+    updateBackground
+  } = useEditor();
+  const hasSplitTemplate = !!template.backgroundId;
   const onBackgroundImageChange = (file) => {
     if (backgroundImage == null ? void 0 : backgroundImage.startsWith("blob:")) {
       URL.revokeObjectURL(backgroundImage);
     }
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setBackgroundImage(imageUrl);
+      updateBackground({ image: imageUrl });
     } else {
-      setBackgroundImage(null);
+      updateBackground({ image: null });
+      updateCSSVariables({ "--cover-color-overlay-opacity": "0%" });
     }
   };
-  return /* @__PURE__ */ jsxs(Stack, { children: [
-    /* @__PURE__ */ jsx(
-      ColorInput,
-      {
-        format: "rgba",
-        label: "Background color",
-        description: "Accepts RGBA",
-        value: backgroundColor,
-        onChange: setBackgroundColor
-      },
-      `bg-color-${resetKey}`
-    ),
-    backgroundImage ? /* @__PURE__ */ jsxs(Stack, { children: [
-      /* @__PURE__ */ jsx(Text, { fw: 500, component: "span", children: "Upload background image" }),
-      /* @__PURE__ */ jsx(
-        Image,
-        {
-          src: backgroundImage,
-          radius: "md",
-          style: { border: "1px solid var(--mantine-color-default-border)" },
-          alt: "Background image",
-          width: 368,
-          height: 200
+  const onPatternChange = (name) => {
+    if (backgroundImage) {
+      onBackgroundImageChange(null);
+      updateCSSVariables({ "--cover-color-overlay-opacity": "0%" });
+    }
+    if (name === backgroundPattern.name) {
+      updateBackground({
+        pattern: {
+          name: null,
+          url: null,
+          color: backgroundPattern.color,
+          opacity: backgroundPattern.opacity
         }
-      ),
-      /* @__PURE__ */ jsx(Button, { "aria-label": "Remove background image", onClick: () => setBackgroundImage(null), children: "Clear" })
-    ] }) : /* @__PURE__ */ jsx(
-      FileInput,
-      {
-        clearable: true,
-        description: "Accepts PNG, JPEG, and WEBP",
-        leftSection: /* @__PURE__ */ jsx(MediaImageFolder, { width: 16, height: 16 }),
-        accept: "image/png,image/jpeg,image/webp",
-        label: "Upload background image",
-        placeholder: "Click to upload",
-        maw: 368,
-        onChange: onBackgroundImageChange
-      },
-      `bg-image-${resetKey}`
-    ),
-    backgroundImage ? /* @__PURE__ */ jsx(
-      NumberInput,
-      {
-        defaultValue: 0,
-        suffix: "%",
-        max: 100,
-        min: 0,
-        onChange: (value) => {
-          updateCSSVariable({ name: "--cover-color-overlay-opacity", value: `${value}%` });
-        },
-        label: "Color overlay opacity",
-        size: "md",
-        allowDecimal: false,
-        allowNegative: false
-      },
-      `color-overlay-opacity-${resetKey}`
-    ) : null
-  ] });
-}
-const TARGET_WIDTH = 1600;
-const TARGET_HEIGHT = 840;
-async function saveDomNodeAsImage(node) {
-  if (!node) return { success: false, blob: null };
-  try {
-    const originalRect = node.getBoundingClientRect();
-    const clone = node.cloneNode(true);
-    document.body.appendChild(clone);
-    const scaleFactorWidth = TARGET_WIDTH / originalRect.width;
-    const scaleFactorHeight = TARGET_HEIGHT / originalRect.height;
-    const SCALE_FACTOR = Math.min(scaleFactorWidth, scaleFactorHeight);
-    Object.assign(clone.style, {
-      position: "absolute",
-      left: "-9999px",
-      margin: "0",
-      boxSizing: "border-box",
-      transform: `scale(${SCALE_FACTOR})`,
-      transformOrigin: "top left",
-      borderRadius: "0px"
-    });
-    const titleRndWrapper = Array.from(clone.querySelectorAll('[class*="rndWrapper"]'));
-    if (titleRndWrapper.length > 0) {
-      titleRndWrapper.forEach((element) => {
-        if (element instanceof HTMLElement) {
-          element.style.border = "none";
+      });
+    } else {
+      updateBackground({
+        pattern: {
+          name,
+          url: patterns[name](backgroundPattern.color, backgroundPattern.opacity),
+          color: backgroundPattern.color,
+          opacity: backgroundPattern.opacity
         }
       });
     }
-    const blob = await domToImage.toBlob(clone, {
-      width: TARGET_WIDTH,
-      height: TARGET_HEIGHT
-    });
-    document.body.removeChild(clone);
-    fs.saveAs(blob, "coverSnap-cover.png");
-    return { success: true, blob };
-  } catch (_error) {
-    return { success: false, blob: null };
+  };
+  return /* @__PURE__ */ jsxs(Stack, { gap: "xl", children: [
+    /* @__PURE__ */ jsxs(Fieldset, { legend: "Colors", children: [
+      /* @__PURE__ */ jsx(
+        ColorInput,
+        {
+          format: "rgba",
+          label: "Background color 1",
+          description: "Accepts RGBA",
+          value: (backgroundColors == null ? void 0 : backgroundColors.color1) ?? "rgba(255, 255, 255, 1)",
+          onChangeEnd: (value) => updateBackground({ colors: { ...backgroundColors, color1: value } })
+        }
+      ),
+      hasSplitTemplate ? /* @__PURE__ */ jsx(
+        ColorInput,
+        {
+          format: "rgba",
+          label: "Background color 2",
+          description: "Accepts RGBA",
+          value: (backgroundColors == null ? void 0 : backgroundColors.color2) ?? "rgba(255, 255, 255, 1)",
+          onChangeEnd: (value) => updateBackground({ colors: { ...backgroundColors, color2: value } })
+        }
+      ) : null
+    ] }),
+    /* @__PURE__ */ jsxs(Fieldset, { legend: "Images", children: [
+      backgroundImage ? /* @__PURE__ */ jsxs(Stack, { children: [
+        /* @__PURE__ */ jsx(Text, { fw: 500, component: "span", children: "Upload background image" }),
+        /* @__PURE__ */ jsx(
+          Image,
+          {
+            src: backgroundImage,
+            radius: "md",
+            style: { border: "1px solid var(--mantine-color-default-border)" },
+            alt: "Background image",
+            width: 368,
+            height: 200
+          }
+        ),
+        /* @__PURE__ */ jsx(Button, { "aria-label": "Remove background image", onClick: () => onBackgroundImageChange(null), children: "Clear" })
+      ] }) : /* @__PURE__ */ jsx(
+        FileInput,
+        {
+          clearable: true,
+          description: "Accepts PNG, JPEG, and WEBP",
+          leftSection: /* @__PURE__ */ jsx(MediaImageFolder, { width: 16, height: 16 }),
+          accept: "image/png,image/jpeg,image/webp",
+          label: "Upload background image",
+          placeholder: "Click to upload",
+          maw: 368,
+          onChange: onBackgroundImageChange
+        }
+      ),
+      backgroundImage ? /* @__PURE__ */ jsx(
+        NumberInput,
+        {
+          defaultValue: 0,
+          max: 1,
+          min: 0,
+          step: 0.1,
+          decimalScale: 1,
+          onChange: (value) => {
+            const percentage = value ? decimalToPercentage(Number(value)) : 0;
+            updateCSSVariables({ "--cover-color-overlay-opacity": `${percentage}%` });
+          },
+          label: "Overlay opacity",
+          allowNegative: false
+        }
+      ) : null
+    ] }),
+    /* @__PURE__ */ jsxs(Fieldset, { legend: "Patterns", disabled: !!backgroundImage, children: [
+      /* @__PURE__ */ jsx(
+        ColorInput,
+        {
+          disabled: !!backgroundImage,
+          format: "hex",
+          label: "Pattern color",
+          description: "Accepts HEX",
+          value: backgroundPattern.color,
+          onChangeEnd: (color) => updateBackground({
+            pattern: {
+              ...backgroundPattern,
+              url: backgroundPattern.name ? patterns[backgroundPattern.name](color, backgroundPattern.opacity) : null,
+              color
+            }
+          })
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        NumberInput,
+        {
+          disabled: !!backgroundImage,
+          max: 1,
+          min: 0,
+          step: 0.1,
+          value: backgroundPattern.opacity,
+          onChange: (value) => updateBackground({
+            pattern: {
+              ...backgroundPattern,
+              opacity: Number(value),
+              url: backgroundPattern.name ? patterns[backgroundPattern.name](backgroundPattern.color, Number(value)) : null
+            }
+          }),
+          label: "Pattern opacity",
+          allowNegative: false
+        }
+      ),
+      /* @__PURE__ */ jsx(SimpleGrid, { cols: { base: 1, xs: 3, md: 2 }, spacing: "sm", verticalSpacing: "xl", component: "section", children: Object.entries(patterns).map(([key, value]) => {
+        const isSelected = backgroundPattern.name === key;
+        return /* @__PURE__ */ jsxs(Stack, { gap: 4, component: "article", children: [
+          /* @__PURE__ */ jsx(
+            Text,
+            {
+              component: "span",
+              fw: 600,
+              fz: { base: 18, sm: 14 },
+              ta: "center",
+              c: isSelected && !backgroundImage ? "var(--mantine-color-primary-filled)" : "var(--mantine-color-dimmed)",
+              style: {
+                whiteSpace: "nowrap"
+              },
+              children: key
+            }
+          ),
+          /* @__PURE__ */ jsx(
+            UnstyledButton,
+            {
+              "aria-label": `Select ${key} background pattern`,
+              onClick: () => onPatternChange(key),
+              style: { cursor: !backgroundImage ? "pointer" : "not-allowed" },
+              children: /* @__PURE__ */ jsx(
+                Paper,
+                {
+                  radius: "md",
+                  className: classes$1.patternCard,
+                  style: {
+                    backgroundImage: value(backgroundPattern.color, 1),
+                    border: isSelected ? "1px solid var(--mantine-primary-color-light-color)" : "1px solid var(--mantine-color-default-border)"
+                  },
+                  children: isSelected && !backgroundImage && /* @__PURE__ */ jsx(Center, { className: classes$1["patternCard-selected"], children: /* @__PURE__ */ jsx(Center, { component: "span", w: 40, h: 40, bg: "white", style: { borderRadius: "100%" }, children: /* @__PURE__ */ jsx(Check, { width: 32, height: 32, color: "var(--mantine-color-blue-filled)" }) }) })
+                }
+              )
+            }
+          )
+        ] }, key);
+      }) })
+    ] })
+  ] });
+}
+const LayoutTemplatePreview = ({
+  coverClasses,
+  previewPrimaryBarClasses,
+  previewSecondaryBarClasses,
+  isSelected
+}) => {
+  return /* @__PURE__ */ jsxs(Paper, { radius: "md", className: classnames(classes$2.previewContainer, coverClasses), children: [
+    /* @__PURE__ */ jsx("div", { className: classnames(classes$2.previewBar, classes$2["previewBar--wide"], previewPrimaryBarClasses) }),
+    /* @__PURE__ */ jsx("div", { className: classnames(classes$2.previewBar, classes$2["previewBar--narrow"], previewSecondaryBarClasses) }),
+    isSelected && /* @__PURE__ */ jsx(Center, { component: "span", pos: "absolute", inset: 0, bg: "rgba(0, 0, 0, 0.5)", children: /* @__PURE__ */ jsx(Center, { component: "span", w: 40, h: 40, bg: "white", style: { borderRadius: "100%" }, children: /* @__PURE__ */ jsx(Check, { width: 32, height: 32, color: "var(--mantine-color-blue-filled)" }) }) })
+  ] });
+};
+const BackgroundTemplatePreview = ({ styles, isSelected }) => {
+  return /* @__PURE__ */ jsxs(Paper, { radius: "md", className: classes$2.previewContainer, children: [
+    /* @__PURE__ */ jsx("div", { className: classnames(classes$2.previewSection, styles) }),
+    isSelected && /* @__PURE__ */ jsx(Center, { component: "span", pos: "absolute", inset: 0, bg: "rgba(0, 0, 0, 0.5)", children: /* @__PURE__ */ jsx(Center, { component: "span", w: 40, h: 40, bg: "white", style: { borderRadius: "100%" }, children: /* @__PURE__ */ jsx(Check, { width: 32, height: 32, color: "var(--mantine-color-blue-filled)" }) }) })
+  ] });
+};
+function TemplateSettings() {
+  const { template, updateTemplate } = useEditor();
+  return /* @__PURE__ */ jsxs(Stack, { gap: 32, children: [
+    /* @__PURE__ */ jsx(Fieldset, { legend: "Background split", children: /* @__PURE__ */ jsx(SimpleGrid, { cols: { base: 1, xs: 3, md: 2 }, spacing: "xs", verticalSpacing: "xl", component: "section", children: BACKGROUND_TEMPLATES.map((t) => {
+      const isSelected = template.backgroundId === t.id;
+      return /* @__PURE__ */ jsxs(Stack, { gap: 4, component: "article", children: [
+        /* @__PURE__ */ jsx(
+          Text,
+          {
+            component: "span",
+            fw: 600,
+            fz: { base: 18, sm: 14 },
+            ta: "center",
+            c: isSelected ? "var(--mantine-color-primary-filled)" : "var(--mantine-color-dimmed)",
+            children: t.name
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          UnstyledButton,
+          {
+            pos: "relative",
+            "aria-label": `Select ${t.name} template`,
+            onClick: () => updateTemplate({ ...template, backgroundId: t.id }),
+            children: t.preview({
+              children: /* @__PURE__ */ jsx(BackgroundTemplatePreview, { styles: t.previewStyles ?? "", isSelected })
+            })
+          }
+        )
+      ] }, t.id);
+    }) }) }),
+    /* @__PURE__ */ jsx(Fieldset, { legend: "Text layout", children: /* @__PURE__ */ jsx(SimpleGrid, { cols: { base: 1, xs: 3, md: 2 }, spacing: "xs", verticalSpacing: "xl", component: "section", children: LAYOUT_TEMPLATES.map((t) => {
+      var _a, _b;
+      const isSelected = template.layoutId === t.id;
+      return /* @__PURE__ */ jsxs(Stack, { gap: 4, component: "article", children: [
+        /* @__PURE__ */ jsx(
+          Text,
+          {
+            component: "span",
+            fw: 600,
+            fz: { base: 18, sm: 14 },
+            ta: "center",
+            c: isSelected ? "var(--mantine-color-primary-filled)" : "var(--mantine-color-dimmed)",
+            children: t.name
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          UnstyledButton,
+          {
+            pos: "relative",
+            "aria-label": `Select ${t.name} template`,
+            onClick: () => updateTemplate({ ...template, layoutId: t.id }),
+            children: t.preview({
+              children: /* @__PURE__ */ jsx(
+                LayoutTemplatePreview,
+                {
+                  coverClasses: t.previewStyles.cover,
+                  previewPrimaryBarClasses: ((_a = t.previewStyles) == null ? void 0 : _a.primaryText) ?? "",
+                  previewSecondaryBarClasses: ((_b = t.previewStyles) == null ? void 0 : _b.secondaryText) ?? "",
+                  isSelected
+                }
+              )
+            })
+          }
+        )
+      ] }, t.id);
+    }) }) })
+  ] });
+}
+async function getBlobFromDomNode(node, cover) {
+  const TARGET_WIDTH = cover.width;
+  const TARGET_HEIGHT = cover.height;
+  const blob = await htmlToImage.toBlob(node, {
+    quality: 1,
+    pixelRatio: 1,
+    canvasWidth: TARGET_WIDTH,
+    canvasHeight: TARGET_HEIGHT,
+    style: {
+      margin: "0",
+      border: "0",
+      borderRadius: "0",
+      transform: "scale(1)",
+      transformOrigin: "top left"
+    }
+  });
+  return blob;
+}
+const RETRY_ATTEMPTS = 3;
+const errorMessages = {
+  [
+    "CONVERSION_FAILED"
+    /* CONVERSION_FAILED */
+  ]: "Failed to convert image. Please try again. Contact support if the issue persists.",
+  [
+    "SAVE_FAILED"
+    /* SAVE_FAILED */
+  ]: "Failed to save image, please try again. Contact support if the issue persists.",
+  [
+    "NODE_NOT_FOUND"
+    /* NODE_NOT_FOUND */
+  ]: "Image element not found. Please refresh the page and try again.",
+  [
+    "UNEXPECTED_ERROR"
+    /* UNEXPECTED_ERROR */
+  ]: "An unexpected error occurred. Please try again. Contact support if the issue persists."
+};
+class ImageDownloadError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.code = code;
+    this.name = "ImageDownloadError";
   }
 }
-const useImageDownload = ({ imageRef }) => {
-  const [visible, { open, close }] = useDisclosure(false);
+const useImageDownload = ({ imageRef, cover }) => {
+  const [visible, { open, close: closeSpinner }] = useDisclosure(false);
+  const [isDownloadDisabled, setIsDownloadDisabled] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const retryCountRef = useRef(0);
   const downloadImage = async () => {
     open();
-    if (imageRef.current) {
-      const result = await saveDomNodeAsImage(imageRef.current);
-      if (result.success) {
-        setIsSuccessModalOpen(true);
-        setTimeout(() => {
-          close();
-        }, 500);
-      } else {
-        toast.error("Failed to download image. If the issue persists, contact @Kieran6Dev on X.");
+    try {
+      retryCountRef.current += 1;
+      if (!(imageRef == null ? void 0 : imageRef.current)) {
+        throw new ImageDownloadError(
+          errorMessages[
+            "NODE_NOT_FOUND"
+            /* NODE_NOT_FOUND */
+          ],
+          "NODE_NOT_FOUND"
+          /* NODE_NOT_FOUND */
+        );
       }
+      const blob = await getBlobFromDomNode(imageRef.current, cover);
+      if (!blob) {
+        throw new ImageDownloadError(
+          errorMessages[
+            "CONVERSION_FAILED"
+            /* CONVERSION_FAILED */
+          ],
+          "CONVERSION_FAILED"
+          /* CONVERSION_FAILED */
+        );
+      }
+      try {
+        fs.saveAs(blob, "cvrsnap-cover.png");
+      } catch {
+        throw new ImageDownloadError(
+          errorMessages[
+            "SAVE_FAILED"
+            /* SAVE_FAILED */
+          ],
+          "SAVE_FAILED"
+          /* SAVE_FAILED */
+        );
+      }
+      retryCountRef.current = 0;
+      setIsSuccessModalOpen(true);
+    } catch (error) {
+      const canRetry = retryCountRef.current < RETRY_ATTEMPTS;
+      const _error = error instanceof ImageDownloadError ? error : new ImageDownloadError(
+        errorMessages[
+          "UNEXPECTED_ERROR"
+          /* UNEXPECTED_ERROR */
+        ],
+        "UNEXPECTED_ERROR"
+        /* UNEXPECTED_ERROR */
+      );
+      const errorLabel = canRetry ? "Retry" : "Contact Support";
+      const errorAction = canRetry ? () => downloadImage() : () => window.open("https://x.com/Kieran6Dev", "_blank");
+      toast.error(_error.message, {
+        action: {
+          label: errorLabel,
+          onClick: errorAction
+        },
+        duration: 15e3
+      });
+      if (!canRetry) {
+        setIsDownloadDisabled(true);
+      }
+    } finally {
+      setTimeout(() => {
+        closeSpinner();
+      }, 500);
     }
   };
   return {
     isLoading: visible,
     isSuccessModalOpen,
     closeSuccessModal: () => setIsSuccessModalOpen(false),
-    downloadImage
+    downloadImage,
+    isDownloadDisabled
   };
 };
 function DownloadSuccessModal({ close }) {
   useEffect(() => {
-    toast$1.success("Image downloaded successfully.", {
-      icon: /* @__PURE__ */ jsx(Check, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }),
-      id: "download-success"
-    });
+    setTimeout(() => {
+      toast.success("Image downloaded successfully.", {
+        icon: /* @__PURE__ */ jsx(Check, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }),
+        id: "download-success"
+      });
+    }, 0);
   }, []);
-  return /* @__PURE__ */ jsx(Modal, { opened: true, onClose: close, centered: true, title: "Thanks for using CoverSnap!", children: /* @__PURE__ */ jsxs(Stack, { children: [
+  return /* @__PURE__ */ jsx(Modal, { opened: true, onClose: close, centered: true, title: `Thanks for using ${SITE_NAME}!`, children: /* @__PURE__ */ jsxs(Stack, { children: [
     /* @__PURE__ */ jsx(Divider, {}),
     /* @__PURE__ */ jsxs(Text, { mb: "md", children: [
       "If you have any feedback, please share it with me on X",
       " ",
-      /* @__PURE__ */ jsx(Anchor, { underline: "always", target: "_blank", href: "https://x.com/Kieran6Dev", children: "@Kieran6Dev" }),
+      /* @__PURE__ */ jsx(Anchor, { underline: "always", target: "_blank", "data-autofocus": true, href: "https://x.com/Kieran6Dev", children: "@Kieran6Dev" }),
       ", or raise an issue on",
       " ",
       /* @__PURE__ */ jsx(Anchor, { underline: "always", target: "_blank", href: GITHUB_URL, children: "GitHub." })
@@ -805,51 +1589,48 @@ function DownloadSuccessModal({ close }) {
     ] })
   ] }) });
 }
-function EditorDrawer({ imageNodeRef }) {
+const editSections = [
+  {
+    title: "Template",
+    content: () => /* @__PURE__ */ jsx(TemplateSettings, {}),
+    icon: /* @__PURE__ */ jsx(ThemeIcon, { size: "lg", radius: "md", variant: "light", color: "var(--mantine-primary-color-8)", children: /* @__PURE__ */ jsx(AlignBottomBox, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }) })
+  },
+  {
+    title: "Text",
+    content: () => /* @__PURE__ */ jsx(TextSettings, {}),
+    icon: /* @__PURE__ */ jsx(ThemeIcon, { size: "lg", radius: "md", variant: "light", color: "var(--mantine-primary-color-8)", children: /* @__PURE__ */ jsx(Text$1, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }) })
+  },
+  {
+    title: "Background",
+    content: () => /* @__PURE__ */ jsx(BackgroundSettings, {}),
+    icon: /* @__PURE__ */ jsx(ThemeIcon, { size: "lg", radius: "md", variant: "light", color: "var(--mantine-primary-color-8)", children: /* @__PURE__ */ jsx(MediaImage, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }) })
+  }
+];
+function Drawer({ imageNodeRef }) {
   var _a;
   const fetcher = useFetcher();
   const { openItems } = useLoaderData();
   const currentOpenItems = fetcher.formData ? (_a = fetcher.formData.get("openItems")) == null ? void 0 : _a.toString().split(",") : openItems;
-  const { resetEditor } = useEditor();
+  const { resetEditor, cover } = useEditor();
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
-    imageRef: imageNodeRef
+    imageRef: imageNodeRef,
+    cover
   });
-  const editSections = [
-    {
-      title: "Text",
-      content: () => /* @__PURE__ */ jsx(DrawerTextSection, {}),
-      icon: /* @__PURE__ */ jsx(Text$1, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" })
-    },
-    {
-      title: "Background",
-      content: () => /* @__PURE__ */ jsx(DrawerBackgroundSection, {}),
-      icon: /* @__PURE__ */ jsx(MediaImage, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" })
-    },
-    {
-      title: "Templates",
-      content: () => null,
-      icon: /* @__PURE__ */ jsx(AlignBottomBox, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }),
-      isDisabled: true
-    },
-    {
-      title: "Elements",
-      content: () => null,
-      icon: /* @__PURE__ */ jsx(Pentagon, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }),
-      isDisabled: true
-    },
-    {
-      title: "Uploads",
-      content: () => null,
-      icon: /* @__PURE__ */ jsx(UploadSquare, { width: 24, height: 24, color: "var(--mantine-primary-color-8)" }),
-      isDisabled: true
-    }
-  ];
-  const handleAccordionChange = (values) => {
+  const onAccordionChange = (values) => {
     fetcher.submit(
       { openItems: values, intent: "updateOpenItems" },
       {
         method: "post",
-        action: "/create"
+        action: CREATE_ROUTE
+      }
+    );
+  };
+  const onHideSidebar = () => {
+    fetcher.submit(
+      { sidebarState: "closed", intent: "updateSidebarState" },
+      {
+        method: "post",
+        action: CREATE_ROUTE
       }
     );
   };
@@ -859,10 +1640,10 @@ function EditorDrawer({ imageNodeRef }) {
       {
         skeleton: /* @__PURE__ */ jsxs(Flex, { h: 53, w: "100%", justify: "space-between", align: "center", p: "md", children: [
           /* @__PURE__ */ jsxs(Flex, { gap: "sm", align: "center", children: [
-            /* @__PURE__ */ jsx(Skeleton, { circle: true, height: 24, width: 24, animate: true }),
-            /* @__PURE__ */ jsx(Skeleton, { height: 16, width: 125, animate: true })
+            /* @__PURE__ */ jsx(Skeleton, { radius: "md", height: 34, width: 34, animate: true }),
+            /* @__PURE__ */ jsx(Skeleton, { radius: "md", height: 16, width: 125, animate: true })
           ] }),
-          /* @__PURE__ */ jsx(Skeleton, { height: 16, circle: true, width: 16, animate: true })
+          /* @__PURE__ */ jsx(Skeleton, { radius: "md", height: 16, circle: true, width: 16, animate: true })
         ] }),
         children: /* @__PURE__ */ jsxs(Accordion.Item, { value: item.title, children: [
           /* @__PURE__ */ jsx(
@@ -870,9 +1651,8 @@ function EditorDrawer({ imageNodeRef }) {
             {
               "aria-label": `Toggle ${item.title.toLowerCase()} editing`,
               icon: item.icon,
-              disabled: !!item.isDisabled,
-              className: classes$1.accordionControl,
-              children: /* @__PURE__ */ jsx(Text, { size: "md", fw: 500, children: item.title })
+              className: classes$3.accordionControl,
+              children: /* @__PURE__ */ jsx(Flex, { gap: "xs", align: "center", children: /* @__PURE__ */ jsx(Text, { size: "md", fw: 500, children: item.title }) })
             }
           ),
           /* @__PURE__ */ jsx(Accordion.Panel, { px: "sm", children: /* @__PURE__ */ jsx(Box, { pb: 48, pt: 24, children: item.content() }) })
@@ -882,8 +1662,43 @@ function EditorDrawer({ imageNodeRef }) {
     );
   });
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Box, { component: "aside", className: classes$1.sidebar, pos: "relative", children: [
-      /* @__PURE__ */ jsx(ScrollArea, { visibleFrom: "md", h: "calc(100vh - 69px)", children: /* @__PURE__ */ jsx(Accordion, { radius: "md", multiple: true, value: currentOpenItems, onChange: handleAccordionChange, variant: "default", children: items }) }),
+    /* @__PURE__ */ jsxs(Box, { component: "aside", className: classes$3.sidebar, pos: "relative", children: [
+      /* @__PURE__ */ jsxs(
+        Flex,
+        {
+          justify: "space-between",
+          align: "center",
+          p: "md",
+          style: { borderBottom: "1px solid var(--mantine-color-default-border)" },
+          children: [
+            /* @__PURE__ */ jsx(Title, { size: "sm", order: 2, children: "Cover settings" }),
+            /* @__PURE__ */ jsx(
+              ActionIcon,
+              {
+                visibleFrom: "md",
+                onClick: onHideSidebar,
+                variant: "default",
+                size: 28,
+                title: "Close sidebar",
+                "aria-label": "Close sidebar",
+                children: /* @__PURE__ */ jsx(ArrowLeftTag, { width: 18, height: 18 })
+              }
+            )
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsx(ScrollArea, { visibleFrom: "md", h: "calc(100vh - 69px - 60px)", children: /* @__PURE__ */ jsx(
+        Accordion,
+        {
+          transitionDuration: 0,
+          radius: "md",
+          multiple: true,
+          value: currentOpenItems,
+          onChange: onAccordionChange,
+          variant: "default",
+          children: items
+        }
+      ) }),
       /* @__PURE__ */ jsx(
         Accordion,
         {
@@ -891,9 +1706,9 @@ function EditorDrawer({ imageNodeRef }) {
           radius: "md",
           multiple: true,
           value: currentOpenItems,
-          onChange: handleAccordionChange,
+          onChange: onAccordionChange,
           variant: "default",
-          pb: "md",
+          pb: 80,
           children: items
         }
       ),
@@ -904,23 +1719,13 @@ function EditorDrawer({ imageNodeRef }) {
           justify: { base: "space-between", md: "flex-end" },
           bg: "var(--mantine-color-body)",
           pos: { base: "fixed", md: "sticky" },
+          className: classes$3.mobileFooter,
           bottom: 0,
           right: 0,
           left: 0,
           p: "md",
-          style: { borderTop: "1px solid var(--mantine-color-default-border)", zIndex: 10 },
           children: [
-            /* @__PURE__ */ jsx(
-              Button,
-              {
-                hiddenFrom: "md",
-                onClick: resetEditor,
-                variant: "light",
-                size: "xs",
-                color: "var(--mantine-primary-color-7)",
-                children: "Reset all"
-              }
-            ),
+            /* @__PURE__ */ jsx(Button, { hiddenFrom: "md", onClick: resetEditor, variant: "outline", size: "xs", children: "Reset all" }),
             /* @__PURE__ */ jsxs(Button, { hiddenFrom: "md", onClick: downloadImage, size: "xs", rightSection: /* @__PURE__ */ jsx(Download, { width: 16, height: 16 }), children: [
               /* @__PURE__ */ jsx(LoadingOverlay, { visible: isLoading, zIndex: 1e3, overlayProps: { radius: "sm", blur: 2 } }),
               "Download image"
@@ -932,159 +1737,423 @@ function EditorDrawer({ imageNodeRef }) {
     isSuccessModalOpen && /* @__PURE__ */ jsx(DownloadSuccessModal, { close: closeSuccessModal })
   ] });
 }
-const coverSection = "_coverSection_47ibl_12";
-const coverWrapper = "_coverWrapper_47ibl_33";
-const cover = "_cover_47ibl_12";
-const coverSkeleton = "_coverSkeleton_47ibl_52";
-const title = "_title_47ibl_60";
-const subtitle = "_subtitle_47ibl_73";
-const rndWrapper = "_rndWrapper_47ibl_86";
+const coverWrapper = "_coverWrapper_6ufh5_33";
+const coverSkeleton = "_coverSkeleton_6ufh5_58";
 const classes = {
-  coverSection,
   coverWrapper,
-  cover,
-  coverSkeleton,
-  title,
-  subtitle,
-  rndWrapper
+  coverSkeleton
 };
+function ImagePreview({ imageNodeRef }) {
+  const {
+    template: { backgroundId },
+    primaryText,
+    secondaryText,
+    background: { image: backgroundImage, pattern: backgroundPattern },
+    cover
+  } = useEditor();
+  const backgroundTemplate = BACKGROUND_TEMPLATES.find((t) => t.id === backgroundId);
+  const { sections: backgroundSections } = backgroundTemplate ?? {};
+  return /* @__PURE__ */ jsx(EditorHydration, { skeleton: /* @__PURE__ */ jsx(Skeleton, { radius: 12, className: classes.coverSkeleton, animate: true }), children: /* @__PURE__ */ jsxs(
+    Box,
+    {
+      ref: imageNodeRef,
+      style: {
+        backgroundColor: "var(--cover-background-color-1)",
+        display: "var(--cover-display)",
+        justifyContent: "var(--cover-justify-content)",
+        alignItems: "var(--cover-align-items)",
+        position: "relative",
+        flexDirection: "var(--cover-flex-direction)",
+        gap: "1rem",
+        overflow: "hidden",
+        width: "min(calc(90vw - 360px), 900px)",
+        padding: "1rem",
+        minWidth: "320px",
+        aspectRatio: cover.aspectRatio,
+        borderRadius: "12px",
+        letterSpacing: "normal",
+        margin: "0 auto"
+      },
+      children: [
+        backgroundSections == null ? void 0 : backgroundSections.map((section, index) => /* @__PURE__ */ jsx(
+          Box,
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              backgroundColor: `var(--cover-background-color-${index + 1})`,
+              clipPath: section.clipPath
+            }
+          },
+          index
+        )),
+        /* @__PURE__ */ jsx(
+          Box,
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+              ...(backgroundPattern == null ? void 0 : backgroundPattern.url) ? {
+                background: backgroundPattern.url
+              } : backgroundImage ? {
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "transparent"
+              } : {}
+            },
+            children: backgroundImage && /* @__PURE__ */ jsx(
+              Box,
+              {
+                style: {
+                  position: "absolute",
+                  inset: 0,
+                  backgroundColor: "var(--cover-background-color-1)",
+                  opacity: "var(--cover-color-overlay-opacity)"
+                }
+              }
+            )
+          }
+        ),
+        primaryText.content && /* @__PURE__ */ jsx(
+          "span",
+          {
+            id: "primaryText",
+            className: "primaryText",
+            style: {
+              color: "var(--cover-primary-text-color)",
+              fontSize: "var(--cover-primary-text-font-size)",
+              fontFamily: "var(--cover-primary-text-font)",
+              textAlign: "var(--cover-primary-text-align)",
+              display: "block",
+              fontWeight: 600,
+              margin: 0,
+              letterSpacing: "normal",
+              position: "relative",
+              zIndex: 2
+            },
+            children: primaryText.content
+          }
+        ),
+        secondaryText.content && /* @__PURE__ */ jsx(
+          "span",
+          {
+            id: "secondaryText",
+            className: "secondaryText",
+            style: {
+              color: "var(--cover-secondary-text-color)",
+              fontSize: "var(--cover-secondary-text-font-size)",
+              fontFamily: "var(--cover-secondary-text-font)",
+              textAlign: "var(--cover-secondary-text-align)",
+              display: "block",
+              fontWeight: 500,
+              margin: 0,
+              position: "var(--cover-secondary-position, relative)",
+              bottom: "var(--cover-secondary-bottom, unset)",
+              right: "var(--cover-secondary-right, unset)",
+              left: "var(--cover-secondary-left, unset)",
+              letterSpacing: "normal",
+              zIndex: 2
+            },
+            children: secondaryText.content
+          }
+        )
+      ]
+    }
+  ) });
+}
+const DownloadButton = ({
+  isLoading,
+  downloadImage,
+  ...props
+}) => {
+  return /* @__PURE__ */ jsxs(
+    Button,
+    {
+      ...downloadImage ? { onClick: downloadImage } : {},
+      size: "md",
+      rightSection: /* @__PURE__ */ jsx(Download, { width: 24, height: 24 }),
+      ...props,
+      children: [
+        /* @__PURE__ */ jsx(LoadingOverlay, { visible: isLoading, zIndex: 1e3, overlayProps: { radius: "sm", blur: 2 } }),
+        "Download image"
+      ]
+    }
+  );
+};
+function CoverImageControls({
+  isLoading,
+  resetStyles,
+  downloadImage,
+  isDownloadDisabled
+}) {
+  return /* @__PURE__ */ jsxs(Flex, { gap: "xs", justify: "center", wrap: "wrap", children: [
+    /* @__PURE__ */ jsx(
+      Button,
+      {
+        visibleFrom: "md",
+        onClick: resetStyles,
+        size: "md",
+        rightSection: /* @__PURE__ */ jsx(Restart, { width: 24, height: 24 }),
+        variant: "outline",
+        children: "Reset applied styles"
+      }
+    ),
+    /* @__PURE__ */ jsx(
+      DownloadButton,
+      {
+        isLoading: !!isLoading,
+        disabled: isDownloadDisabled,
+        downloadImage,
+        visibleFrom: "md"
+      }
+    )
+  ] });
+}
+function CoverImageSize({
+  defaultImageSize,
+  onAspectRatioChange,
+  _hasHydrated
+}) {
+  return /* @__PURE__ */ jsx(Skeleton, { visible: !_hasHydrated, maw: "max-content", children: /* @__PURE__ */ jsx(
+    Select,
+    {
+      label: "Image download size",
+      value: defaultImageSize,
+      data: Object.values(IMAGE_DOWNLOAD_SIZES).map((size) => ({
+        value: size.value,
+        label: `${size.width}x${size.height} ${size.label} `
+      })),
+      onChange: (value) => onAspectRatioChange(value),
+      clearable: false,
+      allowDeselect: false,
+      comboboxProps: { width: "max-content", position: "bottom" },
+      checkIconPosition: "right"
+    }
+  ) });
+}
+const Confetti = lazy(() => import("./assets/Confetti-Dh1EWJA1.js"));
 function CoverImage({ imageNodeRef }) {
-  const { primaryTitle, subTitle, backgroundImage, resetEditor } = useEditor();
-  const { isLoading, isSuccessModalOpen, closeSuccessModal, downloadImage } = useImageDownload({
-    imageRef: imageNodeRef
+  const { resetEditor, updateCover, cover, _hasHydrated } = useEditor();
+  const fetcher = useFetcher();
+  const { sidebarState } = useLoaderData();
+  const currentSidebarState = fetcher.formData ? fetcher.formData.get("sidebarState") : sidebarState;
+  const isSidebarOpen = currentSidebarState !== "closed";
+  const defaultImageSize = `${cover.id}:${cover.aspectRatio}:${cover.width}x${cover.height}`;
+  const { isLoading, isSuccessModalOpen, isDownloadDisabled, closeSuccessModal, downloadImage } = useImageDownload({
+    imageRef: imageNodeRef,
+    cover
   });
   const resetStyles = () => {
     resetEditor();
   };
+  const onSidebarChange = (value) => {
+    fetcher.submit(
+      { sidebarState: "true", intent: "updateSidebarState" },
+      {
+        method: "post",
+        action: CREATE_ROUTE
+      }
+    );
+  };
+  const onAspectRatioChange = (value) => {
+    if (!value) return;
+    const id = value.split(":")[0];
+    const aspectRatio = value.split(":")[1];
+    const size = value.split(":")[2];
+    const width = size.split("x")[0];
+    const height = size.split("x")[1];
+    updateCSSVariables({ "--cover-aspect-ratio": `${aspectRatio}` });
+    updateCover({ id, width: Number(width), height: Number(height), aspectRatio: Number(aspectRatio) });
+  };
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(Box, { className: classes.coverSection, children: /* @__PURE__ */ jsxs(Box, { className: classes.coverWrapper, children: [
-      /* @__PURE__ */ jsx(Text, { ta: "center", size: "sm", fw: 500, children: "Download size is 1600 x 840" }),
-      /* @__PURE__ */ jsx(EditorHydration, { skeleton: /* @__PURE__ */ jsx(Skeleton, { className: classes.coverSkeleton }), children: /* @__PURE__ */ jsxs(
-        Box,
+    /* @__PURE__ */ jsxs(Box, { className: classes.coverWrapper, children: [
+      !isSidebarOpen ? /* @__PURE__ */ jsx(
+        ActionIcon,
         {
-          ref: imageNodeRef,
-          className: classes.cover,
-          variant: "filled",
-          style: {
-            ...backgroundImage && {
-              backgroundImage: `linear-gradient(
-                    color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent),
-                    color-mix(in srgb, var(--cover-background-color) var(--cover-color-overlay-opacity), transparent)
-                  ), url(${backgroundImage})`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundColor: "transparent"
-            }
-          },
-          children: [
-            primaryTitle ? /* @__PURE__ */ jsx(
-              Rnd,
-              {
-                default: {
-                  x: 0,
-                  y: 25,
-                  width: "100%",
-                  height: "auto"
-                },
-                bounds: "parent",
-                enableResizing: {
-                  top: true,
-                  right: true,
-                  bottom: true,
-                  left: true
-                },
-                className: classes.rndWrapper,
-                children: /* @__PURE__ */ jsx("span", { className: classes.title, children: primaryTitle ?? "" })
-              }
-            ) : null,
-            subTitle ? /* @__PURE__ */ jsx(
-              Rnd,
-              {
-                default: {
-                  x: 0,
-                  y: 0,
-                  width: "auto",
-                  height: "auto"
-                },
-                bounds: "parent",
-                enableResizing: {
-                  top: true,
-                  right: true,
-                  bottom: true,
-                  left: true
-                },
-                className: classes.rndWrapper,
-                children: /* @__PURE__ */ jsx("span", { className: classes.subtitle, children: subTitle ?? "" })
-              }
-            ) : null
-          ]
+          visibleFrom: "md",
+          pos: "absolute",
+          top: 16,
+          left: 20,
+          onClick: () => onSidebarChange(),
+          title: "Open sidebar",
+          variant: "default",
+          size: 28,
+          "aria-label": "Open sidebar",
+          children: /* @__PURE__ */ jsx(ArrowRightTag, { width: 18, height: 18 })
         }
-      ) }),
-      /* @__PURE__ */ jsxs(Flex, { gap: "xs", justify: "center", children: [
-        /* @__PURE__ */ jsx(
-          Button,
-          {
-            visibleFrom: "md",
-            onClick: resetStyles,
-            size: "md",
-            variant: "light",
-            rightSection: /* @__PURE__ */ jsx(Restart, { width: 24, height: 24 }),
-            color: "var(--mantine-primary-color-7)",
-            children: "Reset applied styles"
-          }
-        ),
-        /* @__PURE__ */ jsxs(
-          Button,
-          {
-            visibleFrom: "md",
-            onClick: downloadImage,
-            size: "md",
-            rightSection: /* @__PURE__ */ jsx(Download, { width: 24, height: 24 }),
-            children: [
-              /* @__PURE__ */ jsx(LoadingOverlay, { visible: isLoading, zIndex: 1e3, overlayProps: { radius: "sm", blur: 2 } }),
-              "Download image"
-            ]
-          }
-        )
-      ] })
-    ] }) }),
-    isSuccessModalOpen && /* @__PURE__ */ jsx(DownloadSuccessModal, { close: closeSuccessModal })
+      ) : null,
+      /* @__PURE__ */ jsx(
+        CoverImageSize,
+        {
+          defaultImageSize,
+          onAspectRatioChange,
+          _hasHydrated
+        }
+      ),
+      /* @__PURE__ */ jsx(ImagePreview, { imageNodeRef }),
+      /* @__PURE__ */ jsx(
+        CoverImageControls,
+        {
+          ...isDownloadDisabled ? {
+            isDownloadDisabled: true
+          } : { isLoading, resetStyles, downloadImage, isDownloadDisabled: false }
+        }
+      )
+    ] }),
+    isSuccessModalOpen && /* @__PURE__ */ jsx(DownloadSuccessModal, { close: closeSuccessModal }),
+    isSuccessModalOpen && /* @__PURE__ */ jsx(Confetti, {})
   ] });
 }
 function EditorArea() {
+  const fetcher = useFetcher();
+  const { sidebarState } = useLoaderData();
+  const currentSidebarState = fetcher.formData ? fetcher.formData.get("sidebarState") !== "closed" : sidebarState;
+  const isSidebarOpen = currentSidebarState !== "closed";
   const coverImageNodeRef = useRef(null);
-  return /* @__PURE__ */ jsxs(Flex, { direction: { base: "column-reverse", md: "row" }, children: [
-    /* @__PURE__ */ jsx(Box, { children: /* @__PURE__ */ jsx(EditorDrawer, { imageNodeRef: coverImageNodeRef }) }),
-    /* @__PURE__ */ jsx(CoverImage, { imageNodeRef: coverImageNodeRef })
-  ] });
+  const isMobile = useMediaQuery("(max-width: 992px)");
+  const showDrawer = isMobile || isSidebarOpen;
+  return /* @__PURE__ */ jsx(Fragment, { children: /* @__PURE__ */ jsxs(
+    Flex,
+    {
+      direction: { base: "column-reverse", md: "row" },
+      justify: "center",
+      align: "center",
+      h: { base: "auto", md: "100%" },
+      children: [
+        showDrawer ? /* @__PURE__ */ jsx(Drawer, { imageNodeRef: coverImageNodeRef }) : null,
+        /* @__PURE__ */ jsx(CoverImage, { imageNodeRef: coverImageNodeRef })
+      ]
+    }
+  ) });
 }
 const editorOpenStateCookie = createCookie("editor-open-state", {
   maxAge: 604800
   // 1 week
 });
+const editorSidebarStateCookie = createCookie("editor-sidebar-state", {
+  maxAge: 604800
+  // 1 week
+});
+const welcomeCookie = createCookie("welcome-status", {
+  maxAge: 31536e3
+  // 1 year in seconds
+});
 async function loader({ request }) {
   const cookieHeader = request.headers.get("Cookie");
-  const cookie = await editorOpenStateCookie.parse(cookieHeader) || {};
-  return { openItems: cookie.openItems };
+  const editorCookie = await editorOpenStateCookie.parse(cookieHeader) || {};
+  const _welcomeCookie = await welcomeCookie.parse(cookieHeader) || {};
+  const editorSidebarCookie = await editorSidebarStateCookie.parse(cookieHeader) || {};
+  const openItems = editorCookie.openItems ? editorCookie.openItems.split(",") : [];
+  return {
+    openItems,
+    hasVisited: _welcomeCookie.hasVisited,
+    sidebarState: editorSidebarCookie.sidebarState
+  };
 }
 async function action({ request }) {
+  var _a;
   const formData = await request.formData();
   const cookieHeader = request.headers.get("Cookie");
-  const cookie = await editorOpenStateCookie.parse(cookieHeader) || {};
-  cookie.openItems = cookie.openItems = formData.get("openItems");
-  return new Response("", {
-    headers: {
-      "Set-Cookie": await editorOpenStateCookie.serialize(cookie)
-    }
-  });
+  if (formData.get("intent") === "updateOpenItems") {
+    const editorCookie = await editorOpenStateCookie.parse(cookieHeader) || {};
+    const newItems = ((_a = formData.get("openItems")) == null ? void 0 : _a.toString().split(",")) || [];
+    const uniqueItems = [...new Set(newItems)].filter((item) => !!item);
+    editorCookie.openItems = uniqueItems.join(",");
+    return new Response("", {
+      headers: {
+        "Set-Cookie": await editorOpenStateCookie.serialize(editorCookie)
+      }
+    });
+  }
+  if (formData.get("intent") === "updateHasVisited") {
+    const _welcomeCookie = await welcomeCookie.parse(cookieHeader) || {};
+    _welcomeCookie.hasVisited = "true";
+    return new Response("", {
+      headers: {
+        "Set-Cookie": await welcomeCookie.serialize(_welcomeCookie)
+      }
+    });
+  }
+  if (formData.get("intent") === "updateSidebarState") {
+    const editorSidebarCookie = await editorSidebarStateCookie.parse(cookieHeader) || {};
+    editorSidebarCookie.sidebarState = formData.get("sidebarState");
+    return new Response("", {
+      headers: {
+        "Set-Cookie": await editorSidebarStateCookie.serialize(editorSidebarCookie)
+      }
+    });
+  }
 }
 const meta = () => {
+  const title = `${SITE_NAME} - Create`;
+  const description = `Use ${SITE_NAME}'s easy-to-use editing tools and presets to download free cover images for your blog without the design headache.`;
+  const image = "/editor-dark.webp";
+  const url = `https://${DOMAIN}/create`;
+  const domain = DOMAIN;
   return [
-    { title: "CoverSnap | Easily Create Blog Cover Images" },
+    { title },
     {
       name: "description",
-      content: "Use the clean and easy-to-use editing tools to build your cover image. Download it when you are ready. Jump in!"
+      content: description
+    },
+    {
+      property: "og:title",
+      content: title
+    },
+    {
+      property: "og:description",
+      content: description
+    },
+    {
+      property: "og:image",
+      content: image
+    },
+    {
+      property: "og:url",
+      content: url
+    },
+    {
+      property: "og:type",
+      content: "website"
+    },
+    {
+      property: "og:site_name",
+      content: domain
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@Kieran6Dev"
+    },
+    {
+      property: "twitter:title",
+      content: title
+    },
+    {
+      property: "twitter:description",
+      content: description
+    },
+    {
+      property: "twitter:image",
+      content: image
+    },
+    {
+      property: "twitter:url",
+      content: url
+    },
+    {
+      property: "twitter:domain",
+      content: domain
     }
   ];
 };
@@ -1100,16 +2169,27 @@ function Create() {
         px: "lg",
         style: { borderBottom: "1px solid var(--mantine-color-default-border)" },
         children: /* @__PURE__ */ jsxs(Flex, { component: "nav", justify: "space-between", align: "center", children: [
-          /* @__PURE__ */ jsx(Anchor, { component: Link, to: "/", "aria-label": "CoverSnap logo", children: /* @__PURE__ */ jsx(Image, { src: "/favicon.ico", width: 36, height: 36, alt: "CoverSnap logo" }) }),
+          /* @__PURE__ */ jsx(Anchor, { component: Link, to: "/", "aria-label": `${SITE_NAME} logo`, children: /* @__PURE__ */ jsx(Image, { src: "/favicon.ico", width: 36, height: 36, alt: `${SITE_NAME} logo` }) }),
           /* @__PURE__ */ jsxs(Flex, { gap: "xs", children: [
-            /* @__PURE__ */ jsx(ColorSchemeToggle, {}),
+            /* @__PURE__ */ jsx(ThemeToggle, {}),
             /* @__PURE__ */ jsx(GitHubStarButton, { visibleFrom: "md", size: "sm", variant: "light" }),
             /* @__PURE__ */ jsx(MobileGithubButton, {})
           ] })
         ] })
       }
     ),
-    /* @__PURE__ */ jsx("main", { children: /* @__PURE__ */ jsx(EditorArea, {}) })
+    /* @__PURE__ */ jsx(
+      Box,
+      {
+        component: "main",
+        style: {
+          height: "calc(100vh - 69px)",
+          display: "flex",
+          flexDirection: "column"
+        },
+        children: /* @__PURE__ */ jsx(EditorArea, {})
+      }
+    )
   ] });
 }
 const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
@@ -1119,7 +2199,7 @@ const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   loader,
   meta
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-DYh11VBT.js", "imports": ["/assets/components-BNKHmFWC.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-CequxXvG.js", "imports": ["/assets/components-BNKHmFWC.js", "/assets/index-kgYb_6Zu.js", "/assets/MantineThemeProvider-C5m826AU.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-DA1t25TT.js", "imports": ["/assets/components-BNKHmFWC.js", "/assets/GitHubStarButton-DwhZ-WC1.js", "/assets/MantineThemeProvider-C5m826AU.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-BgTgz5_P.js", "imports": ["/assets/components-BNKHmFWC.js", "/assets/GitHubStarButton-DwhZ-WC1.js", "/assets/MantineThemeProvider-C5m826AU.js", "/assets/index-kgYb_6Zu.js"], "css": ["/assets/route-BfB2u-cs.css"] } }, "url": "/assets/manifest-e8f82e40.js", "version": "e8f82e40" };
+const serverManifest = { "entry": { "module": "/assets/entry.client--f8KK9x-.js", "imports": ["/assets/components-Dm8HcSpN.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-B_9_hCqA.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/index-Ci_gLne_.js", "/assets/MantineThemeProvider-Yo6tZTPa.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-D9X51C5_.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/GitHubStarButton-BN6r5uxL.js", "/assets/MantineThemeProvider-Yo6tZTPa.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-BsT9hbfP.js", "imports": ["/assets/components-Dm8HcSpN.js", "/assets/GitHubStarButton-BN6r5uxL.js", "/assets/MantineThemeProvider-Yo6tZTPa.js", "/assets/index-Ci_gLne_.js"], "css": ["/assets/route-X_nsH9s_.css"] } }, "url": "/assets/manifest-90f1a554.js", "version": "90f1a554" };
 const mode = "production";
 const assetsBuildDirectory = "build/client";
 const basename = "/";

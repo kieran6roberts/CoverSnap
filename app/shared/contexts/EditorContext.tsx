@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { useEffect } from 'react';

@@ -1,8 +1,9 @@
 import '@mantine/core/styles.css';
+import sonnerStyles from 'sonner/dist/styles.css?url';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/cloudflare';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
-import { Toaster } from 'sonner';
+import { ToastProvider } from '~/shared/providers/ToastProvider';
 
 export const links: LinksFunction = () => [
   {
@@ -22,7 +23,8 @@ export const links: LinksFunction = () => [
     href: '/favicon-16x16.png',
     sizes: '16x16'
   },
-  { rel: 'manifest', href: '/site.webmanifest' }
+  { rel: 'manifest', href: '/site.webmanifest' },
+  { rel: 'stylesheet', href: sonnerStyles }
 ];
 
 const theme = createTheme({
@@ -136,8 +138,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
-        <Toaster />
         <MantineProvider theme={theme}>{children}</MantineProvider>
+        <ToastProvider />
         <ScrollRestoration />
         <Scripts />
       </body>

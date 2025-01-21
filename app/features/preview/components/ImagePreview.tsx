@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Skeleton } from '@mantine/core';
 
 import { EditorHydration, useEditor } from '~/shared/contexts/EditorContext';

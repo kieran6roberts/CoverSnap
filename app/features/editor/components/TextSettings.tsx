@@ -1,3 +1,5 @@
+'use client';
+
 import { CloseButton, ColorInput, Stack, TextInput, NumberInput, Select, Fieldset } from '@mantine/core';
 
 import { useEditor } from '~/shared/contexts/EditorContext';
