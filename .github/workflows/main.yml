@@ -30,7 +30,7 @@ jobs:
           build: pnpm build
           start: pnpm start
           env: configFile=ci
-          wait-on: 'http://localhost:8788'
+          wait-on: 'http://localhost:3000'
           browser: chrome
           record: false
 
