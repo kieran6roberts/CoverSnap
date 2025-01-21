@@ -5,15 +5,16 @@ import { Link } from '@remix-run/react';
 import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { Footer } from '~/shared/layouts/Footer';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
+import editorLight from '~/images/editor-light.webp';
+import editorDark from '~/images/editor-dark.webp';
+import { DOMAIN, SITE_NAME } from '~/config/consts';
 
 export const meta: MetaFunction = () => {
-  const title = 'CvrSnap - Get your free blog post cover images.';
-  const description =
-    // eslint-disable-next-line quotes
-    "CvrSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.";
-  const image = '/home-dark.png';
-  const url = 'https://cvrsnap.com';
-  const domain = 'cvrsnap.com';
+  const title = `${SITE_NAME} - Get your free blog post cover images.`;
+  const description = `${SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.`;
+  const image = editorDark;
+  const url = `https://${DOMAIN}`;
+  const domain = DOMAIN;
 
   return [
     { title },
@@ -77,8 +78,8 @@ export const meta: MetaFunction = () => {
 };
 
 const heroImages = {
-  light: '/editor-light.png',
-  dark: '/editor-dark.png'
+  light: editorLight,
+  dark: editorDark
 } as const;
 
 export default function Index() {
@@ -88,7 +89,7 @@ export default function Index() {
         <Container size="lg">
           <Flex component="nav" justify="space-between" align="center">
             <Anchor size="sm" fz={{ base: '1.3rem', sm: '1.5rem' }} fw={500} variant="text" component={Link} to="/">
-              CvrSnap
+              {SITE_NAME}
             </Anchor>
             <ThemeToggle />
           </Flex>
@@ -102,7 +103,7 @@ export default function Index() {
               fz={{ base: '2.4rem', sm: '4.5rem' }}
               style={{ lineHeight: '1', zIndex: 1 }}
               fw={700}
-              aria-label="CvrSnap"
+              aria-label={SITE_NAME}
               maw={{ base: 500, sm: 700 }}
               mx="auto"
             >
@@ -114,8 +115,8 @@ export default function Index() {
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
-              CvrSnap empowers you to create great looking cover images for your blog posts in seconds using easy to use
-              editing tools. No design skills required and it's completely free to download your image.
+              {SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds using easy to
+              use editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
               <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">
@@ -144,14 +145,14 @@ export default function Index() {
             <Image
               lightHidden
               src={heroImages['dark']}
-              alt="CvrSnap create page screenshot"
+              alt={`${SITE_NAME} create page screenshot`}
               radius="md"
               loading="eager"
             />
             <Image
               darkHidden
               src={heroImages['light']}
-              alt="CvrSnap create page screenshot"
+              alt={`${SITE_NAME} create page screenshot`}
               radius="md"
               loading="eager"
             />

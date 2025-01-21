@@ -58,7 +58,6 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
   const fetcher = useFetcher();
   const { openItems } = useLoaderData<EditorLoaderData>();
 
-  // Optimistic value
   const currentOpenItems = fetcher.formData ? fetcher.formData.get('openItems')?.toString().split(',') : openItems;
 
   const { resetEditor, cover } = useEditor();

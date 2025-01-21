@@ -2,6 +2,8 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
 import type { EditorLoaderData } from '~/features/preview/types/editor';
+import welcomeImage from '~/images/welcome.webp';
+import { SITE_NAME } from '~/config/consts';
 
 export function WelcomeModal() {
   const fetcher = useFetcher();
@@ -29,7 +31,7 @@ export function WelcomeModal() {
           size="md"
         >
           <Stack>
-            <Image src="/welcome.png" radius="md" alt="Welcome to CvrSnap cover" width={400} height={200} />
+            <Image src={welcomeImage} radius="md" alt={`Welcome to ${SITE_NAME} cover`} width={400} height={200} />
             <Text>
               Use the editing sidebar to adjust your content, layout, background and more. Several new templates are
               coming soon.

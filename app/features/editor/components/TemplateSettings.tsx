@@ -1,7 +1,7 @@
 import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
 
 import { useEditor } from '~/shared/contexts/EditorContext';
-import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts';
+import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
 import { LayoutTemplatePreview } from '~/features/editor/components/LayoutTemplatePreview';
 import { BackgroundTemplatePreview } from '~/features/editor/components/BackgroundTemplatePreview';
 
@@ -32,13 +32,7 @@ export function TemplateSettings() {
                   onClick={() => updateTemplate({ ...template, backgroundId: t.id })}
                 >
                   {t.preview({
-                    children: (
-                      <BackgroundTemplatePreview
-                        coverClasses={t.previewStyles?.cover ?? ''}
-                        previewSection1Classes={t.previewStyles?.section1 ?? ''}
-                        isSelected={isSelected}
-                      />
-                    )
+                    children: <BackgroundTemplatePreview styles={t.previewStyles ?? ''} isSelected={isSelected} />
                   })}
                 </UnstyledButton>
               </Stack>

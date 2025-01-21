@@ -1,37 +1,25 @@
-import fs from 'file-saver';
 import * as htmlToImage from 'html-to-image';
 
-export async function saveDomNodeAsImage(
+export async function getBlobFromDomNode(
   node: React.RefObject<HTMLElement>['current'],
   cover: { width: number; height: number; aspectRatio: number }
 ) {
-  if (!node) return { success: false, blob: null };
-
   const TARGET_WIDTH = cover.width;
   const TARGET_HEIGHT = cover.height;
 
-  try {
-    const blob = await htmlToImage.toBlob(node, {
-      quality: 1,
-      pixelRatio: 1,
-      canvasWidth: TARGET_WIDTH,
-      canvasHeight: TARGET_HEIGHT,
-      style: {
-        margin: '0',
-        border: '0',
-        borderRadius: '0',
-        transform: 'scale(1)',
-        transformOrigin: 'top left'
-      }
-    });
-
-    if (!blob) {
-      throw new Error('Failed to generate blob');
+  const blob = await htmlToImage.toBlob(node, {
+    quality: 1,
+    pixelRatio: 1,
+    canvasWidth: TARGET_WIDTH,
+    canvasHeight: TARGET_HEIGHT,
+    style: {
+      margin: '0',
+      border: '0',
+      borderRadius: '0',
+      transform: 'scale(1)',
+      transformOrigin: 'top left'
     }
-    fs.saveAs(blob, 'cvrsnap-cover.png');
-    return { success: true, blob };
-  } catch (_error) {
-    console.error(_error);
-    return { success: false, blob: null };
-  }
+  });
+
+  return blob;
 }

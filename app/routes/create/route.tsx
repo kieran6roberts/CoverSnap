@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import { Flex, Anchor, Box, Image } from '@mantine/core';
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { Link, MetaFunction } from '@remix-run/react';
@@ -9,6 +8,7 @@ import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { MobileGithubButton } from '~/shared/components/MobileGitHubButton';
 import { EditorArea } from '~/shared/layouts/EditorArea';
 import { editorOpenStateCookie, editorSidebarStateCookie, welcomeCookie } from '~/routes/create/cookies';
+import { DOMAIN, SITE_NAME } from '~/config/consts';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get('Cookie');
@@ -66,12 +66,11 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export const meta: MetaFunction = () => {
-  const title = 'CvrSnap - Create';
-  const description =
-    "Use CvrSnap's easy-to-use editing tools and presets to download free cover images for your blog without the design headache.";
-  const image = '/editor-dark.png';
-  const url = 'https://cvrsnap.com/create';
-  const domain = 'cvrsnap.com';
+  const title = `${SITE_NAME} - Create`;
+  const description = `Use ${SITE_NAME}'s easy-to-use editing tools and presets to download free cover images for your blog without the design headache.`;
+  const image = '/editor-dark.webp';
+  const url = `https://${DOMAIN}/create`;
+  const domain = DOMAIN;
 
   return [
     { title },
@@ -147,8 +146,8 @@ export default function Create() {
         style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
       >
         <Flex component="nav" justify="space-between" align="center">
-          <Anchor component={Link} to="/" aria-label="CvrSnap logo">
-            <Image src="/favicon.ico" width={36} height={36} alt="CvrSnap logo" />
+          <Anchor component={Link} to="/" aria-label={`${SITE_NAME} logo`}>
+            <Image src="/favicon.ico" width={36} height={36} alt={`${SITE_NAME} logo`} />
           </Anchor>
           <Flex gap="xs">
             <ThemeToggle />

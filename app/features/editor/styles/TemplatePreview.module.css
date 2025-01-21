@@ -1,3 +1,14 @@
+:root {
+  --clip-path-diagonal-split-1: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+  --clip-path-diagonal-split-2: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+  --clip-path-diagonal-split-reverse-1: polygon(0 0, 40% 0, 60% 100%, 0 100%);
+  --clip-path-diagonal-split-reverse-2: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
+  --clip-path-horizontal-split-1: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  --clip-path-horizontal-split-2: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  --clip-path-vertical-split-1: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+  --clip-path-vertical-split-2: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+}
+
 .previewContainer {
   display: flex;
   position: relative;
@@ -102,12 +113,12 @@
 }
 
 .previewSection--diagonal-left {
-  clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+  clip-path: var(--clip-path-diagonal-split-1);
   background-color: var(--mantine-color-gray-6);
 }
 
 .previewSection--vertical-left {
-  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+  clip-path: var(--clip-path-vertical-split-1);
   background-color: var(--mantine-color-gray-6);
 }
 
@@ -128,13 +139,13 @@
 
 /* Diagonal Left (Reverse) */
 .previewSection--diagonal-left-reverse {
-  clip-path: polygon(0 0, 40% 0, 60% 100%, 0 100%);
+  clip-path: var(--clip-path-diagonal-split-reverse-1);
   background-color: var(--mantine-color-gray-6);
 }
 
 /* Horizontal Split (X-split) */
 .previewSection--horizontal-top {
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  clip-path: var(--clip-path-horizontal-split-1);
   background-color: var(--mantine-color-gray-6);
 }
 
