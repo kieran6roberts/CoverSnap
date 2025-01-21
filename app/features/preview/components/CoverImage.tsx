@@ -1,6 +1,5 @@
-import { Box, Flex, Button, LoadingOverlay, Select, ActionIcon, Skeleton } from '@mantine/core';
-import type { ButtonProps } from '@mantine/core';
-import { ArrowRightTag, Download, Restart } from 'iconoir-react';
+import { Box, ActionIcon } from '@mantine/core';
+import { ArrowRightTag } from 'iconoir-react';
 import { lazy } from 'react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
@@ -9,28 +8,13 @@ import classes from '~/features/preview/styles/CoverImage.module.css';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { ImagePreview } from '~/features/preview/components/ImagePreview';
-import { IMAGE_DOWNLOAD_SIZES } from '~/features/editor/consts';
 import { updateCSSVariables } from '~/shared/utils/styles';
 import { EditorLoaderData } from '~/features/preview/types/editor';
 import { CREATE_ROUTE } from '~/config/consts';
+import { CoverImageControls } from '~/features/preview/components/CoverImageControls';
+import { CoverImageSize } from '~/features/preview/components/CoverImageSize';
 
 const Confetti = lazy(() => import('~/features/preview/components/Confetti'));
-
-const DownloadButton = ({
-  isLoading,
-  downloadImage,
-  ...props
-}: {
-  isLoading: boolean;
-  downloadImage: () => void;
-} & ButtonProps) => {
-  return (
-    <Button onClick={downloadImage} size="md" rightSection={<Download width={24} height={24} />} {...props}>
-      <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-      Download image
-    </Button>
-  );
-};
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const { resetEditor, updateCover, cover, _hasHydrated } = useEditor();
@@ -41,7 +25,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
   const isSidebarOpen = currentSidebarState !== 'closed';
   const defaultImageSize = `${cover.id}:${cover.aspectRatio}:${cover.width}x${cover.height}`;
 
-  const { isLoading, isSuccessModalOpen, closeSuccessModal, downloadImage } = useImageDownload({
+  const { isLoading, isSuccessModalOpen, isDownloadDisabled, closeSuccessModal, downloadImage } = useImageDownload({
     imageRef: imageNodeRef,
     cover
   });
@@ -90,35 +74,20 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             <ArrowRightTag width={18} height={18} />
           </ActionIcon>
         ) : null}
-        <Skeleton visible={!_hasHydrated} maw="max-content">
-          <Select
-            label="Image download size"
-            value={defaultImageSize}
-            data={Object.values(IMAGE_DOWNLOAD_SIZES).map((size) => ({
-              value: size.value,
-              label: `${size.width}x${size.height} ${size.label} `
-            }))}
-            onChange={(value) => onAspectRatioChange(value)}
-            clearable={false}
-            allowDeselect={false}
-            comboboxProps={{ width: 'max-content', position: 'bottom' }}
-            checkIconPosition="right"
-          />
-        </Skeleton>
+        <CoverImageSize
+          defaultImageSize={defaultImageSize}
+          onAspectRatioChange={onAspectRatioChange}
+          _hasHydrated={_hasHydrated}
+        />
         <ImagePreview imageNodeRef={imageNodeRef} />
-        <Flex gap="xs" justify="center" wrap="wrap">
-          <Button
-            visibleFrom="md"
-            onClick={resetStyles}
-            size="md"
-            rightSection={<Restart width={24} height={24} />}
-            variant="outline"
-          >
-            Reset applied styles
-          </Button>
 
-          <DownloadButton isLoading={isLoading} downloadImage={downloadImage} visibleFrom="md" />
-        </Flex>
+        <CoverImageControls
+          {...(isDownloadDisabled
+            ? {
+                isDownloadDisabled: true
+              }
+            : { isLoading, resetStyles, downloadImage, isDownloadDisabled: false })}
+        />
       </Box>
 
       {isSuccessModalOpen && <DownloadSuccessModal close={closeSuccessModal} />}
