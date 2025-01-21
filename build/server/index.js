@@ -1,3 +1,4 @@
+import { createRequestHandler } from "@netlify/vite-plugin-react-router";
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { PassThrough } from "node:stream";
 import { createReadableStreamFromReadable } from "@react-router/node";
@@ -190,7 +191,6 @@ const theme = createTheme({
 function Layout({
   children
 }) {
-  const isProd = process.env.NODE_ENV === "production";
   return /* @__PURE__ */ jsxs("html", {
     lang: "en",
     children: [/* @__PURE__ */ jsxs("head", {
@@ -199,12 +199,7 @@ function Layout({
       }), /* @__PURE__ */ jsx("meta", {
         name: "viewport",
         content: "width=device-width, initial-scale=1"
-      }), /* @__PURE__ */ jsx(Meta, {}), /* @__PURE__ */ jsx(Links, {}), isProd ? /* @__PURE__ */ jsx("script", {
-        defer: true,
-        "data-domain": "cvrsnap.com",
-        "data-api": "/anl/event",
-        src: "/anl/script.js"
-      }) : null, /* @__PURE__ */ jsx(ColorSchemeScript, {
+      }), /* @__PURE__ */ jsx(Meta, {}), /* @__PURE__ */ jsx(Links, {}), /* @__PURE__ */ jsx(ColorSchemeScript, {
         defaultColorScheme: "dark"
       })]
     }), /* @__PURE__ */ jsxs("body", {
@@ -2277,7 +2272,7 @@ const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   loader,
   meta
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-vTr8iGI7.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-DBe0Axw0.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/MantineThemeProvider-D9umXcey.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-DaVuEIrK.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-3-Eucae3.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/route-X_nsH9s_.css"] } }, "url": "/assets/manifest-cb3fb2b0.js", "version": "cb3fb2b0" };
+const serverManifest = { "entry": { "module": "/assets/entry.client-vTr8iGI7.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-Cp8-Z2-C.js", "imports": ["/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/MantineThemeProvider-D9umXcey.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/root-6q_rHjqV.css"] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-DaVuEIrK.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js"], "css": [] }, "routes/create": { "id": "routes/create", "parentId": "root", "path": "create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/route-3-Eucae3.js", "imports": ["/assets/MantineThemeProvider-D9umXcey.js", "/assets/chunk-SYFQ2XB5-C7tHbInG.js", "/assets/GitHubStarButton-BeIPw8VR.js", "/assets/index-sgCiKOWf.js"], "css": ["/assets/route-X_nsH9s_.css"] } }, "url": "/assets/manifest-a6d417f7.js", "version": "a6d417f7" };
 const assetsBuildDirectory = "build/client";
 const basename = "/";
 const future = { "unstable_optimizeDeps": false };
@@ -2310,8 +2305,9 @@ const routes = {
     module: route2
   }
 };
-export {
-  serverManifest as assets,
+const build = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  assets: serverManifest,
   assetsBuildDirectory,
   basename,
   entry,
@@ -2319,4 +2315,11 @@ export {
   isSpaMode,
   publicPath,
   routes
+}, Symbol.toStringTag, { value: "Module" }));
+const _virtual_netlifyServer = createRequestHandler({
+  build,
+  getLoadContext: async (_req, ctx) => ctx
+});
+export {
+  _virtual_netlifyServer as default
 };
