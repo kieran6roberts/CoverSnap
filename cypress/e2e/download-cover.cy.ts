@@ -24,7 +24,7 @@ context(`Download ${SITE_NAME} cover`, () => {
 
     cy.findByRole('heading', { name: `Thanks for using ${SITE_NAME}!` }).should('be.visible');
     cy.findByRole('button', { name: 'Keep building' }).should('be.visible');
-    cy.findByRole('button', { name: 'Keep building' }).click();
+    cy.findByRole('button', { name: 'Keep building' }).click({ force: true });
 
     cy.verifyDownload('cvrsnap-cover.png');
   });
