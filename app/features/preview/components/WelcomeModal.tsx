@@ -1,28 +1,19 @@
-'use client';
-import { useFetcher, useLoaderData } from 'react-router';
 import { Modal, Text, Stack, Button, Image } from '@mantine/core';
 
-import type { EditorLoaderData } from '~/features/preview/types/editor';
 import welcomeImage from '~/images/welcome.webp';
 import { SITE_NAME } from '~/config/consts';
+import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 
 export function WelcomeModal() {
-  const fetcher = useFetcher();
-  const { hasVisited } = useLoaderData<EditorLoaderData>();
-
-  const hasVisitedEditor = fetcher.formData ? fetcher.formData.get('hasVisited') === 'true' : hasVisited;
-
-  const handleClose = () => {
-    fetcher.submit({ hasVisited: 'true', intent: 'updateHasVisited' }, { method: 'post' });
-  };
+  const { hasSeenWelcome, setHasSeenWelcome } = useEditorUIStore();
 
   return (
     <>
-      {!hasVisitedEditor && (
+      {!hasSeenWelcome && (
         <Modal
           centered
-          opened={!hasVisitedEditor}
-          onClose={handleClose}
+          opened={!hasSeenWelcome}
+          onClose={() => setHasSeenWelcome(true)}
           fz="xl"
           title={
             <Text size="xl" fw={500}>
@@ -38,7 +29,7 @@ export function WelcomeModal() {
               coming soon.
             </Text>
             <Text>When you are done, select your preferred download size and hit the download button. Enjoy!</Text>
-            <Button variant="filled" fullWidth data-autofocus onClick={handleClose}>
+            <Button variant="filled" fullWidth data-autofocus onClick={() => setHasSeenWelcome(true)}>
               Start editing
             </Button>
           </Stack>

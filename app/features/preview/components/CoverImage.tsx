@@ -1,30 +1,23 @@
-'use client';
-
 import { Box, ActionIcon } from '@mantine/core';
 import { ArrowRightTag } from 'iconoir-react';
 import { lazy } from 'react';
-import { useFetcher, useLoaderData } from 'react-router';
 
-import { useEditor } from '~/shared/contexts/EditorContext';
+import { useEditor } from '~/shared/stores/EditorContext';
 import classes from '~/features/preview/styles/CoverImage.module.css';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { ImagePreview } from '~/features/preview/components/ImagePreview';
 import { updateCSSVariables } from '~/shared/utils/styles';
-import { EditorLoaderData } from '~/features/preview/types/editor';
-import { CREATE_ROUTE } from '~/config/consts';
 import { CoverImageControls } from '~/features/preview/components/CoverImageControls';
 import { CoverImageSize } from '~/features/preview/components/CoverImageSize';
+import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 
 const Confetti = lazy(() => import('~/features/preview/components/Confetti'));
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
   const { resetEditor, updateCover, cover, _hasHydrated } = useEditor();
-  const fetcher = useFetcher();
-  const { sidebarState } = useLoaderData<EditorLoaderData>();
+  const { isDrawerOpen, setDrawerOpen } = useEditorUIStore();
 
-  const currentSidebarState = fetcher.formData ? fetcher.formData.get('sidebarState') : sidebarState;
-  const isSidebarOpen = currentSidebarState !== 'closed';
   const defaultImageSize = `${cover.id}:${cover.aspectRatio}:${cover.width}x${cover.height}`;
 
   const { isLoading, isSuccessModalOpen, isDownloadDisabled, closeSuccessModal, downloadImage } = useImageDownload({
@@ -34,16 +27,6 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
 
   const resetStyles = () => {
     resetEditor();
-  };
-
-  const onSidebarChange = (value: boolean) => {
-    fetcher.submit(
-      { sidebarState: value ? 'true' : 'false', intent: 'updateSidebarState' },
-      {
-        method: 'post',
-        action: CREATE_ROUTE
-      }
-    );
   };
 
   const onAspectRatioChange = (value: string | null) => {
@@ -61,13 +44,13 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
   return (
     <>
       <Box className={classes.coverWrapper}>
-        {!isSidebarOpen ? (
+        {!isDrawerOpen ? (
           <ActionIcon
             visibleFrom="md"
             pos="absolute"
             top={16}
             left={20}
-            onClick={() => onSidebarChange(true)}
+            onClick={() => setDrawerOpen(true)}
             title="Open sidebar"
             variant="default"
             size={28}

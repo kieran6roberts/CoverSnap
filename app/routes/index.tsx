@@ -119,10 +119,10 @@ export default function Index() {
               use editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
-              <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">
+              <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled" viewTransition>
                 Build for free
               </Button>
-              <Button visibleFrom="sm" component={Link} to="/create" size="lg" variant="filled">
+              <Button visibleFrom="sm" component={Link} to="/create" size="lg" variant="filled" viewTransition>
                 Build for free
               </Button>
               <GitHubStarButton hiddenFrom="sm" size="md" variant="outline" />

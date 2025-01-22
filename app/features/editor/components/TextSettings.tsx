@@ -1,8 +1,6 @@
-'use client';
-
 import { CloseButton, ColorInput, Stack, TextInput, NumberInput, Select, Fieldset } from '@mantine/core';
 
-import { useEditor } from '~/shared/contexts/EditorContext';
+import { useEditor } from '~/shared/stores/EditorContext';
 import {
   PRIMARY_TEXT_LENGTH,
   SECONDARY_TEXT_LENGTH,

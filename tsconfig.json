@@ -6,7 +6,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@react-router/node", "vite/client"],
+    "types": ["vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

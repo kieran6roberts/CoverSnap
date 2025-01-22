@@ -1,8 +1,6 @@
-'use client';
-
 import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
 
-import { useEditor } from '~/shared/contexts/EditorContext';
+import { useEditor } from '~/shared/stores/EditorContext';
 import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
 import { LayoutTemplatePreview } from '~/features/editor/components/LayoutTemplatePreview';
 import { BackgroundTemplatePreview } from '~/features/editor/components/BackgroundTemplatePreview';
