@@ -1,3 +1,5 @@
+import { config } from "../config";
+
 export const frontend = new sst.aws.StaticSite("Frontend", {
   path: "packages/frontend",
   build: {
@@ -8,8 +10,8 @@ export const frontend = new sst.aws.StaticSite("Frontend", {
   domain:
   $app.stage === "production"
     ? {
-        name: "cvrsnap.com",
-        redirects: ["www.cvrsnap.com"],
+        name: config.domain,
+        redirects: [`www.${config.domain}`],
       }
     : undefined,
 });
