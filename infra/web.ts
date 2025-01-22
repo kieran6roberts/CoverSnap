@@ -8,7 +8,7 @@ export const frontend = new sst.aws.StaticSite("Frontend", {
   },
   indexPage: "index.html",
   domain:
-  $app.stage === "production"
+  $app.stage === 'production'
     ? {
         name: config.domain,
         redirects: [`www.${config.domain}`],

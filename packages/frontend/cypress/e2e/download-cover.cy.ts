@@ -18,7 +18,7 @@ context(`Download ${SITE_NAME} cover`, () => {
 
     cy.log('User can download the cover image');
     cy.findByRole('button', { name: 'Download image' }).should('exist');
-    cy.findByRole('button', { name: 'Download image' }).click();
+    cy.findByRole('button', { name: 'Download image' }).trigger('click');
 
     cy.log('Download success modal should be shown');
 
