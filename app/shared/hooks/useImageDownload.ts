@@ -1,5 +1,3 @@
-'use client';
-
 import { useDisclosure } from '@mantine/hooks';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';

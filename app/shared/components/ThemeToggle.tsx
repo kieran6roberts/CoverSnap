@@ -1,16 +1,13 @@
-'use client';
-
-import { ActionIcon, Box, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Box, useMantineColorScheme } from '@mantine/core';
 import { SunLight, HalfMoon } from 'iconoir-react';
 import { SITE_THEMES } from '~/config/consts';
 
 export function ThemeToggle() {
-  const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme(SITE_THEMES.light, { getInitialValueInEffect: true });
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   return (
     <ActionIcon
-      onClick={() => setColorScheme(computedColorScheme === SITE_THEMES.light ? SITE_THEMES.dark : SITE_THEMES.light)}
+      onClick={() => setColorScheme(colorScheme === SITE_THEMES.light ? SITE_THEMES.dark : SITE_THEMES.light)}
       variant="default"
       size={36}
       aria-label="Toggle color scheme"

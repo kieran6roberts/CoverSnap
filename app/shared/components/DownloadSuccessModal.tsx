@@ -1,5 +1,3 @@
-'use client';
-
 import { Modal, Stack, Button, Flex, Text, Divider, Anchor } from '@mantine/core';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -10,12 +8,12 @@ import { GITHUB_URL, SITE_NAME } from '~/config/consts';
 
 export function DownloadSuccessModal({ close }: { close: () => void }) {
   useEffect(() => {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       toast.success('Image downloaded successfully.', {
         icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />,
         id: 'download-success'
       });
-    }, 0);
+    });
   }, []);
 
   return (

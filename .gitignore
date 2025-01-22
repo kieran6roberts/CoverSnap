@@ -4,7 +4,6 @@ build
 .env
 /public/.DS_Store
 .DS_Store
-.dev.vars
-.wrangler
-wrangler.toml
+.react-router/
+
 

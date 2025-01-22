@@ -1,8 +1,6 @@
-'use client';
-
 import { Box, Skeleton } from '@mantine/core';
 
-import { EditorHydration, useEditor } from '~/shared/contexts/EditorContext';
+import { EditorHydration, useEditor } from '~/shared/stores/EditorContext';
 import classes from '~/features/preview/styles/CoverImage.module.css';
 import { BACKGROUND_TEMPLATES } from '~/features/editor/consts/templates';
 

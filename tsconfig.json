@@ -1,20 +1,12 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx",
-    "cypress.config.ts"
-  ],
-  "exclude": ["node_modules", "build"],
+  "include": ["**/*.ts", "**/*.tsx", "cypress.config.ts"],
+  "exclude": ["node_modules", "build", ".react-router"],
   "compilerOptions": {
     "alwaysStrict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@remix-run/cloudflare", "vite/client"],
+    "types": ["vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

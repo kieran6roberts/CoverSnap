@@ -1,6 +1,6 @@
-import type { MetaFunction } from '@remix-run/cloudflare';
+import type { MetaFunction } from 'react-router';
 import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link } from 'react-router';
 
 import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { Footer } from '~/shared/layouts/Footer';
@@ -119,10 +119,10 @@ export default function Index() {
               use editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
-              <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled">
+              <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled" viewTransition>
                 Build for free
               </Button>
-              <Button visibleFrom="sm" component={Link} to="/create" size="lg" variant="filled">
+              <Button visibleFrom="sm" component={Link} to="/create" size="lg" variant="filled" viewTransition>
                 Build for free
               </Button>
               <GitHubStarButton hiddenFrom="sm" size="md" variant="outline" />

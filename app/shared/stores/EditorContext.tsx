@@ -1,5 +1,3 @@
-'use client';
-
 import { create } from 'zustand';
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { useEffect } from 'react';
@@ -269,6 +267,7 @@ export const useEditor = create(
         },
         cover: state.cover
       }),
+      version: 1,
       onRehydrateStorage: () => (state, error) => {
         if (error) {
           setTimeout(() => {

@@ -1,5 +1,3 @@
-'use client';
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ColorInput,
@@ -18,7 +16,7 @@ import {
 import { MediaImageFolder, Check } from 'iconoir-react';
 import * as patterns from 'hero-patterns';
 
-import { useEditor } from '~/shared/contexts/EditorContext';
+import { useEditor } from '~/shared/stores/EditorContext';
 import { updateCSSVariables } from '~/shared/utils/styles';
 import classes from '~/features/editor/styles/BackgroundSection.module.css';
 import { decimalToPercentage } from '~/features/editor/utils';

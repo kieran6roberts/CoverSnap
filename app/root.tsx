@@ -1,7 +1,6 @@
 import '@mantine/core/styles.css';
-import sonnerStyles from 'sonner/dist/styles.css?url';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/cloudflare';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteError } from 'react-router';
+import type { LinksFunction } from 'react-router';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
 
@@ -23,8 +22,7 @@ export const links: LinksFunction = () => [
     href: '/favicon-16x16.png',
     sizes: '16x16'
   },
-  { rel: 'manifest', href: '/site.webmanifest' },
-  { rel: 'stylesheet', href: sonnerStyles }
+  { rel: 'manifest', href: '/site.webmanifest' }
 ];
 
 const theme = createTheme({
@@ -123,7 +121,7 @@ const theme = createTheme({
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const isProd = process.env.NODE_ENV === 'production';
+  // const isProd = process.env.NODE_ENV === 'production';
 
   return (
     <html lang="en">
@@ -132,9 +130,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        {isProd ? (
-          <script data-domain="cvrsnap.com" data-api="/discover/anl/event" src="/discover/anl/script.js" />
-        ) : null}
+        {/* {isProd ? <script defer data-domain="cvrsnap.com" data-api="/anl/event" src="/anl/script.js" /> : null} */}
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
@@ -149,4 +145,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return <Outlet />;
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

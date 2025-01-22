@@ -1,5 +1,5 @@
 import { Flex, Button, ButtonProps } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link } from 'react-router';
 import { Github } from 'iconoir-react';
 
 import { GITHUB_URL } from '~/config/consts';

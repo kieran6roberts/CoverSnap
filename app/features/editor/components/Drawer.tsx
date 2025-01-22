@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Text,
   Accordion,
@@ -14,17 +12,15 @@ import {
   ActionIcon
 } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag } from 'iconoir-react';
-import { useFetcher, useLoaderData } from '@remix-run/react';
 
-import type { EditorLoaderData } from '~/features/preview/types/editor';
 import classes from '~/features/editor/styles/EditorDrawer.module.css';
 import { TextSettings } from '~/features/editor/components/TextSettings';
 import { BackgroundSettings } from '~/features/editor/components/BackgroundSettings';
 import { TemplateSettings } from '~/features/editor/components/TemplateSettings';
-import { useEditor, EditorHydration } from '~/shared/contexts/EditorContext';
+import { useEditor, EditorHydration } from '~/shared/stores/EditorContext';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
-import { CREATE_ROUTE } from '~/config/consts';
+import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 
 const editSections = [
   {
@@ -57,37 +53,13 @@ const editSections = [
 ];
 
 export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
-  const fetcher = useFetcher();
-  const { openItems } = useLoaderData<EditorLoaderData>();
-
-  const currentOpenItems = fetcher.formData ? fetcher.formData.get('openItems')?.toString().split(',') : openItems;
-
+  const { setDrawerOpen, openSections, setOpenSections } = useEditorUIStore();
   const { resetEditor, cover } = useEditor();
 
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
     imageRef: imageNodeRef,
     cover
   });
-
-  const onAccordionChange = (values: string[]) => {
-    fetcher.submit(
-      { openItems: values, intent: 'updateOpenItems' },
-      {
-        method: 'post',
-        action: CREATE_ROUTE
-      }
-    );
-  };
-
-  const onHideSidebar = () => {
-    fetcher.submit(
-      { sidebarState: 'closed', intent: 'updateSidebarState' },
-      {
-        method: 'post',
-        action: CREATE_ROUTE
-      }
-    );
-  };
 
   const items = editSections.map((item) => {
     return (
@@ -139,7 +111,7 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           </Title>
           <ActionIcon
             visibleFrom="md"
-            onClick={onHideSidebar}
+            onClick={() => setDrawerOpen(false)}
             variant="default"
             size={28}
             title="Close sidebar"
@@ -150,22 +122,22 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
         </Flex>
         <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px)">
           <Accordion
+            value={openSections}
+            onChange={setOpenSections}
             transitionDuration={0}
             radius="md"
             multiple
-            value={currentOpenItems}
-            onChange={onAccordionChange}
             variant="default"
           >
             {items}
           </Accordion>
         </ScrollArea>
         <Accordion
+          value={openSections}
+          onChange={setOpenSections}
           hiddenFrom="md"
           radius="md"
           multiple
-          value={currentOpenItems}
-          onChange={onAccordionChange}
           variant="default"
           pb={80}
         >
