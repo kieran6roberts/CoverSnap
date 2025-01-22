@@ -2,11 +2,8 @@ import { DOMAIN } from '~/config/consts';
 
 export const loader = async () => {
   const baseUrl = `https://${DOMAIN}`;
-  
-  const routes = [
-    '/',
-    '/create'
-  ];
+
+  const routes = ['/', '/create'];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
