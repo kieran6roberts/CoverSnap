@@ -6,7 +6,6 @@
   "sideEffects": false,
   "scripts": {
     "build": "react-router build",
-    "start": "react-router-serve ./build/server/index.js",
     "preview": "pnpm build && pnpm start",
     "dev": "react-router dev",
     "lint": "eslint .",
