@@ -5,8 +5,10 @@ interface EditorUIState {
   isDrawerOpen: boolean;
   openSections: string[];
   hasSeenWelcome: boolean;
+  isHydrated: boolean;
 
   setDrawerOpen: (isOpen: boolean) => void;
+  setHasHydrated: (isHydrated: boolean) => void;
   setOpenSections: (sections: string[]) => void;
   setHasSeenWelcome: (hasSeen: boolean) => void;
 }
@@ -17,8 +19,10 @@ export const useEditorUIStore = create<EditorUIState>()(
       isDrawerOpen: true,
       openSections: [],
       hasSeenWelcome: false,
+      isHydrated: false,
 
       setDrawerOpen: (isOpen: boolean) => set({ isDrawerOpen: isOpen }),
+      setHasHydrated: (isHydrated: boolean) => set({ isHydrated: isHydrated }),
       setOpenSections: (sections: string[]) => set({ openSections: sections }),
       setHasSeenWelcome: (hasSeen: boolean) => set({ hasSeenWelcome: hasSeen })
     }),
@@ -30,7 +34,10 @@ export const useEditorUIStore = create<EditorUIState>()(
         openSections: state.openSections,
         hasSeenWelcome: state.hasSeenWelcome
       }),
-      version: 1
+      version: 1,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      }
     }
   )
 );

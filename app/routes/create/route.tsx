@@ -7,6 +7,7 @@ import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { MobileGithubButton } from '~/shared/components/MobileGitHubButton';
 import { EditorArea } from '~/shared/layouts/EditorArea';
 import { DOMAIN, SITE_NAME } from '~/config/consts';
+import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Create`;
@@ -77,9 +78,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Create() {
+  const { hasSeenWelcome, isHydrated, setHasSeenWelcome } = useEditorUIStore();
   return (
     <>
-      <WelcomeModal />
+      <WelcomeModal isOpen={!hasSeenWelcome && isHydrated} hideWelcome={() => setHasSeenWelcome(true)} />
 
       <Box
         component="header"
