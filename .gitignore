@@ -1,9 +1,20 @@
+# dependencies
 node_modules
-/.cache
-build
+
+# sst
+.sst
+
+# tmp files
+.#*
+
+# env 
+.env*.local
 .env
-/public/.DS_Store
+
+# opennext
+.open-next
+
+# misc
 .DS_Store
-.react-router/
 
 

@@ -30,23 +30,14 @@ CvrSnap empowers you to create great looking cover images for your blog posts in
 ## Tech Stack
 
 - React
-- Remix.run
+- React Router v7
 - TypeScript
 - MantineUI
+- SST-AWS CloudFront+S3
 
 ## Contributing
 
-Contributions are currently not open, but I'm open to it in the future.
-
-## Development
-
-Running the dev server: `pnpm dev`
-
-Type check + lint + formatting: `pnpm format:all`
-
-## Tests
-
-Running tests locally: `pnpm tests:run`
+Contributions are currently not open.
 
 ## Feedback
 
