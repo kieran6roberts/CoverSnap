@@ -121,7 +121,7 @@ const theme = createTheme({
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  // const isProd = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === 'production';
 
   return (
     <html lang="en" {...mantineHtmlProps}>
@@ -131,7 +131,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript defaultColorScheme="dark" />
         <Meta />
         <Links />
-        {/* {isProd ? <script defer data-domain="cvrsnap.com" data-api="/anl/event" src="/anl/script.js" /> : null} */}
+
+        {isProd ? <script defer data-domain="cvrsnap.com" src="https://plausible.io/js/script.js"></script> : null}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
