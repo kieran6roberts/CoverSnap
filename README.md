@@ -33,7 +33,7 @@ CvrSnap empowers you to create great looking cover images for your blog posts in
 - React Router v7
 - TypeScript
 - MantineUI
-- SST/AWS
+- SST-AWS CloudFront+S3
 
 ## Contributing
 
