@@ -1,0 +1,12 @@
+{
+  "name": "@cvrsnap/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@cvrsnap/core": "workspace:*",
+    "sst": "*"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8"
+  }
+}
