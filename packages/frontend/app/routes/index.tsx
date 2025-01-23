@@ -1,13 +1,13 @@
 import type { MetaFunction } from 'react-router';
-import { Container, Title, Text, Flex, Anchor, Stack, Button, Box, Image, Mark } from '@mantine/core';
+import { Container, Title, Text, Flex, Stack, Button, Box, Image, Mark } from '@mantine/core';
 import { Link } from 'react-router';
 
-import { ThemeToggle } from '~/shared/components/ThemeToggle';
 import { Footer } from '~/shared/layouts/Footer';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
 import editorLight from '~/images/editor-light.webp';
 import editorDark from '~/images/editor-dark.webp';
 import { DOMAIN, SITE_NAME } from '~/config/consts';
+import { Navbar } from '~/shared/layouts/Navbar';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
@@ -85,16 +85,7 @@ const heroImages = {
 export default function Index() {
   return (
     <>
-      <Box component="header" w="100%" py="md">
-        <Container size="lg">
-          <Flex component="nav" justify="space-between" align="center">
-            <Anchor size="sm" fz={{ base: '1.3rem', sm: '1.5rem' }} fw={500} variant="text" component={Link} to="/">
-              {SITE_NAME}
-            </Anchor>
-            <ThemeToggle />
-          </Flex>
-        </Container>
-      </Box>
+      <Navbar />
       <Container component="main" size="xl">
         <Flex direction="column" gap="xl" align="center" mt={{ base: 80, sm: 100 }}>
           <Stack justify="center" gap="xs">
@@ -133,12 +124,12 @@ export default function Index() {
             style={{
               border: '1px solid var(--mantine-color-default-border)',
               borderRadius: 'var(--mantine-radius-md)',
-              boxShadow: 'var(--mantine-shadow-sm)',
-              maxWidth: '1200px',
-              maxHeight: '700px',
-              width: '100%',
-              height: '100%'
+              boxShadow: 'var(--mantine-shadow-sm)'
             }}
+            h="100%"
+            w="100%"
+            mah="700px"
+            maw="1200px"
             mt="xl"
             mb={{ base: 50, sm: 100 }}
           >

@@ -1,13 +1,11 @@
-import { Flex, Box, Image } from '@mantine/core';
-import { Link, MetaFunction } from 'react-router';
+import { Box } from '@mantine/core';
+import { MetaFunction } from 'react-router';
 
 import { WelcomeModal } from '~/features/preview/components/WelcomeModal';
-import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
-import { ThemeToggle } from '~/shared/components/ThemeToggle';
-import { MobileGithubButton } from '~/shared/components/MobileGitHubButton';
 import { EditorArea } from '~/shared/layouts/EditorArea';
 import { DOMAIN, SITE_NAME } from '~/config/consts';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
+import { Navbar } from '~/shared/layouts/Navbar';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Create`;
@@ -83,38 +81,8 @@ export default function Create() {
     <>
       <WelcomeModal isOpen={!hasSeenWelcome && isHydrated} hideWelcome={() => setHasSeenWelcome(true)} />
 
-      <Box
-        component="header"
-        w="100%"
-        py="md"
-        px="lg"
-        style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
-      >
-        <Flex component="nav" justify="space-between" align="center">
-          <Link
-            to="/"
-            style={{ fontSize: '1.5rem', fontWeight: 500, textDecoration: 'none' }}
-            aria-label={`${SITE_NAME} logo`}
-            viewTransition
-          >
-            <Image src="/favicon.ico" width={36} height={36} alt={`${SITE_NAME} logo`} />
-          </Link>
-
-          <Flex gap="xs">
-            <ThemeToggle />
-            <GitHubStarButton visibleFrom="md" size="sm" variant="light" />
-            <MobileGithubButton />
-          </Flex>
-        </Flex>
-      </Box>
-      <Box
-        component="main"
-        style={{
-          height: 'calc(100vh - 69px)',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+      <Navbar />
+      <Box component="main" h="calc(100vh - 69px)">
         <EditorArea />
       </Box>
     </>
