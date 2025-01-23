@@ -132,7 +132,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
 
-        {isProd ? <script defer data-domain="cvrsnap.com" src="https://plausible.io/js/script.js"></script> : null}
+        {isProd ? <script defer data-domain="cvrsnap.com" src="/js/script.js"></script> : null}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
