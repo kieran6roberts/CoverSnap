@@ -155,7 +155,7 @@ export const LAYOUT_TEMPLATES = [
 export const BACKGROUND_TEMPLATES = [
   {
     id: 'diagonal',
-    name: 'Diagonal Split',
+    name: 'Split',
     sections: [
       {
         clipPath: 'var(--clip-path-diagonal-split-1)'
@@ -168,8 +168,36 @@ export const BACKGROUND_TEMPLATES = [
     preview: ({ children }: { children: React.ReactNode }) => children
   },
   {
+    id: 'cross',
+    name: 'Cross',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-cross-1)'
+      },
+      {
+        clipPath: 'var(--clip-path-cross-2)'
+      }
+    ],
+    previewStyles: classes['previewSection--cross'],
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'cross-reverse',
+    name: 'Cross (Reverse)',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-cross-reverse-1)'
+      },
+      {
+        clipPath: 'var(--clip-path-cross-reverse-2)'
+      }
+    ],
+    previewStyles: classes['previewSection--cross-reverse'],
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
     id: 'diagonal-reverse',
-    name: 'Diagonal Split (Reverse)',
+    name: 'Split (Reverse)',
     sections: [
       {
         clipPath: 'var(--clip-path-diagonal-split-reverse-1)'
@@ -213,6 +241,20 @@ export const BACKGROUND_TEMPLATES = [
       }
     ],
     previewStyles: classes['previewSection--vertical-left'],
+    preview: ({ children }: { children: React.ReactNode }) => children
+  },
+  {
+    id: 'criss-cross',
+    name: 'Criss Cross',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-criss-cross-1)'
+      },
+      {
+        clipPath: 'var(--clip-path-criss-cross-2)'
+      }
+    ],
+    previewStyles: classes['previewSection--criss-cross'],
     preview: ({ children }: { children: React.ReactNode }) => children
   }
 ];

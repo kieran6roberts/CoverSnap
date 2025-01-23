@@ -1,12 +1,10 @@
-import * as patterns from 'hero-patterns';
-
 import { LAYOUT_TEMPLATES, BACKGROUND_TEMPLATES } from './templates';
 
 export const PRIMARY_TEXT_LENGTH = 100;
 export const SECONDARY_TEXT_LENGTH = 80;
 export const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
 export const PRIMARY_TEXT_FONT_SIZE_MAX = 60;
-export const SECONDARY_TEXT_FONT_SIZE_MIN = 10;
+export const SECONDARY_TEXT_FONT_SIZE_MIN = 6;
 export const SECONDARY_TEXT_FONT_SIZE_MAX = 40;
 
 export const fonts = [
@@ -20,21 +18,21 @@ export const fonts = [
   'Courier New'
 ];
 
-const DEFAULT_PRIMARY_TEXT_CONTENT = 'Tutorial: Implement a Scroll-Translated, Dynamic Sticky Navbar in React.';
+const DEFAULT_PRIMARY_TEXT_CONTENT = '5 Simple Tips/Good Practises to Level Up Your React Codebase';
 const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
 const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
 const DEFAULT_SECONDARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
 const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
 const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
-const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 38;
+const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 45;
 const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
 
 const DEFAULT_PATTERN_COLOR = '#ffffff';
 const DEFAULT_PATTERN_OPACITY = 0.1;
 
 export const DEFAULT_PATTERN = {
-  url: patterns.architect(DEFAULT_PATTERN_COLOR, DEFAULT_PATTERN_OPACITY),
-  name: 'architect',
+  url: '',
+  name: '',
   color: DEFAULT_PATTERN_COLOR,
   opacity: DEFAULT_PATTERN_OPACITY
 };
