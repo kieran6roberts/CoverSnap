@@ -134,7 +134,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
 
-        {isProd ? <script defer data-domain={DOMAIN} src="/js/script.js"></script> : null}
+        {isProd ? <script defer data-domain={DOMAIN} data-api="/api/event" src="/js/script.js"></script> : null}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
