@@ -7,6 +7,12 @@
   --clip-path-horizontal-split-2: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
   --clip-path-vertical-split-1: polygon(0 0, 50% 0, 50% 100%, 0 100%);
   --clip-path-vertical-split-2: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  --clip-path-cross-1: polygon(0 100%, 100% 0, 100% 100%);
+  --clip-path-cross-2: polygon(0 0, 100% 0, 0 100%);
+  --clip-path-cross-reverse-1: polygon(0 0, 100% 100%, 0 100%);
+  --clip-path-cross-reverse-2: polygon(100% 0, 100% 100%, 0 0);
+  --clip-path-criss-cross-1: polygon(0 0, 100% 0, 100% 65%, 75% 50%, 50% 65%, 25% 50%, 0 65%);
+  --clip-path-criss-cross-2: polygon(0 65%, 25% 50%, 50% 65%, 75% 50%, 100% 65%, 100% 100%, 0 100%);
 }
 
 .previewContainer {
@@ -94,14 +100,14 @@
 
 .previewBar--bottom-right {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  bottom: 16px;
+  right: 16px;
 }
 
 .previewBar--bottom-left {
   position: absolute;
-  bottom: 8px;
-  left: 8px;
+  bottom: 16px;
+  left: 16px;
 }
 
 /* Background templates */
@@ -126,9 +132,22 @@
   background-color: var(--mantine-color-gray-6);
 }
 
+.previewSection--cross {
+  clip-path: var(--clip-path-cross-1);
+  background-color: var(--mantine-color-gray-6);
+}
+
+/* Cross (Reverse) */
+.previewSection--cross-reverse {
+  clip-path: var(--clip-path-cross-reverse-1);
+  background-color: var(--mantine-color-gray-6);
+}
+
 [data-mantine-color-scheme='dark'] .previewSection--diagonal-left,
 [data-mantine-color-scheme='dark'] .previewSection--vertical-left,
-[data-mantine-color-scheme='dark'] .previewSection--solid {
+[data-mantine-color-scheme='dark'] .previewSection--solid,
+[data-mantine-color-scheme='dark'] .previewSection--cross,
+[data-mantine-color-scheme='dark'] .previewSection--cross-reverse {
   background-color: var(--mantine-color-gray-6);
 }
 
@@ -146,6 +165,11 @@
 /* Horizontal Split (X-split) */
 .previewSection--horizontal-top {
   clip-path: var(--clip-path-horizontal-split-1);
+  background-color: var(--mantine-color-gray-6);
+}
+
+.previewSection--criss-cross {
+  clip-path: var(--clip-path-criss-cross-1);
   background-color: var(--mantine-color-gray-6);
 }
 
