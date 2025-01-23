@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches:
+      - production
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: pnpm i
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: pnpm build
+          start: pnpm start
+          env: configFile=ci
+          wait-on: 'http://localhost:8788'
+          browser: chrome
+          record: false
+
+  type-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Run typecheck
+        run: pnpm typecheck
+
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Run formatter
+        run: pnpm format
