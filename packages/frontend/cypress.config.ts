@@ -24,7 +24,7 @@ export default defineConfig({
       });
       const fileName = config.env.configFile || 'dev';
       const configFile = await import(`./cypress/config/${fileName}.json`, {
-        assert: { type: 'json' }
+        with: { type: 'json' }
       });
       return {
         ...config,

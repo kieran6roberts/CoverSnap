@@ -4,6 +4,13 @@
   "version": "1.0.0",
   "description": "Cover Snap is a free tool that lets you easily generate good looking cover images for your blog posts in seconds using the editing dashboard.",
   "sideEffects": false,
+  "author": "Kieran Roberts",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": "9.0.6"
+  },
+  "packageManager": "pnpm@9.0.6",
+  "license": "MIT",
   "scripts": {
     "build": "react-router build",
     "preview": "pnpm build && pnpm start",
@@ -17,7 +24,6 @@
     "tests:run": "start-server-and-test 'pnpm dev' http://localhost:5173 'cypress run'",
     "tests:run:ci": "cypress run"
   },
-  "author": "Kieran Roberts",
   "dependencies": {
     "@mantine/core": "^7.15.2",
     "@mantine/hooks": "^7.15.2",

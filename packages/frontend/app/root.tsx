@@ -1,7 +1,7 @@
 import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteError } from 'react-router';
 import type { LinksFunction } from 'react-router';
-import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
 
 export const links: LinksFunction = () => [
@@ -121,17 +121,18 @@ const theme = createTheme({
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  // const isProd = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === 'production';
 
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <ColorSchemeScript defaultColorScheme="dark" />
         <Meta />
         <Links />
-        {/* {isProd ? <script defer data-domain="cvrsnap.com" data-api="/anl/event" src="/anl/script.js" /> : null} */}
-        <ColorSchemeScript defaultColorScheme="dark" />
+
+        {isProd ? <script defer data-domain="cvrsnap.com" src="https://plausible.io/js/script.js"></script> : null}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>

@@ -10,5 +10,12 @@
   },
   "dependencies": {
     "sst": "^3"
-  }
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": "9.0.6"
+  },
+  "packageManager": "pnpm@9.0.6",
+  "license": "MIT",
+  "author": "Kieran Roberts"
 }
