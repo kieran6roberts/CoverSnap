@@ -8,13 +8,13 @@ on:
     paths:
       - 'packages/frontend/**'
 
-  env:
-    NODE_VERSION: 22
-    PNPM_VERSION: 9.0.6
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-  concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: true
+env:
+  NODE_VERSION: 22
+  PNPM_VERSION: 9.0.6
 
 jobs:
   e2e:
