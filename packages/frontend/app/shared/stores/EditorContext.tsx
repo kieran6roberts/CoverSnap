@@ -211,14 +211,14 @@ export const useEditor = create(
           /* Cover Wrapper */
           '--cover-display': 'flex',
           '--cover-justify-content': 'center',
-          '--cover-align-items': 'center',
+          '--cover-align-items': 'flex-start',
           '--cover-flex-direction': 'column',
 
           /* Cover Primary Text */
           '--cover-primary-text-color': DEFAULT_EDITOR_STATE.primaryText.color,
           '--cover-primary-text-font-size': `${DEFAULT_EDITOR_STATE.primaryText.fontSize}px`,
           '--cover-primary-text-font': DEFAULT_EDITOR_STATE.primaryText.font,
-          '--cover-primary-text-align': 'center',
+          '--cover-primary-text-align': 'left',
 
           /* Cover Secondary Text */
           '--cover-secondary-text-color': DEFAULT_EDITOR_STATE.secondaryText.color,
@@ -251,7 +251,7 @@ export const useEditor = create(
               backgroundId: BACKGROUND_TEMPLATES[0].id
             }
           });
-        }, 1000);
+        }, 500);
 
         toast.success('Cover reset.', {
           id: 'reset-cover',

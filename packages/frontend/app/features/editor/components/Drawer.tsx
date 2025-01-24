@@ -9,9 +9,11 @@ import {
   Skeleton,
   Title,
   ThemeIcon,
-  ActionIcon
+  ActionIcon,
+  Image,
+  Stack
 } from '@mantine/core';
-import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag } from 'iconoir-react';
+import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag, QuestionMark } from 'iconoir-react';
 
 import classes from '~/features/editor/styles/EditorDrawer.module.css';
 import { TextSettings } from '~/features/editor/components/TextSettings';
@@ -21,14 +23,15 @@ import { useEditor, EditorHydration } from '~/shared/stores/EditorContext';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
-
+import welcomeImage from '~/images/welcome.webp';
+import { SITE_NAME } from '~/config/consts';
 const editSections = [
   {
     title: 'Template',
     content: () => <TemplateSettings />,
     icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
-        <AlignBottomBox width={24} height={24} color="var(--mantine-primary-color-8)" />
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-grape-8)">
+        <AlignBottomBox width={24} height={24} color="var(--mantine-color-grape-8)" />
       </ThemeIcon>
     )
   },
@@ -49,6 +52,16 @@ const editSections = [
         <MediaImage width={24} height={24} color="var(--mantine-color-yellow-8)" />
       </ThemeIcon>
     )
+  },
+  {
+    title: 'More coming soon',
+    content: () => null,
+    icon: (
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-pink-8)">
+        <QuestionMark width={24} height={24} color="var(--mantine-color-pink-8)" />
+      </ThemeIcon>
+    ),
+    isDisabled: true
   }
 ];
 
@@ -80,6 +93,7 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             aria-label={`Toggle ${item.title.toLowerCase()} editing`}
             icon={item.icon}
             className={classes.accordionControl}
+            disabled={!!item?.isDisabled}
           >
             <Flex gap="xs" align="center">
               <Text size="md" fw={500} className={classes['accordionControl-name']}>
@@ -113,14 +127,14 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             visibleFrom="md"
             onClick={() => setDrawerOpen(false)}
             variant="default"
-            size={28}
+            size={32}
             title="Close sidebar"
             aria-label="Close sidebar"
           >
             <ArrowLeftTag width={18} height={18} />
           </ActionIcon>
         </Flex>
-        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px - 51px)">
+        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px - 55px)">
           <Accordion
             value={openSections}
             onChange={setOpenSections}
@@ -131,6 +145,24 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           >
             {items}
           </Accordion>
+          <Stack m="lg" h="100%" className={classes['sidebar-help']}>
+            <Image src={welcomeImage} radius="md" alt={`Welcome to ${SITE_NAME} cover`} width={400} height={200} />
+            <Text size="sm">
+              Your editor state (except uploaded background images) will persist across sessions meaning your progress
+              will be saved.
+            </Text>
+            <Text size="sm">
+              More features and templates will be added over time. If you have any suggestions, share them with me{' '}
+              <a
+                href="https://x.com/Kieran6dev"
+                target="_blank"
+                rel="noreferrer"
+                className={classes['sidebar-help--name-link']}
+              >
+                @Kieran6dev.
+              </a>
+            </Text>
+          </Stack>
         </ScrollArea>
         <Accordion
           value={openSections}

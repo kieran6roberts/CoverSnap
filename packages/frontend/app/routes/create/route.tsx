@@ -10,7 +10,7 @@ import { Navbar } from '~/shared/layouts/Navbar';
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Create`;
   const description = `Use ${SITE_NAME}'s easy-to-use editing tools and presets to download free cover images for your blog without the design headache.`;
-  const image = '/editor-dark.webp';
+  const image = '/og-image.png';
   const url = `https://${DOMAIN}/create`;
   const domain = DOMAIN;
 

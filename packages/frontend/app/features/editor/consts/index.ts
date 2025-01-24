@@ -63,7 +63,7 @@ export const DEFAULT_EDITOR_STATE = {
   background: {
     image: null,
     colors: {
-      color1: 'rgba(81, 133, 196, 1)',
+      color1: 'rgba(204, 93, 232, 1)',
       color2: 'rgba(51, 51, 51, 1)'
     },
     pattern: DEFAULT_PATTERN

@@ -53,7 +53,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             onClick={() => setDrawerOpen(true)}
             title="Open sidebar"
             variant="default"
-            size={28}
+            size={32}
             aria-label="Open sidebar"
           >
             <ArrowRightTag width={18} height={18} />

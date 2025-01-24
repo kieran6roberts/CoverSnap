@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 const theme = createTheme({
   autoContrast: true,
   luminanceThreshold: 0.3,
-  primaryColor: 'indigo',
+  primaryColor: 'grape',
   primaryShade: 7,
   components: {
     InputLabel: {
@@ -72,29 +72,42 @@ const theme = createTheme({
     },
     Button: {
       defaultProps: {
-        radius: 'md'
+        radius: 'xl'
       }
     },
     ActionIcon: {
       defaultProps: {
-        radius: 'md'
+        radius: 'xl'
       }
     },
     Select: {
       defaultProps: {
-        radius: 'md',
+        radius: 'xl',
         size: 'md'
+      },
+      styles: {
+        dropdown: {
+          borderRadius: '12px'
+        },
+        option: {
+          borderRadius: '8px'
+        }
+      }
+    },
+    SelectItem: {
+      defaultProps: {
+        radius: 'xl'
       }
     },
     TextInput: {
       defaultProps: {
-        radius: 'md',
+        radius: 'xl',
         size: 'md'
       }
     },
     ColorInput: {
       defaultProps: {
-        radius: 'md',
+        radius: 'xl',
         size: 'md'
       }
     },
@@ -105,21 +118,17 @@ const theme = createTheme({
     },
     NumberInput: {
       defaultProps: {
-        size: 'md'
+        size: 'md',
+        radius: 'xl'
       }
     },
     FileInput: {
       defaultProps: {
-        size: 'md'
-      }
-    },
-    SegmentedControl: {
-      defaultProps: {
-        radius: 'md'
+        size: 'md',
+        radius: 'xl'
       }
     }
-  },
-  defaultRadius: 'md'
+  }
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
