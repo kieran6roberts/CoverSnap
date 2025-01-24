@@ -8,32 +8,32 @@
     width: 400px;
     border-right: 1px solid var(--mantine-color-default-border);
   }
+
+  [data-mantine-color-scheme='dark'] & {
+    background-color: var(--mantine-color-dark-7);
+  }
+
+  &-footer {
+    border-top: 1px solid var(--mantine-color-default-border);
+    z-index: 10;
+  }
 }
 
 .accordionControl {
   background-color: var(--mantine-color-white);
-}
 
-.accordionControl[data-active='true'] {
-  background-color: var(--mantine-color-gray-1);
-}
+  [data-active='true'] & {
+    background-color: var(--mantine-color-gray-1);
+  }
 
-[data-mantine-color-scheme='dark'] .accordionControl[data-active='true'] {
-  background-color: var(--mantine-color-dark-8);
-}
+  [data-mantine-color-scheme='dark'] & {
+    background-color: var(--mantine-color-dark-7);
+  }
 
-[data-mantine-color-scheme='dark'] .accordionControl {
-  background-color: var(--mantine-color-dark-7);
-}
-[data-mantine-color-scheme='dark'] .accordionControl:hover {
-  background-color: var(--mantine-color-dark-8);
-}
-
-[data-mantine-color-scheme='dark'] .sidebar {
-  background-color: var(--mantine-color-dark-7);
-}
-
-.mobileFooter {
-  border-top: 1px solid var(--mantine-color-default-border);
-  z-index: 10;
+  [data-mantine-color-scheme='dark'] & [data-active='true'] {
+    background-color: var(--mantine-color-dark-8);
+  }
+  [data-mantine-color-scheme='dark'] &:hover {
+    background-color: var(--mantine-color-dark-8);
+  }
 }

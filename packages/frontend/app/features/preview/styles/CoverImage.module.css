@@ -49,10 +49,10 @@
     gap: 2rem;
     flex: 1;
   }
-}
 
-[data-mantine-color-scheme='dark'] .coverWrapper {
-  background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+  [data-mantine-color-scheme='dark'] & {
+    background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+  }
 }
 
 .coverSkeleton {

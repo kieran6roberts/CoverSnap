@@ -10,14 +10,14 @@
   width: 100%;
   opacity: 0.8;
   transition: opacity 0.2s ease-in-out;
-}
 
-.patternCard:hover {
-  opacity: 1;
-}
+  &:hover {
+    opacity: 1;
+  }
 
-.patternCard-selected {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  &--selected {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 }

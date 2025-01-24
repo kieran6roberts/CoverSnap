@@ -148,7 +148,7 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           justify={{ base: 'space-between', md: 'flex-end' }}
           bg="var(--mantine-color-body)"
           pos={{ base: 'fixed', md: 'sticky' }}
-          className={classes.mobileFooter}
+          className={classes['sidebar-footer']}
           bottom={0}
           right={0}
           left={0}
