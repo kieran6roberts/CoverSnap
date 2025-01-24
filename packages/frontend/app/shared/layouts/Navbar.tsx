@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from '@mantine/core';
+import { Box, Flex, Image, Text } from '@mantine/core';
 import { Link } from 'react-router';
 
 import { ThemeToggle } from '~/shared/components/ThemeToggle';
@@ -16,14 +16,20 @@ export function Navbar() {
       style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
     >
       <Flex component="nav" justify="space-between" align="center">
-        <Link
+        <Flex
+          component={Link}
           to="/"
-          style={{ fontSize: '1.5rem', fontWeight: 500, textDecoration: 'none' }}
+          align="center"
+          gap="xs"
           aria-label={`${SITE_NAME} logo`}
+          style={{ textDecoration: 'none' }}
           viewTransition
         >
-          <Image src="/favicon.ico" width={36} height={36} alt={`${SITE_NAME} logo`} />
-        </Link>
+          <Image src="/favicon.ico" width={28} height={28} alt={`${SITE_NAME} logo`} />
+          <Text component="span" size="lg" fw={500}>
+            {SITE_NAME}
+          </Text>
+        </Flex>
 
         <Flex gap="xs">
           <ThemeToggle />

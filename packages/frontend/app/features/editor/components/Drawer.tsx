@@ -36,8 +36,8 @@ const editSections = [
     title: 'Text',
     content: () => <TextSettings />,
     icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
-        <IconText width={24} height={24} color="var(--mantine-primary-color-8)" />
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-teal-8)">
+        <IconText width={24} height={24} color="var(--mantine-color-teal-8)" />
       </ThemeIcon>
     )
   },
@@ -45,8 +45,8 @@ const editSections = [
     title: 'Background',
     content: () => <BackgroundSettings />,
     icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-primary-color-8)">
-        <MediaImage width={24} height={24} color="var(--mantine-primary-color-8)" />
+      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-yellow-8)">
+        <MediaImage width={24} height={24} color="var(--mantine-color-yellow-8)" />
       </ThemeIcon>
     )
   }
@@ -120,7 +120,7 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             <ArrowLeftTag width={18} height={18} />
           </ActionIcon>
         </Flex>
-        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px)">
+        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px - 51px)">
           <Accordion
             value={openSections}
             onChange={setOpenSections}
@@ -144,7 +144,6 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           {items}
         </Accordion>
         <Flex
-          hiddenFrom="md"
           justify={{ base: 'space-between', md: 'flex-end' }}
           bg="var(--mantine-color-body)"
           pos={{ base: 'fixed', md: 'sticky' }}
@@ -154,6 +153,17 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           left={0}
           p="md"
         >
+          <Text component="span" size="xs" fw={500} visibleFrom="md">
+            Built by{' '}
+            <a
+              className={classes['sidebar-footer--name-link']}
+              href="https://www.linkedin.com/in/kieran6roberts/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Kieran Roberts</span>
+            </a>
+          </Text>
           <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="xs">
             Reset all
           </Button>

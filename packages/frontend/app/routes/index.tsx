@@ -99,7 +99,7 @@ export default function Index() {
               mx="auto"
             >
               Publish blog posts{' '}
-              <Mark fz="0.95em" style={{ zIndex: -1 }}>
+              <Mark fz="0.95em" style={{ zIndex: -1 }} color="blue">
                 faster
               </Mark>{' '}
               without cover image design hassle
