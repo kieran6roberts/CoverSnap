@@ -1,7 +1,7 @@
 .sidebar {
   width: 100%;
   height: 100%;
-  background-color: var(--mantine-color-white);
+  background-color: var(--mantine-color-light-1);
 
   @media (min-width: em(992px)) {
     height: calc(100vh - 69px);
@@ -10,7 +10,7 @@
   }
 
   [data-mantine-color-scheme='dark'] & {
-    background-color: var(--mantine-color-dark-7);
+    background-color: var(--mantine-color-dark-8);
   }
 
   &-footer {
@@ -22,8 +22,12 @@
 .accordionControl {
   background-color: var(--mantine-color-white);
 
+  &:hover {
+    background-color: var(--mantine-primary-color-0);
+  }
+
   [data-active='true'] & {
-    background-color: var(--mantine-color-gray-1);
+    background-color: var(--mantine-primary-color-0);
   }
 
   [data-mantine-color-scheme='dark'] & {
@@ -31,9 +35,9 @@
   }
 
   [data-mantine-color-scheme='dark'] &[data-active='true'] {
-    background-color: var(--mantine-color-dark-8);
+    background-color: var(--mantine-color-dark-9);
   }
   [data-mantine-color-scheme='dark'] &:hover {
-    background-color: var(--mantine-color-dark-8);
+    background-color: var(--mantine-color-dark-9);
   }
 }

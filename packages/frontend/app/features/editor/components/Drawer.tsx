@@ -82,7 +82,7 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             className={classes.accordionControl}
           >
             <Flex gap="xs" align="center">
-              <Text size="md" fw={500}>
+              <Text size="md" fw={500} className={classes['accordionControl-name']}>
                 {item.title}
               </Text>
             </Flex>

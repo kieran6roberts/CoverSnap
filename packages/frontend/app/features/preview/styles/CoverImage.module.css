@@ -51,7 +51,7 @@
   }
 
   [data-mantine-color-scheme='dark'] & {
-    background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+    background-color: var(--mantine-color-dark-9);
   }
 }
 
