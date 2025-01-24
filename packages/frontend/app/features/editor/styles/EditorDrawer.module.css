@@ -21,6 +21,12 @@
       color: var(--mantine-color-text);
     }
   }
+
+  &-help {
+    &--name-link {
+      color: var(--mantine-color-text);
+    }
+  }
 }
 
 .accordionControl {

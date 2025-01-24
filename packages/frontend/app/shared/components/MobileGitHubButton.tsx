@@ -5,7 +5,7 @@ import { SITE_NAME } from '~/config/consts';
 export function MobileGithubButton() {
   return (
     <ActionIcon aria-label={`${SITE_NAME} GitHub repo`} hiddenFrom="md" variant="outline" size="lg">
-      <Github />
+      <Github width={18} height={18} />
     </ActionIcon>
   );
 }

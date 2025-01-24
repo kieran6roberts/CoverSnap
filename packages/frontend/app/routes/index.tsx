@@ -12,7 +12,6 @@ import { Navbar } from '~/shared/layouts/Navbar';
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
   const description = `${SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.`;
-  const image = editorDark;
   const url = `https://${DOMAIN}`;
   const domain = DOMAIN;
 
@@ -32,7 +31,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'og:image',
-      content: image
+      content: '/og-image.png'
     },
     {
       property: 'og:url',
@@ -64,7 +63,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'twitter:image',
-      content: image
+      content: '/og-image.png'
     },
     {
       property: 'twitter:url',
@@ -99,7 +98,7 @@ export default function Index() {
               mx="auto"
             >
               Publish blog posts{' '}
-              <Mark fz="0.95em" style={{ zIndex: -1 }} color="blue">
+              <Mark fz="0.95em" style={{ zIndex: -1 }} color="grape">
                 faster
               </Mark>{' '}
               without cover image design hassle

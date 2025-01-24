@@ -19,7 +19,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   return (
     <EditorHydration skeleton={<Skeleton radius={12} className={classes.coverSkeleton} animate />}>
-      <Skeleton visible={isResettingImage} maw={900} animate>
+      <Skeleton visible={isResettingImage} maw="max-content" radius={12} animate>
         <Box
           component="div"
           ref={imageNodeRef}

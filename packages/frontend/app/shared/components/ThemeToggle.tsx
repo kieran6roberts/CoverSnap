@@ -1,4 +1,4 @@
-import { ActionIcon, Box, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Center, useMantineColorScheme } from '@mantine/core';
 import { SunLight, HalfMoon } from 'iconoir-react';
 import { SITE_THEMES } from '~/config/consts';
 
@@ -12,12 +12,12 @@ export function ThemeToggle() {
       size={36}
       aria-label="Toggle color scheme"
     >
-      <Box darkHidden>
-        <SunLight width={16} height={16} color="var(--mantine-color-text)" />
-      </Box>
-      <Box lightHidden>
-        <HalfMoon width={16} height={16} color="var(--mantine-color-text)" />
-      </Box>
+      <Center darkHidden h="100%" w="100%">
+        <SunLight width={18} height={18} color="var(--mantine-color-text)" />
+      </Center>
+      <Center lightHidden h="100%" w="100%">
+        <HalfMoon width={18} height={18} color="var(--mantine-color-text)" />
+      </Center>
     </ActionIcon>
   );
 }

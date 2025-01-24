@@ -4,23 +4,6 @@ import { CSSVariableKey } from '~/shared/types/styles';
 
 export const LAYOUT_TEMPLATES = [
   {
-    id: 'hero',
-    name: 'Hero',
-    styles: {
-      '--cover-flex-direction': 'column',
-      '--cover-align-items': 'center',
-      '--cover-primary-text-align': 'center',
-      '--cover-secondary-position': 'relative',
-      '--cover-secondary-text-align': 'center',
-      '--cover-secondary-bottom': 'unset',
-      '--cover-secondary-right': 'unset',
-      '--cover-secondary-left': 'unset'
-    } as Partial<Record<CSSVariableKey, string>>,
-    previewStyles: {
-      cover: classnames(classes['previewPaper-content--centered'])
-    }
-  },
-  {
     id: 'left-handed',
     name: 'Left Handed',
     styles: {
@@ -52,6 +35,23 @@ export const LAYOUT_TEMPLATES = [
     } as Partial<Record<CSSVariableKey, string>>,
     previewStyles: {
       cover: classnames(classes['previewPaper-content--right'])
+    }
+  },
+  {
+    id: 'hero',
+    name: 'Hero',
+    styles: {
+      '--cover-flex-direction': 'column',
+      '--cover-align-items': 'center',
+      '--cover-primary-text-align': 'center',
+      '--cover-secondary-position': 'relative',
+      '--cover-secondary-text-align': 'center',
+      '--cover-secondary-bottom': 'unset',
+      '--cover-secondary-right': 'unset',
+      '--cover-secondary-left': 'unset'
+    } as Partial<Record<CSSVariableKey, string>>,
+    previewStyles: {
+      cover: classnames(classes['previewPaper-content--centered'])
     }
   },
   {
