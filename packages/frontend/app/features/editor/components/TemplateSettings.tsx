@@ -1,9 +1,10 @@
-import { Text, SimpleGrid, UnstyledButton, Stack, Fieldset } from '@mantine/core';
+import { SimpleGrid, Stack, Fieldset } from '@mantine/core';
+import classnames from 'classnames';
 
+import classes from '~/features/editor/styles/TemplatePreview.module.css';
 import { useEditor } from '~/shared/stores/EditorContext';
 import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
-import { LayoutTemplatePreview } from '~/features/editor/components/LayoutTemplatePreview';
-import { BackgroundTemplatePreview } from '~/features/editor/components/BackgroundTemplatePreview';
+import { TemplatePreview } from '~/features/editor/components/TemplatePreview';
 
 export function TemplateSettings() {
   const { template, updateTemplate } = useEditor();
@@ -15,27 +16,16 @@ export function TemplateSettings() {
           {BACKGROUND_TEMPLATES.map((t) => {
             const isSelected = template.backgroundId === t.id;
             return (
-              <Stack key={t.id} gap={4} component="article">
-                <Text
-                  component="span"
-                  fw={600}
-                  fz={{ base: 18, sm: 14 }}
-                  ta="center"
-                  c={isSelected ? 'var(--mantine-color-primary-filled)' : 'var(--mantine-color-dimmed)'}
-                >
-                  {t.name}
-                </Text>
-
-                <UnstyledButton
-                  pos="relative"
-                  aria-label={`Select ${t.name} template`}
-                  onClick={() => updateTemplate({ ...template, backgroundId: t.id })}
-                >
-                  {t.preview({
-                    children: <BackgroundTemplatePreview styles={t.previewStyles ?? ''} isSelected={isSelected} />
-                  })}
-                </UnstyledButton>
-              </Stack>
+              <TemplatePreview
+                key={t.id}
+                templateName={t.name}
+                isSelected={isSelected}
+                onTemplateUpdate={() => updateTemplate({ ...template, backgroundId: t.id })}
+              >
+                <div className={classes['previewPaper-content']}>
+                  <div className={classnames(classes['backgroundTemplate-previewSection'], t.previewStyles)} />
+                </div>
+              </TemplatePreview>
             );
           })}
         </SimpleGrid>
@@ -45,34 +35,17 @@ export function TemplateSettings() {
           {LAYOUT_TEMPLATES.map((t) => {
             const isSelected = template.layoutId === t.id;
             return (
-              <Stack key={t.id} gap={4} component="article">
-                <Text
-                  component="span"
-                  fw={600}
-                  fz={{ base: 18, sm: 14 }}
-                  ta="center"
-                  c={isSelected ? 'var(--mantine-color-primary-filled)' : 'var(--mantine-color-dimmed)'}
-                >
-                  {t.name}
-                </Text>
-
-                <UnstyledButton
-                  pos="relative"
-                  aria-label={`Select ${t.name} template`}
-                  onClick={() => updateTemplate({ ...template, layoutId: t.id })}
-                >
-                  {t.preview({
-                    children: (
-                      <LayoutTemplatePreview
-                        coverClasses={t.previewStyles.cover}
-                        previewPrimaryBarClasses={t.previewStyles?.primaryText ?? ''}
-                        previewSecondaryBarClasses={t.previewStyles?.secondaryText ?? ''}
-                        isSelected={isSelected}
-                      />
-                    )
-                  })}
-                </UnstyledButton>
-              </Stack>
+              <TemplatePreview
+                key={t.id}
+                templateName={t.name}
+                isSelected={isSelected}
+                onTemplateUpdate={() => updateTemplate({ ...template, layoutId: t.id })}
+              >
+                <div className={classnames(t.previewStyles.cover, classes['previewPaper-content'])}>
+                  <div className={classnames(classes['previewBar--wide'], t.previewStyles.primaryText ?? '')} />
+                  <div className={classnames(classes['previewBar--narrow'], t.previewStyles.secondaryText ?? '')} />
+                </div>
+              </TemplatePreview>
             );
           })}
         </SimpleGrid>

@@ -12,7 +12,7 @@ export function CoverImageSize({
   _hasHydrated: boolean;
 }) {
   return (
-    <Skeleton visible={!_hasHydrated} maw="max-content">
+    <Skeleton visible={!_hasHydrated} maw={250}>
       <Select
         label="Image download size"
         value={defaultImageSize}
@@ -23,7 +23,7 @@ export function CoverImageSize({
         onChange={(value) => onAspectRatioChange(value)}
         clearable={false}
         allowDeselect={false}
-        comboboxProps={{ width: 'max-content', position: 'bottom' }}
+        comboboxProps={{ width: '275px', position: 'bottom' }}
         checkIconPosition="right"
       />
     </Skeleton>

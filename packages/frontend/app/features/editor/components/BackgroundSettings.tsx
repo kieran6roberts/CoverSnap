@@ -215,7 +215,7 @@ export function BackgroundSettings() {
                     }}
                   >
                     {isSelected && !backgroundImage && (
-                      <Center className={classes['patternCard-selected']}>
+                      <Center className={classes['patternCard--selected']}>
                         <Center component="span" w={40} h={40} bg="white" style={{ borderRadius: '100%' }}>
                           <Check width={32} height={32} color="var(--mantine-color-blue-filled)" />
                         </Center>

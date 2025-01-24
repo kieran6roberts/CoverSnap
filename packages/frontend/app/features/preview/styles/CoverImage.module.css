@@ -49,10 +49,10 @@
     gap: 2rem;
     flex: 1;
   }
-}
 
-[data-mantine-color-scheme='dark'] .coverWrapper {
-  background-color: color-mix(in srgb, var(--mantine-color-dark-9) 75%, transparent);
+  [data-mantine-color-scheme='dark'] & {
+    background-color: var(--mantine-color-dark-9);
+  }
 }
 
 .coverSkeleton {
@@ -63,7 +63,6 @@
   aspect-ratio: var(--cover-aspect-ratio);
   overflow: hidden;
   border-radius: 16px;
-  background-color: blue;
   z-index: 99;
-  padding: 1rem;
+  padding: 2rem;
 }
