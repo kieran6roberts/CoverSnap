@@ -49,7 +49,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
                 position: 'absolute',
                 inset: 0,
                 zIndex: 1,
-                backgroundColor: `var(--cover-background-color-${index + 1})`,
+                backgroundColor: 'var(--cover-background-color-2)',
                 clipPath: section.clipPath
               }}
             />

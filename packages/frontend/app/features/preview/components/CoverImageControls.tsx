@@ -30,7 +30,7 @@ export function CoverImageControls({
         rightSection={<Restart width={24} height={24} />}
         variant="outline"
       >
-        Reset applied styles
+        Reset cover
       </Button>
 
       <Button
