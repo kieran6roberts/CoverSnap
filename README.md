@@ -6,9 +6,10 @@ CvrSnap empowers you to create great looking cover images for your blog posts in
 
 ## Screenshots
 
-![CvrSnap landing page screenshot](https://github.com/user-attachments/assets/22ce296f-187e-4dd1-b51d-4413ba9bb204)
+<img width="1200" alt="CvrSnap homepage screenshot" src="https://github.com/user-attachments/assets/c3ad7f95-9922-40e7-870d-3a1ca9b6fbf8" />
 
-![CvrSnap editor page screenshot](https://github.com/user-attachments/assets/03c0492c-c468-48a9-8c0b-7f549abf6bf1)
+<img width="1200" alt="CvrSnap editor screenshot" src="https://github.com/user-attachments/assets/0e1d6708-1cb9-4930-9182-6926d453ee1e" />
+
 
 ## Features
 
