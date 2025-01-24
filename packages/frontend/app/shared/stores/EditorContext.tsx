@@ -77,9 +77,10 @@ const indexDBStorage: StateStorage = {
 };
 
 export const useEditor = create(
-  persist<EditorState & EditorActions & { _hasHydrated: boolean }>(
+  persist<EditorState & EditorActions & { _hasHydrated: boolean; isResettingImage: boolean }>(
     (set) => ({
       _hasHydrated: false,
+      isResettingImage: false,
       ...defaultState,
       setHasHydrated: (state) => set({ _hasHydrated: state }),
 
@@ -196,6 +197,8 @@ export const useEditor = create(
       },
 
       resetEditor: async () => {
+        set({ isResettingImage: true });
+
         const state = useEditor.getState();
         if (state.background.image?.startsWith('blob:')) {
           URL.revokeObjectURL(state.background.image);
@@ -238,14 +241,17 @@ export const useEditor = create(
 
         await indexDBStorage.removeItem('editor-storage');
 
-        set(() => ({
-          _hasHydrated: true,
-          ...defaultState,
-          template: {
-            layoutId: LAYOUT_TEMPLATES[0].id,
-            backgroundId: BACKGROUND_TEMPLATES[0].id
-          }
-        }));
+        setTimeout(() => {
+          set({
+            _hasHydrated: true,
+            isResettingImage: false,
+            ...defaultState,
+            template: {
+              layoutId: LAYOUT_TEMPLATES[0].id,
+              backgroundId: BACKGROUND_TEMPLATES[0].id
+            }
+          });
+        }, 1000);
 
         toast.success('Cover reset.', {
           id: 'reset-cover',

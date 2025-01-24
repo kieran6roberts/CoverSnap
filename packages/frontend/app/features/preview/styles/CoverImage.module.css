@@ -63,7 +63,6 @@
   aspect-ratio: var(--cover-aspect-ratio);
   overflow: hidden;
   border-radius: 16px;
-  background-color: blue;
   z-index: 99;
-  padding: 1rem;
+  padding: 2rem;
 }
