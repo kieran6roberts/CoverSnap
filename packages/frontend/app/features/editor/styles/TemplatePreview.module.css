@@ -3,15 +3,13 @@
 
   /* Diagonal Split */
   --clip-path-diagonal-split-1: polygon(0 0, 60% 0, 40% 100%, 0 100%);
-  --clip-path-diagonal-split-2: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
 
   /* Diagonal Split (Reverse) */
   --clip-path-diagonal-split-reverse-1: polygon(0 0, 40% 0, 60% 100%, 0 100%);
   --clip-path-diagonal-split-reverse-2: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
 
   /* Horizontal Split */
-  --clip-path-horizontal-split-1: polygon(0 0, 100% 0, 100% 50%, 0 50%);
-  --clip-path-horizontal-split-2: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  --clip-path-horizontal-split-1: polygon(0 50%, 100% 50%, 100% 100%, 0% 100%);
 
   /* Vertical Split */
   --clip-path-vertical-split-1: polygon(0 0, 50% 0, 50% 100%, 0 100%);
@@ -28,6 +26,20 @@
   /* Criss Cross */
   --clip-path-criss-cross-1: polygon(0 0, 100% 0, 100% 65%, 75% 50%, 50% 65%, 25% 50%, 0 65%);
   --clip-path-criss-cross-2: polygon(0 65%, 25% 50%, 50% 65%, 75% 50%, 100% 65%, 100% 100%, 0 100%);
+
+  /* frame */
+  --clip-path-frame-1: polygon(0% 0%, 0% 100%, 5% 100%, 5% 10%, 95% 10%, 95% 90%, 5% 90%, 5% 100%, 100% 100%, 100% 0%);
+
+  /* ticket */
+  --clip-path-ticket-1: circle(25% at 0%);
+  --clip-path-ticket-reverse-1: circle(25% at 100%);
+
+  /* sun */
+  --clip-path-sun-up-1: circle(40% at 0 0);
+  --clip-path-sun-down-1: circle(40% at 100% 100%);
+
+  /* bevel */
+  --clip-path-bevel-1: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
 }
 
 .previewPaper {
@@ -172,6 +184,30 @@
 
   &--vertical-left {
     clip-path: var(--clip-path-vertical-split-1);
+  }
+
+  &--frame {
+    clip-path: var(--clip-path-frame-1);
+  }
+
+  &--ticket {
+    clip-path: var(--clip-path-ticket-1);
+  }
+
+  &--ticket-reverse {
+    clip-path: var(--clip-path-ticket-reverse-1);
+  }
+
+  &--sun-up {
+    clip-path: var(--clip-path-sun-up-1);
+  }
+
+  &--sun-down {
+    clip-path: var(--clip-path-sun-down-1);
+  }
+
+  &--bevel {
+    clip-path: var(--clip-path-bevel-1);
   }
 
   [data-mantine-color-scheme='dark'] & {
