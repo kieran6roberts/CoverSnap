@@ -9,13 +9,18 @@ export const SECONDARY_TEXT_FONT_SIZE_MAX = 40;
 
 export const fonts = [
   'Arial',
+  'Arial Black',
   'Helvetica',
   'Verdana',
   'Tahoma',
   'Trebuchet MS',
   'Times New Roman',
   'Georgia',
-  'Courier New'
+  'Courier New',
+  'Impact',
+  'Palatino',
+  'Garamond',
+  'Comic Sans MS'
 ];
 
 const DEFAULT_PRIMARY_TEXT_CONTENT = '5 Simple Tips/Good Practises to Level Up Your React Codebase';
