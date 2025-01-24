@@ -142,8 +142,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript defaultColorScheme="dark" />
         <Meta />
         <Links />
-
-        {isProd ? <script defer data-domain={DOMAIN} data-api="/api/event" src="/js/script.js"></script> : null}
+        {isProd ? (
+          <script defer data-domain={DOMAIN} data-api="/api/event" src="/js/script.tagged-events.js"></script>
+        ) : null}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
