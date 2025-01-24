@@ -6,26 +6,21 @@
 
   /* Diagonal Split (Reverse) */
   --clip-path-diagonal-split-reverse-1: polygon(0 0, 40% 0, 60% 100%, 0 100%);
-  --clip-path-diagonal-split-reverse-2: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
 
   /* Horizontal Split */
   --clip-path-horizontal-split-1: polygon(0 50%, 100% 50%, 100% 100%, 0% 100%);
 
   /* Vertical Split */
   --clip-path-vertical-split-1: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-  --clip-path-vertical-split-2: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
 
   /* Cross */
   --clip-path-cross-1: polygon(0 100%, 100% 0, 100% 100%);
-  --clip-path-cross-2: polygon(0 0, 100% 0, 0 100%);
 
   /* Cross (Reverse) */
   --clip-path-cross-reverse-1: polygon(0 0, 100% 100%, 0 100%);
-  --clip-path-cross-reverse-2: polygon(100% 0, 100% 100%, 0 0);
 
   /* Criss Cross */
   --clip-path-criss-cross-1: polygon(0 0, 100% 0, 100% 65%, 75% 50%, 50% 65%, 25% 50%, 0 65%);
-  --clip-path-criss-cross-2: polygon(0 65%, 25% 50%, 50% 65%, 75% 50%, 100% 65%, 100% 100%, 0 100%);
 
   /* frame */
   --clip-path-frame-1: polygon(0% 0%, 0% 100%, 5% 100%, 5% 10%, 95% 10%, 95% 90%, 5% 90%, 5% 100%, 100% 100%, 100% 0%);
