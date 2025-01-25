@@ -13,65 +13,12 @@ export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
   const description = `Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`;
   const url = `https://${DOMAIN}`;
-  const domain = DOMAIN;
 
   return [
     { title, description },
     {
-      name: 'description',
-      content: description
-    },
-    {
-      property: 'og:title',
-      content: title
-    },
-    {
-      property: 'og:description',
-      content: description
-    },
-    {
-      property: 'og:image',
-      content: '/og-image.png'
-    },
-    {
-      property: 'og:image:alt',
-      content: 'CvrSnap - Create blog post cover images in seconds'
-    },
-    {
-      property: 'og:image:width',
-      content: '1200'
-    },
-    {
-      property: 'og:image:height',
-      content: '630'
-    },
-    {
       property: 'og:url',
       content: url
-    },
-    {
-      property: 'og:type',
-      content: 'website'
-    },
-    {
-      property: 'og:site_name',
-      content: 'CvrSnap'
-    },
-    {
-      name: 'twitter:card',
-      content: 'summary_large_image'
-    },
-    {
-      name: 'twitter:creator',
-      content: '@Kieran6Dev'
-    },
-    {
-      property: 'twitter:site',
-      content: '@Kieran6dev'
-    },
-    {
-      property: 'twitter:domain',
-      content: domain
     }
   ];
 };

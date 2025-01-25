@@ -144,6 +144,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:image" content={'/og-image.png'} />
+        <meta property="og:image:alt" content="CvrSnap - Create blog post cover images in seconds" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="675" />
+        <meta property="og:site_name" content="CvrSnap" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@Kieran6Dev" />
+        <meta name="twitter:site" content="@Kieran6dev" />
+        <meta name="twitter:domain" content={DOMAIN} />
+
         <ColorSchemeScript defaultColorScheme="dark" />
         <Meta />
         <Links />
