@@ -62,7 +62,6 @@
   min-width: 320px;
   aspect-ratio: var(--cover-aspect-ratio);
   overflow: hidden;
-  border-radius: 16px;
   z-index: 99;
   padding: 2rem;
 }

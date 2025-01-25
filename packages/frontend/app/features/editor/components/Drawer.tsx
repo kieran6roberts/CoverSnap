@@ -199,7 +199,13 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="xs">
             Reset all
           </Button>
-          <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
+          <Button
+            className="plausible-event-name=Download+Image"
+            hiddenFrom="md"
+            onClick={downloadImage}
+            size="xs"
+            rightSection={<Download width={16} height={16} />}
+          >
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
             Download image
           </Button>
