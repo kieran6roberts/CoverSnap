@@ -3,7 +3,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, 
 import type { LinksFunction } from 'react-router';
 import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
-import { DOMAIN } from '~/config/consts';
+// import { DOMAIN } from '~/config/consts';
 
 export const links: LinksFunction = () => [
   {
@@ -136,7 +136,7 @@ const theme = createTheme({
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const isProd = process.env.NODE_ENV === 'production';
+  // const isProd = process.env.NODE_ENV === 'production';
 
   return (
     <html lang="en" {...mantineHtmlProps}>
@@ -146,9 +146,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript defaultColorScheme="dark" />
         <Meta />
         <Links />
-        {isProd ? (
+        {/* {isProd ? (
           <script defer data-domain={DOMAIN} data-api="/api/event" src="/js/script.tagged-events.js"></script>
-        ) : null}
+        ) : null} */}
       </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
