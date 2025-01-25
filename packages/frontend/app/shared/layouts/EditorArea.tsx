@@ -7,7 +7,7 @@ import { CoverImage } from '~/features/preview/components/CoverImage';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 
 export function EditorArea() {
-  const { isDrawerOpen, isHydrated } = useEditorUIStore();
+  const { isDrawerOpen } = useEditorUIStore();
 
   const coverImageNodeRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery('(max-width: 992px)');
@@ -22,7 +22,7 @@ export function EditorArea() {
         align="center"
         h={{ base: 'auto', md: '100%' }}
       >
-        {showDrawer && isHydrated ? <Drawer imageNodeRef={coverImageNodeRef} /> : null}
+        {showDrawer ? <Drawer imageNodeRef={coverImageNodeRef} /> : null}
         <CoverImage imageNodeRef={coverImageNodeRef} />
       </Flex>
     </>
