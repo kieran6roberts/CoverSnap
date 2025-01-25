@@ -152,7 +152,8 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
               will be saved.
             </Text>
             <Text size="sm">
-              More features and templates will be added over time. If you have any suggestions, share them with me{' '}
+              Run your downloaded image through an image compressor, then you are set to publish! If you have any
+              suggestions for the app, share them with me{' '}
               <a
                 href="https://x.com/Kieran6dev"
                 target="_blank"

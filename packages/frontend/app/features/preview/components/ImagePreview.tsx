@@ -33,7 +33,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             gap: '1rem',
             overflow: 'hidden',
             width: 'min(calc(90vw - 360px), 900px)',
-            padding: '2rem',
+            padding: '3rem',
             minWidth: '320px',
             aspectRatio: cover.aspectRatio,
             borderRadius: '12px',

@@ -90,22 +90,23 @@ export default function Index() {
           <Stack justify="center" gap="xs">
             <Title
               ta="center"
+              order={1}
               fz={{ base: '2.4rem', sm: '4.5rem' }}
               style={{ lineHeight: '1', zIndex: 1 }}
               fw={700}
               aria-label={SITE_NAME}
-              maw={{ base: 500, sm: 700 }}
+              maw={{ base: 500, sm: 800 }}
               mx="auto"
             >
               Publish blog posts{' '}
-              <Mark fz="0.95em" style={{ zIndex: -1 }} color="grape">
+              <Mark fz="0.95em" style={{ zIndex: -1 }} color="yellow">
                 faster
               </Mark>{' '}
-              without cover image design hassle
+              and take away the cover image design burden
             </Title>
 
-            <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
-              Every blog post needs to good cover article. {SITE_NAME} empowers you to create great looking blog cover
+            <Text fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
+              Most blog posts need a good cover article. {SITE_NAME} empowers you to create great looking blog cover
               images in seconds using templates and simple editing tools. It's completely free to download as many cover
               images as you like.
             </Text>
