@@ -1,17 +1,6 @@
 # CvrSnap
 
-Every blog post needs to good cover article. CvrSnap empowers you to create great looking blog cover
-images in seconds using templates and simple editing tools. It's completely free to download as many cover
-images as you like.
-
-I initially built this tool for myself because I needed quick and simple blog cover images for my own blog without
-having to design them myself. I could spend hours trying different design ideas without sticking to something.
-
-## Who is this tool for (other than me)?
-
-This tool is for anyone who wants a quick blog post cover image that highlights their blog title in the cover image.
-I don't care for a generic background image pulled from the Unsplash API. I just wanted some thing clean that included my
-article title and name in the image. If that sounds like something you need, then this tool is for you.
+CvrSnap empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 

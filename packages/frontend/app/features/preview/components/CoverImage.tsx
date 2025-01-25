@@ -69,10 +69,9 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
         <CoverImageControls
           {...(isDownloadDisabled
             ? {
-                isDownloadDisabled: true,
-                hasEditorHydrated: _hasHydrated
+                isDownloadDisabled: true
               }
-            : { isLoading, resetStyles, downloadImage, isDownloadDisabled: false, hasEditorHydrated: _hasHydrated })}
+            : { isLoading, resetStyles, downloadImage, isDownloadDisabled: false })}
         />
       </Box>
 

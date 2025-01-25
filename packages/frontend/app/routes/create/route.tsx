@@ -10,11 +10,12 @@ import { Navbar } from '~/shared/layouts/Navbar';
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Create`;
   const description = `Use ${SITE_NAME}'s easy-to-use editing tools and presets to download free cover images for your blog without the design headache.`;
+  const image = '/og-image.png';
   const url = `https://${DOMAIN}/create`;
   const domain = DOMAIN;
 
   return [
-    { title, description },
+    { title },
     {
       name: 'description',
       content: description
@@ -29,19 +30,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'og:image',
-      content: '/og-image.png'
-    },
-    {
-      property: 'og:image:alt',
-      content: 'CvrSnap - Create blog post cover images in seconds'
-    },
-    {
-      property: 'og:image:width',
-      content: '1200'
-    },
-    {
-      property: 'og:image:height',
-      content: '630'
+      content: image
     },
     {
       property: 'og:url',
@@ -53,19 +42,31 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'og:site_name',
-      content: 'CvrSnap'
+      content: domain
     },
     {
-      name: 'twitter:card',
+      property: 'twitter:card',
       content: 'summary_large_image'
     },
     {
-      name: 'twitter:creator',
+      property: 'twitter:creator',
       content: '@Kieran6Dev'
     },
     {
-      property: 'twitter:site',
-      content: '@Kieran6dev'
+      property: 'twitter:title',
+      content: title
+    },
+    {
+      property: 'twitter:description',
+      content: description
+    },
+    {
+      property: 'twitter:image',
+      content: image
+    },
+    {
+      property: 'twitter:url',
+      content: url
     },
     {
       property: 'twitter:domain',

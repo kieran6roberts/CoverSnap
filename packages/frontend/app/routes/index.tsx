@@ -11,12 +11,12 @@ import { Navbar } from '~/shared/layouts/Navbar';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
-  const description = `Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`;
+  const description = `${SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds, skipping the design hassle. It's completely free to download as many images as you like.`;
   const url = `https://${DOMAIN}`;
   const domain = DOMAIN;
 
   return [
-    { title, description },
+    { title },
     {
       name: 'description',
       content: description
@@ -34,18 +34,6 @@ export const meta: MetaFunction = () => {
       content: '/og-image.png'
     },
     {
-      property: 'og:image:alt',
-      content: 'CvrSnap - Create blog post cover images in seconds'
-    },
-    {
-      property: 'og:image:width',
-      content: '1200'
-    },
-    {
-      property: 'og:image:height',
-      content: '630'
-    },
-    {
       property: 'og:url',
       content: url
     },
@@ -55,19 +43,31 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'og:site_name',
-      content: 'CvrSnap'
+      content: domain
     },
     {
-      name: 'twitter:card',
+      property: 'twitter:card',
       content: 'summary_large_image'
     },
     {
-      name: 'twitter:creator',
+      property: 'twitter:creator',
       content: '@Kieran6Dev'
     },
     {
-      property: 'twitter:site',
-      content: '@Kieran6dev'
+      property: 'twitter:title',
+      content: title
+    },
+    {
+      property: 'twitter:description',
+      content: description
+    },
+    {
+      property: 'twitter:image',
+      content: '/og-image.png'
+    },
+    {
+      property: 'twitter:url',
+      content: url
     },
     {
       property: 'twitter:domain',
@@ -105,9 +105,8 @@ export default function Index() {
             </Title>
 
             <Text c="dimmed" fz={{ base: 'md', sm: 'lg' }} ta="center" maw={580} mx="auto" mt="md">
-              Every blog post needs to good cover article. {SITE_NAME} empowers you to create great looking blog cover
-              images in seconds using templates and simple editing tools. It's completely free to download as many cover
-              images as you like.
+              {SITE_NAME} empowers you to create great looking cover images for your blog posts in seconds using easy to
+              use editing tools. No design skills required and it's completely free to download your image.
             </Text>
             <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
               <Button hiddenFrom="sm" component={Link} to="/create" size="lg" variant="filled" viewTransition>

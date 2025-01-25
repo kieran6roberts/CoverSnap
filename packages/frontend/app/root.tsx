@@ -1,9 +1,10 @@
 import '@mantine/core/styles.css';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteError } from 'react-router';
 import type { LinksFunction } from 'react-router';
-import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps, Box } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
 import { DOMAIN } from '~/config/consts';
+import { Navbar } from './shared/layouts/Navbar';
 
 export const links: LinksFunction = () => [
   {
@@ -126,11 +127,6 @@ const theme = createTheme({
         size: 'md',
         radius: 'xl'
       }
-    },
-    Skeleton: {
-      defaultProps: {
-        radius: 'xl'
-      }
     }
   }
 });
@@ -188,4 +184,13 @@ export function ErrorBoundary() {
   } else {
     return <h1>Unknown Error</h1>;
   }
+}
+
+export function HydrateFallback() {
+  return (
+    <MantineProvider>
+      <Navbar />
+      <Box component="main" style={{ minHeight: 'calc(100vh - 69px)' }} />
+    </MantineProvider>
+  );
 }
