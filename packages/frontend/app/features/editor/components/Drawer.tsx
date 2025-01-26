@@ -146,7 +146,14 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             {items}
           </Accordion>
           <Stack m="lg" h="100%" className={classes['sidebar-help']}>
-            <Image src={welcomeImage} radius="md" alt={`Welcome to ${SITE_NAME} cover`} width={400} height={200} />
+            <Image
+              src={welcomeImage}
+              radius="md"
+              alt={`Welcome to ${SITE_NAME} cover`}
+              w="100%"
+              style={{ aspectRatio: 2.38 }}
+              bg="var(--mantine-color-dark-9)"
+            />
             <Text size="sm" ta="center">
               Your editor state (except uploaded background images) will persist across sessions meaning your progress
               will be saved.

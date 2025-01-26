@@ -101,6 +101,7 @@ export default function Index() {
                 loading="eager"
                 w="100%"
                 style={{ aspectRatio: '16/9' }}
+                bg="var(--mantine-color-dark-9)"
               />
             </Box>
             <Flex component="section" direction="column" gap="md" mb={40}>
