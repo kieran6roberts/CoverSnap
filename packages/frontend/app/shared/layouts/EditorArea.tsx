@@ -15,16 +15,14 @@ export function EditorArea() {
   const showDrawer = isMobile || isDrawerOpen;
 
   return (
-    <>
-      <Flex
-        direction={{ base: 'column-reverse', md: 'row' }}
-        justify="center"
-        align="center"
-        h={{ base: 'auto', md: '100%' }}
-      >
-        {showDrawer ? <Drawer imageNodeRef={coverImageNodeRef} /> : null}
-        <CoverImage imageNodeRef={coverImageNodeRef} />
-      </Flex>
-    </>
+    <Flex
+      direction={{ base: 'column-reverse', md: 'row' }}
+      justify="center"
+      align="center"
+      h={{ base: 'auto', md: '100%' }}
+    >
+      {showDrawer ? <Drawer imageNodeRef={coverImageNodeRef} /> : null}
+      <CoverImage imageNodeRef={coverImageNodeRef} />
+    </Flex>
   );
 }

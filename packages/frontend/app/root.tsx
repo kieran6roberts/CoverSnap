@@ -5,6 +5,7 @@ import { Box, ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps 
 import { ToastProvider } from '~/shared/providers/ToastProvider';
 import { DOMAIN } from '~/config/consts';
 import { Navbar } from './shared/layouts/Navbar';
+import classes from '~/shared/styles/index.module.css';
 
 export const links: LinksFunction = () => [
   {
@@ -128,6 +129,11 @@ const theme = createTheme({
         radius: 'xl'
       }
     },
+    Modal: {
+      defaultProps: {
+        radius: 'lg'
+      }
+    },
     Skeleton: {
       defaultProps: {
         radius: 'xl'
@@ -206,7 +212,7 @@ export function HydrateFallback() {
   return (
     <MantineProvider>
       <Navbar />
-      <Box component="main" style={{ minHeight: 'calc(100vh - 69px)' }} />
+      <Box component="main" style={{ minHeight: 'calc(100vh - 69px)' }} className={classes['themed-bg']} />
     </MantineProvider>
   );
 }

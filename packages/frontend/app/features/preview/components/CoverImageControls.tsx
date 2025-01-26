@@ -35,6 +35,8 @@ export function CoverImageControls({
 
       <Button
         visibleFrom="md"
+        variant="gradient"
+        gradient={{ from: 'grape', to: 'violet', deg: 135 }}
         disabled={isDownloadDisabled}
         {...(downloadImage ? { onClick: downloadImage } : {})}
         size="md"

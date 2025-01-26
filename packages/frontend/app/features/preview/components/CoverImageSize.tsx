@@ -12,6 +12,7 @@ export function CoverImageSize({
   return (
     <Select
       label="Image download size"
+      w="275px"
       value={defaultImageSize}
       data={Object.values(IMAGE_DOWNLOAD_SIZES).map((size) => ({
         value: size.value,
