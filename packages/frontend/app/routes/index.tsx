@@ -5,7 +5,6 @@ import { CheckCircleSolid } from 'iconoir-react';
 
 import { Footer } from '~/shared/layouts/Footer';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
-import editorLight from '~/images/editor-light.webp';
 import editorDark from '~/images/editor-dark.webp';
 import { DOMAIN, SITE_NAME } from '~/config/consts';
 import { Navbar } from '~/shared/layouts/Navbar';
@@ -24,11 +23,6 @@ export const meta: MetaFunction = () => {
     }
   ];
 };
-
-const heroImages = {
-  light: editorLight,
-  dark: editorDark
-} as const;
 
 export default function Index() {
   return (
@@ -101,19 +95,13 @@ export default function Index() {
               mb={{ base: 50, sm: 100 }}
             >
               <Image
-                // lightHidden
-                src={heroImages['dark']}
+                src={editorDark}
                 alt={`${SITE_NAME} create page screenshot`}
                 radius="md"
                 loading="eager"
+                w="100%"
+                style={{ aspectRatio: '16/9' }}
               />
-              {/* <Image
-                darkHidden
-                src={heroImages['light']}
-                alt={`${SITE_NAME} create page screenshot`}
-                radius="md"
-                loading="eager"
-              /> */}
             </Box>
             <Flex component="section" direction="column" gap="md" mb={40}>
               <Title order={2} fz={{ base: '1.5rem', sm: '2rem' }} ta="center">
