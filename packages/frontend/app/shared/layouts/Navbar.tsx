@@ -29,8 +29,8 @@ export function Navbar() {
           style={{ textDecoration: 'none' }}
           viewTransition
         >
-          <Image src="/favicon.ico" width={28} height={28} alt={`${SITE_NAME} logo`} />
-          <Text component="span" size="lg" fw={500}>
+          <Image src="/favicon.ico" width={36} height={36} alt={`${SITE_NAME} logo`} />
+          <Text visibleFrom="md" component="span" size="lg" fw={500}>
             {SITE_NAME}
           </Text>
         </Flex>
