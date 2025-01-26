@@ -146,13 +146,21 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             {items}
           </Accordion>
           <Stack m="lg" h="100%" className={classes['sidebar-help']}>
-            <Image src={welcomeImage} radius="md" alt={`Welcome to ${SITE_NAME} cover`} width={400} height={200} />
-            <Text size="sm">
+            <Image
+              src={welcomeImage}
+              radius="md"
+              alt={`Welcome to ${SITE_NAME} cover`}
+              w="100%"
+              style={{ aspectRatio: 2.38 }}
+              bg="var(--mantine-color-dark-9)"
+            />
+            <Text size="sm" ta="center">
               Your editor state (except uploaded background images) will persist across sessions meaning your progress
               will be saved.
             </Text>
-            <Text size="sm">
-              More features and templates will be added over time. If you have any suggestions, share them with me{' '}
+            <Text size="sm" ta="center">
+              Run your downloaded cover through an image compressor, you are then set to publish! If you have any
+              suggestions for the app, share them with me{' '}
               <a
                 href="https://x.com/Kieran6dev"
                 target="_blank"
@@ -160,7 +168,8 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
                 className={classes['sidebar-help--name-link']}
               >
                 @Kieran6dev.
-              </a>
+              </a>{' '}
+              If you like the app, take a second to star in on GitHub, thanks!
             </Text>
           </Stack>
         </ScrollArea>
@@ -171,12 +180,32 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           radius="md"
           multiple
           variant="default"
-          pb={80}
+          pb={24}
         >
           {items}
         </Accordion>
+        <Stack hiddenFrom="md" m="lg" h="100%" className={classes['sidebar-help']} pb={72} maw={600} px="md" mx="auto">
+          <Text size="sm" ta="center">
+            Your editor state (except uploaded background images) will persist across sessions meaning your progress
+            will be saved.
+          </Text>
+          <Text size="sm" ta="center">
+            Run your downloaded cover through an image compressor, you are then set to publish! If you have any
+            suggestions for the app, share them with me{' '}
+            <a
+              href="https://x.com/Kieran6dev"
+              target="_blank"
+              rel="noreferrer"
+              className={classes['sidebar-help--name-link']}
+            >
+              @Kieran6dev.
+            </a>{' '}
+            If you like the app, take a second to star in on GitHub, thanks!
+          </Text>
+        </Stack>
         <Flex
           justify={{ base: 'space-between', md: 'flex-end' }}
+          align="center"
           bg="var(--mantine-color-body)"
           pos={{ base: 'fixed', md: 'sticky' }}
           className={classes['sidebar-footer']}
@@ -199,7 +228,13 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
           <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="xs">
             Reset all
           </Button>
-          <Button hiddenFrom="md" onClick={downloadImage} size="xs" rightSection={<Download width={16} height={16} />}>
+          <Button
+            className="plausible-event-name=Download+Image"
+            hiddenFrom="md"
+            onClick={downloadImage}
+            size="xs"
+            rightSection={<Download width={16} height={16} />}
+          >
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
             Download image
           </Button>

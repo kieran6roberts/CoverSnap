@@ -23,14 +23,14 @@ export const fonts = [
   'Comic Sans MS'
 ];
 
-const DEFAULT_PRIMARY_TEXT_CONTENT = '5 Simple Tips/Good Practises to Level Up Your React Codebase';
+const DEFAULT_PRIMARY_TEXT_CONTENT = 'How To Persist Style Changes Through Reloads Using Overrides In Dev Tools';
 const DEFAULT_SECONDARY_TEXT_CONTENT = 'by Kieran Roberts';
 const DEFAULT_PRIMARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
 const DEFAULT_SECONDARY_TEXT_COLOR = 'rgba(255, 255, 255, 1)';
 const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
 const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
-const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 45;
-const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 28;
+const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 40;
+const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 25;
 
 const DEFAULT_PATTERN_COLOR = '#ffffff';
 const DEFAULT_PATTERN_OPACITY = 0.1;
@@ -68,8 +68,8 @@ export const DEFAULT_EDITOR_STATE = {
   background: {
     image: null,
     colors: {
-      color1: 'rgba(204, 93, 232, 1)',
-      color2: 'rgba(51, 51, 51, 1)'
+      color1: 'rgba(182, 15, 242, 1)',
+      color2: 'rgba(20, 4, 4, 1)'
     },
     pattern: DEFAULT_PATTERN
   },

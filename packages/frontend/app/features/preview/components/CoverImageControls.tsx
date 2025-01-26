@@ -35,10 +35,13 @@ export function CoverImageControls({
 
       <Button
         visibleFrom="md"
+        variant="gradient"
+        gradient={{ from: 'grape', to: 'violet', deg: 135 }}
         disabled={isDownloadDisabled}
         {...(downloadImage ? { onClick: downloadImage } : {})}
         size="md"
         rightSection={<Download width={24} height={24} />}
+        className="plausible-event-name=Download+Image"
       >
         <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
         Download image

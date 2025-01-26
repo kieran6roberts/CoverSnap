@@ -15,7 +15,7 @@ import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 const Confetti = lazy(() => import('~/features/preview/components/Confetti'));
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
-  const { resetEditor, updateCover, cover, _hasHydrated } = useEditor();
+  const { resetEditor, updateCover, cover } = useEditor();
   const { isDrawerOpen, setDrawerOpen } = useEditorUIStore();
 
   const defaultImageSize = `${cover.id}:${cover.aspectRatio}:${cover.width}x${cover.height}`;
@@ -59,11 +59,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             <ArrowRightTag width={18} height={18} />
           </ActionIcon>
         ) : null}
-        <CoverImageSize
-          defaultImageSize={defaultImageSize}
-          onAspectRatioChange={onAspectRatioChange}
-          _hasHydrated={_hasHydrated}
-        />
+        <CoverImageSize defaultImageSize={defaultImageSize} onAspectRatioChange={onAspectRatioChange} />
         <ImagePreview imageNodeRef={imageNodeRef} />
 
         <CoverImageControls
