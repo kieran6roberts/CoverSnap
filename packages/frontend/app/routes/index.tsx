@@ -43,9 +43,9 @@ export default function Index() {
               </Title>
 
               <Text fz={{ base: 'sm', sm: 'lg' }} fw={500} ta="center" maw={660} mx="auto" mt="md">
-                Most blog posts need a good cover article and {SITE_NAME} empowers you to create great looking blog
-                cover images in seconds using templates and simple editing tools. It's completely free to download as
-                many cover images as you like.
+                Most blog posts need a good cover image and {SITE_NAME} empowers you to create great looking blog cover
+                images in seconds using templates and simple editing tools. It's completely free to download as many
+                images as you like.
               </Text>
               <Flex direction={{ base: 'column', sm: 'row' }} justify="center" align="center" gap="md" mt="xl">
                 <Button
