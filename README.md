@@ -1,6 +1,6 @@
 # CvrSnap
 
-Every blog post needs to good cover article. CvrSnap empowers you to create great looking blog cover
+Every blog post needs to good cover image. CvrSnap empowers you to create great looking blog cover
 images in seconds using templates and simple editing tools. It's completely free to download as many cover
 images as you like.
 

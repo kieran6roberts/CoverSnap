@@ -153,7 +153,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta property="og:title" content={`${SITE_NAME} - Get your free blog post cover images.`} />
         <meta
           property="og:description"
-          content={`Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`}
+          content={`Every blog post needs to good cover image. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`}
         />
         <meta property="og:image" content={`https://${DOMAIN}/og-img.png?v=3`} />
         <meta property="og:image:alt" content="CvrSnap - Create blog post cover images in seconds" />
