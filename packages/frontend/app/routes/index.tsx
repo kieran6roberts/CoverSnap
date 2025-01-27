@@ -12,7 +12,7 @@ import classes from '~/shared/styles/index.module.css';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
-  const description = `Every blog post needs to good cover image. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`;
+  const description = `Most blog posts need a good cover image. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`;
 
   return [{ title, description }];
 };
