@@ -150,7 +150,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:image" content={'/og-image.png'} />
+        <meta property="og:image" content="/og-img.png?v=2" />
+        <meta property="og:updated_time" content={new Date().toISOString()} />
         <meta property="og:image:alt" content="CvrSnap - Create blog post cover images in seconds" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="675" />
