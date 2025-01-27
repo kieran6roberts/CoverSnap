@@ -30,7 +30,7 @@ export function Navbar() {
           viewTransition
         >
           <Image src="/favicon.ico" width={36} height={36} alt={`${SITE_NAME} logo`} />
-          <Text visibleFrom="md" component="span" size="lg" fw={500}>
+          <Text component="span" size="lg" fw={500}>
             {SITE_NAME}
           </Text>
         </Flex>

@@ -20,8 +20,8 @@ export function WelcomeModal({ isOpen, hideWelcome }: { isOpen: boolean; hideWel
       <Stack>
         <Image src={welcomeImage} radius="md" alt={`Welcome to ${SITE_NAME} cover`} width={400} height={200} />
         <Text>
-          Thank you for trying {SITE_NAME}! You are free to download as many cover images as you like for free, and I'll
-          be adding more customisation options over time.
+          Thank you for trying {SITE_NAME}! You can download as many cover images as you like for free, and I'll be
+          adding more customisation options over time.
         </Text>
         <Text>
           If you publish a post with a CvrSnap cover, share it with me using one of my contact links from the sideber.
