@@ -156,12 +156,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content={`Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`}
         />
         <meta property="og:image" content={`https://${DOMAIN}/og-img.png?v=3`} />
-        <meta property="og:updated_time" content={new Date().toISOString()} />
         <meta property="og:image:alt" content="CvrSnap - Create blog post cover images in seconds" />
         <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="675" />
+        <meta property="og:image:height" content="677" />
         <meta property="og:site_name" content="CvrSnap" />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://${DOMAIN}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content="@Kieran6Dev" />
         <meta name="twitter:site" content="@Kieran6dev" />

@@ -6,22 +6,15 @@ import { CheckCircleSolid } from 'iconoir-react';
 import { Footer } from '~/shared/layouts/Footer';
 import { GitHubStarButton } from '~/shared/components/GitHubStarButton';
 import editorDark from '~/images/editor-dark.webp';
-import { DOMAIN, SITE_NAME } from '~/config/consts';
+import { SITE_NAME } from '~/config/consts';
 import { Navbar } from '~/shared/layouts/Navbar';
 import classes from '~/shared/styles/index.module.css';
 
 export const meta: MetaFunction = () => {
   const title = `${SITE_NAME} - Get your free blog post cover images.`;
   const description = `Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`;
-  const url = `https://${DOMAIN}`;
 
-  return [
-    { title, description },
-    {
-      property: 'og:url',
-      content: url
-    }
-  ];
+  return [{ title, description }];
 };
 
 export default function Index() {
