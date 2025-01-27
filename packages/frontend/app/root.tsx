@@ -3,7 +3,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, 
 import type { LinksFunction } from 'react-router';
 import { Box, ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
 import { ToastProvider } from '~/shared/providers/ToastProvider';
-import { DOMAIN } from '~/config/consts';
+import { DOMAIN, SITE_NAME } from '~/config/consts';
 import { Navbar } from './shared/layouts/Navbar';
 import classes from '~/shared/styles/index.module.css';
 
@@ -150,6 +150,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content={`${SITE_NAME} - Get your free blog post cover images.`} />
+        <meta
+          property="og:description"
+          content={`Every blog post needs to good cover article. ${SITE_NAME} empowers you to create great looking blog cover images in seconds using templates and simple editing tools. It's completely free to download as many cover images as you like.`}
+        />
         <meta property="og:image" content="/og-img.png?v=2" />
         <meta property="og:updated_time" content={new Date().toISOString()} />
         <meta property="og:image:alt" content="CvrSnap - Create blog post cover images in seconds" />
