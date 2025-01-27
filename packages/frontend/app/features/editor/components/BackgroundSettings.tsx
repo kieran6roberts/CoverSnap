@@ -101,10 +101,9 @@ export function BackgroundSettings() {
             <Image
               src={backgroundImage}
               radius="md"
-              style={{ border: '1px solid var(--mantine-color-default-border)' }}
+              style={{ border: '1px solid var(--mantine-color-default-border)', aspectRatio: '16/9' }}
               alt="Background image"
-              width={368}
-              height={200}
+              width="100%"
             />
             <Button aria-label="Remove background image" onClick={() => onBackgroundImageChange(null)}>
               Clear
