@@ -28,7 +28,9 @@ export function BackgroundSettings() {
     updateBackground
   } = useEditor();
 
-  const hasSplitTemplate = !!template.backgroundId;
+  // TODO: Put these in consts
+  const is3DotTemplate = template.backgroundId === 'window';
+  const isSolidTemplate = template.backgroundId === 'solid';
 
   const onBackgroundImageChange = (file: File | null) => {
     // Revoke old image if it's a blob
@@ -82,14 +84,36 @@ export function BackgroundSettings() {
           onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value } })}
         />
 
-        {hasSplitTemplate ? (
+        {!isSolidTemplate ? (
           <ColorInput
             format="rgba"
             label="Background color 2"
             description="Accepts RGBA"
             value={backgroundColors?.color2 ?? 'rgba(255, 255, 255, 1)'}
             onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value } })}
+            disabled={!!backgroundImage}
           />
+        ) : null}
+
+        {is3DotTemplate ? (
+          <>
+            <ColorInput
+              format="rgba"
+              label="Background color 3"
+              description="Accepts RGBA"
+              value={backgroundColors?.color3 ?? 'rgba(255, 255, 255, 1)'}
+              onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color3: value } })}
+              disabled={!!backgroundImage}
+            />
+            <ColorInput
+              format="rgba"
+              label="Background color 4"
+              description="Accepts RGBA"
+              value={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
+              onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color4: value } })}
+              disabled={!!backgroundImage}
+            />
+          </>
         ) : null}
       </Fieldset>
       <Fieldset legend="Images">
