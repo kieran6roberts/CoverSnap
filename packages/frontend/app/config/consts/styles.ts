@@ -18,6 +18,8 @@ export const PREVIEW_VARIABLE_NAMES = {
   background: {
     color1: '--cover-background-color-1',
     color2: '--cover-background-color-2',
+    color3: '--cover-background-color-3',
+    color4: '--cover-background-color-4',
     opacity: '--cover-color-overlay-opacity'
   },
   cover: {

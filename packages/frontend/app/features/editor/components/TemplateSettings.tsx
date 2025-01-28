@@ -23,7 +23,18 @@ export function TemplateSettings() {
                 onTemplateUpdate={() => updateTemplate({ ...template, backgroundId: t.id })}
               >
                 <div className={classes['previewPaper-content']}>
-                  <div className={classnames(classes['backgroundTemplate-previewSection'], t.previewStyles)} />
+                  {t.sections?.map((section, index) => (
+                    <div
+                      className={classes['backgroundTemplate-previewSection']}
+                      key={index}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 1,
+                        clipPath: section.clipPath
+                      }}
+                    />
+                  ))}
                 </div>
               </TemplatePreview>
             );

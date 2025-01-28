@@ -147,53 +147,36 @@ export const LAYOUT_TEMPLATES = [
 
 export const BACKGROUND_TEMPLATES = [
   {
-    id: 'diagonal',
-    name: 'Split',
+    id: 'window',
+    name: 'Window',
     sections: [
       {
-        clipPath: 'var(--clip-path-diagonal-split-1)',
+        clipPath: 'var(--clip-path-window-1)',
         backgroundColor: 'var(--cover-background-color-2)'
-      }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--diagonal-left']
-  },
-  {
-    id: 'cross',
-    name: 'Cross',
-    sections: [
+      },
       {
-        clipPath: 'var(--clip-path-cross-1)',
-        backgroundColor: 'var(--cover-background-color-2)'
-      }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--cross']
-  },
-  {
-    id: 'cross-reverse',
-    name: 'Cross (Reverse)',
-    sections: [
+        clipPath: 'var(--clip-path-window-2)',
+        backgroundColor: 'var(--cover-background-color-3)'
+      },
       {
-        clipPath: 'var(--clip-path-cross-reverse-1)',
-        backgroundColor: 'var(--cover-background-color-2)'
+        clipPath: 'var(--clip-path-window-3)',
+        backgroundColor: 'var(--cover-background-color-4)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--cross-reverse']
-  },
-  {
-    id: 'diagonal-reverse',
-    name: 'Split (Reverse)',
-    sections: [
-      {
-        clipPath: 'var(--clip-path-diagonal-split-reverse-1)',
-        backgroundColor: 'var(--cover-background-color-2)'
-      }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--diagonal-left-reverse']
+    ]
   },
   {
     id: 'solid',
-    name: 'Solid',
-    previewStyles: classes['backgroundTemplate-previewSection--solid']
+    name: 'Solid'
+  },
+  {
+    id: 'vertical',
+    name: 'Vertical Split',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-vertical-split-1)',
+        backgroundColor: 'var(--cover-background-color-1)'
+      }
+    ]
   },
   {
     id: 'horizontal',
@@ -203,41 +186,47 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-horizontal-split-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--horizontal-top']
+    ]
   },
   {
-    id: 'vertical',
-    name: 'Vertical Split',
+    id: 'diagonal',
+    name: 'Split',
     sections: [
       {
-        clipPath: 'var(--clip-path-vertical-split-1)',
+        clipPath: 'var(--clip-path-diagonal-split-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--vertical-left']
+    ]
   },
   {
-    id: 'criss-cross',
-    name: 'Criss Cross',
+    id: 'cross',
+    name: 'Cross',
     sections: [
       {
-        clipPath: 'var(--clip-path-criss-cross-1)',
+        clipPath: 'var(--clip-path-cross-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--criss-cross']
+    ]
   },
   {
-    id: 'frame',
-    name: 'Frame',
+    id: 'cross-reverse',
+    name: 'Cross (Reverse)',
     sections: [
       {
-        clipPath: 'var(--clip-path-frame-1)',
+        clipPath: 'var(--clip-path-cross-reverse-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--frame']
+    ]
+  },
+  {
+    id: 'diagonal-reverse',
+    name: 'Split (Reverse)',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-diagonal-split-reverse-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
   },
   {
     id: 'ticket',
@@ -247,8 +236,7 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-ticket-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--ticket']
+    ]
   },
   {
     id: 'ticket-reverse',
@@ -258,8 +246,27 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-ticket-reverse-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--ticket-reverse']
+    ]
+  },
+  {
+    id: 'criss-cross',
+    name: 'Criss Cross',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-criss-cross-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
+  },
+  {
+    id: 'frame',
+    name: 'Frame',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-frame-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
   },
   {
     id: 'sun-up',
@@ -269,8 +276,7 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-sun-up-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--sun-up']
+    ]
   },
   {
     id: 'sun-down',
@@ -280,8 +286,7 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-sun-down-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--sun-down']
+    ]
   },
   {
     id: 'bevel',
@@ -291,7 +296,46 @@ export const BACKGROUND_TEMPLATES = [
         clipPath: 'var(--clip-path-bevel-1)',
         backgroundColor: 'var(--cover-background-color-2)'
       }
-    ],
-    previewStyles: classes['backgroundTemplate-previewSection--bevel']
+    ]
+  },
+  {
+    id: 'ellipse',
+    name: 'Ellipse',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-ellipse-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
+  },
+  {
+    id: 'ellipse-reverse',
+    name: 'Ellipse (Reverse)',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-ellipse-reverse-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
+  },
+  {
+    id: 'mountain',
+    name: 'Mountain',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-mountain-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
+  },
+  {
+    id: 'mountain-reverse',
+    name: 'Mountain (Reverse)',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-mountain-reverse-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      }
+    ]
   }
 ];
