@@ -30,6 +30,8 @@ interface BackgroundState {
   colors: {
     color1: string;
     color2: string;
+    color3: string;
+    color4: string;
   };
   pattern: {
     url: string | null;
@@ -156,6 +158,12 @@ export const useEditor = create(
           if (updates.colors?.color2) {
             cssUpdates['--cover-background-color-2'] = updates.colors?.color2;
           }
+          if (updates.colors?.color3) {
+            cssUpdates['--cover-background-color-3'] = updates.colors?.color3;
+          }
+          if (updates.colors?.color4) {
+            cssUpdates['--cover-background-color-4'] = updates.colors?.color4;
+          }
 
           if (Object.keys(cssUpdates).length > 0) {
             updateCSSVariables(cssUpdates);
@@ -232,8 +240,10 @@ export const useEditor = create(
 
           /* Cover Background */
           '--cover-color-overlay-opacity': '0%',
-          '--cover-background-color-1': DEFAULT_EDITOR_STATE.background.colors?.color1,
-          '--cover-background-color-2': DEFAULT_EDITOR_STATE.background.colors?.color2,
+          '--cover-background-color-1': DEFAULT_EDITOR_STATE.background.colors?.color1 ?? 'rgba(81, 133, 196, 1)',
+          '--cover-background-color-2': DEFAULT_EDITOR_STATE.background.colors?.color2 ?? 'rgba(51, 51, 51, 1)',
+          '--cover-background-color-3': DEFAULT_EDITOR_STATE.background.colors?.color3 ?? 'rgba(51, 51, 51, 1)',
+          '--cover-background-color-4': DEFAULT_EDITOR_STATE.background.colors?.color4 ?? 'rgba(51, 51, 51, 1)',
 
           /* Cover Aspect Ratio */
           '--cover-aspect-ratio': `${(DEFAULT_EDITOR_STATE.cover.width / DEFAULT_EDITOR_STATE.cover.height).toFixed(1)}`
@@ -320,6 +330,8 @@ export function EditorHydration({ children, skeleton }: { children: React.ReactN
          */
         '--cover-background-color-1': state.background.colors?.color1 ?? 'rgba(81, 133, 196, 1)',
         '--cover-background-color-2': state.background.colors?.color2 ?? 'rgba(51, 51, 51, 1)',
+        '--cover-background-color-3': state.background.colors?.color3 ?? 'rgba(51, 51, 51, 1)',
+        '--cover-background-color-4': state.background.colors?.color4 ?? 'rgba(51, 51, 51, 1)',
         /*
         '--cover-align-items
         '--cover-primary-text-align

@@ -16,6 +16,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
 
   const backgroundTemplate = BACKGROUND_TEMPLATES.find((t) => t.id === backgroundId);
   const { sections: backgroundSections } = backgroundTemplate ?? {};
+  const is3DotTemplate = backgroundTemplate?.id === 'window';
 
   return (
     <EditorHydration skeleton={<Skeleton radius={12} className={classes.coverSkeleton} animate />}>
@@ -38,28 +39,31 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             aspectRatio: cover.aspectRatio,
             borderRadius: '12px',
             letterSpacing: 'normal',
-            margin: '0 auto'
+            margin: '0 auto',
+            zIndex: 0
           }}
         >
           {/* Background sections */}
-          {backgroundSections?.map((section, index) => (
-            <Box
-              key={index}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                zIndex: 1,
-                backgroundColor: 'var(--cover-background-color-2)',
-                clipPath: section.clipPath
-              }}
-            />
-          ))}
+          {!backgroundImage
+            ? backgroundSections?.map((section, index) => (
+                <Box
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: is3DotTemplate ? 3 : 0,
+                    backgroundColor: `var(--cover-background-color-${index + 2})`,
+                    clipPath: section.clipPath
+                  }}
+                />
+              ))
+            : null}
 
           <Box
             style={{
               position: 'absolute',
               inset: 0,
-              zIndex: 1,
+              zIndex: 2,
               width: '100%',
               height: '100%',
               pointerEvents: 'none',
@@ -104,7 +108,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
                 margin: 0,
                 letterSpacing: 'normal',
                 position: 'relative',
-                zIndex: 2
+                zIndex: 50
               }}
             >
               {primaryText.content}
@@ -128,7 +132,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
                 right: 'var(--cover-secondary-right, unset)',
                 left: 'var(--cover-secondary-left, unset)',
                 letterSpacing: 'normal',
-                zIndex: 2
+                zIndex: 50
               }}
             >
               {secondaryText.content}

@@ -1,6 +1,6 @@
 import { MantineColorScheme } from '@mantine/core';
 
-export const GITHUB_URL = 'https://github.com/kieran6roberts/CoverSnap';
+export const GITHUB_URL = 'https://github.com/kieran6roberts/cvrsnap';
 export const PORTFOLIO_URL = 'https://kieranroberts.dev';
 export const DOMAIN = 'cvrsnap.com';
 export const SITE_NAME = 'CvrSnap';

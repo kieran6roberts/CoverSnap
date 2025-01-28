@@ -11,7 +11,8 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
     requestAnimationFrame(() => {
       toast.success('Image downloaded successfully.', {
         icon: <Check width={24} height={24} color="var(--mantine-primary-color-8)" />,
-        id: 'download-success'
+        id: 'download-success',
+        duration: 2000
       });
     });
   }, []);
@@ -21,14 +22,15 @@ export function DownloadSuccessModal({ close }: { close: () => void }) {
       <Stack>
         <Divider />
         <Text mb="md">
-          If you have any feedback, please share it with me on X{' '}
+          If you have any feedback, please share it with me{' '}
           <Anchor underline="always" target="_blank" data-autofocus href="https://x.com/Kieran6Dev">
             @Kieran6Dev
           </Anchor>
-          , or raise an issue on{' '}
+          . Leave a star on{' '}
           <Anchor underline="always" target="_blank" href={GITHUB_URL}>
-            GitHub.
-          </Anchor>
+            GitHub
+          </Anchor>{' '}
+          if it was helpful.
         </Text>
 
         <Flex justify="center" align="center" gap="md">

@@ -35,6 +35,19 @@
 
   /* bevel */
   --clip-path-bevel-1: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
+
+  /* ellipse */
+  --clip-path-ellipse-1: ellipse(60% 85% at 50% 0%);
+  --clip-path-ellipse-reverse-1: ellipse(60% 85% at 50% 100%);
+
+  /* mountain */
+  --clip-path-mountain-1: polygon(0 100%, 0 0, 100% 0, 30% 50%);
+  --clip-path-mountain-reverse-1: polygon(100% 100%, 100% 0, 0 0, 70% 50%);
+
+  /* window */
+  --clip-path-window-1: circle(1.5% at 5% 10%);
+  --clip-path-window-2: circle(1.5% at 9% 10%);
+  --clip-path-window-3: circle(1.5% at 13% 10%);
 }
 
 .previewPaper {
@@ -148,62 +161,7 @@
 /* Background templates */
 
 .backgroundTemplate-previewSection {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
   background-color: var(--mantine-color-dark-7);
-
-  &--diagonal-left {
-    clip-path: var(--clip-path-diagonal-split-1);
-  }
-
-  &--cross {
-    clip-path: var(--clip-path-cross-1);
-  }
-
-  &--cross-reverse {
-    clip-path: var(--clip-path-cross-reverse-1);
-  }
-
-  &--diagonal-left-reverse {
-    clip-path: var(--clip-path-diagonal-split-reverse-1);
-  }
-
-  &--horizontal-top {
-    clip-path: var(--clip-path-horizontal-split-1);
-  }
-
-  &--criss-cross {
-    clip-path: var(--clip-path-criss-cross-1);
-  }
-
-  &--vertical-left {
-    clip-path: var(--clip-path-vertical-split-1);
-  }
-
-  &--frame {
-    clip-path: var(--clip-path-frame-1);
-  }
-
-  &--ticket {
-    clip-path: var(--clip-path-ticket-1);
-  }
-
-  &--ticket-reverse {
-    clip-path: var(--clip-path-ticket-reverse-1);
-  }
-
-  &--sun-up {
-    clip-path: var(--clip-path-sun-up-1);
-  }
-
-  &--sun-down {
-    clip-path: var(--clip-path-sun-down-1);
-  }
-
-  &--bevel {
-    clip-path: var(--clip-path-bevel-1);
-  }
 
   [data-mantine-color-scheme='dark'] & {
     background-color: var(--mantine-color-gray-2);

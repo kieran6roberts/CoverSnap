@@ -27,7 +27,7 @@ export default function Create() {
       <WelcomeModal isOpen={!hasSeenWelcome && isHydrated} hideWelcome={() => setHasSeenWelcome(true)} />
 
       <Navbar />
-      <Box component="main" h="calc(100vh - 69px)">
+      <Box component="main" h={{ base: 'auto', sm: 'calc(100vh - 69px)' }}>
         <EditorArea />
       </Box>
     </>
