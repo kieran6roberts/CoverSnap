@@ -32,7 +32,7 @@ export function TextSettings() {
   const hasSecondaryText = secondaryText.length > 0;
 
   return (
-    <Stack gap="xl" pb={16} mt={12}>
+    <Stack gap="xl" pb={{ base: 90, md: 16 }} mt={12}>
       <Fieldset legend="Primary text">
         <TextInput
           value={primaryText}

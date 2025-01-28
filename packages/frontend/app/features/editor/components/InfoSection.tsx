@@ -6,7 +6,7 @@ import classes from '~/features/editor/styles/EditorDrawer.module.css';
 
 export function InfoSection() {
   return (
-    <Stack m="lg" h="100%" className={classes['sidebar-help']} mt={12}>
+    <Stack m="lg" h="100%" pb={{ base: 90, md: 16 }} className={classes['sidebar-help']} mt={12}>
       <Image
         src={welcomeImage}
         radius="md"

@@ -22,6 +22,20 @@
     }
   }
 
+  &-controls {
+    background-color: var(--mantine-color-white);
+    z-index: 50;
+    border-bottom: 1px solid var(--mantine-color-default-border);
+
+    @media (min-width: em(992px)) {
+      border-right: 1px solid var(--mantine-color-default-border);
+    }
+
+    [data-mantine-color-scheme='dark'] & {
+      background-color: var(--mantine-color-dark-9);
+    }
+  }
+
   &-help {
     &--name-link {
       color: var(--mantine-color-text);

@@ -10,7 +10,7 @@ export function TemplateSettings() {
   const { template, updateTemplate } = useEditor();
 
   return (
-    <Stack gap={32} pb={16} mt={12}>
+    <Stack gap={32} pb={{ base: 90, md: 16 }} mt={12}>
       <Fieldset legend="Background split">
         <SimpleGrid cols={{ base: 1, xs: 3, md: 2 }} spacing="xs" verticalSpacing="xl" component="section">
           {BACKGROUND_TEMPLATES.map((t) => {

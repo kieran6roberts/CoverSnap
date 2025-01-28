@@ -1,4 +1,4 @@
-import { Text, Flex, Button, Box, ScrollArea, LoadingOverlay, Title, ActionIcon, Stack } from '@mantine/core';
+import { Text, Flex, Button, Box, ScrollArea, LoadingOverlay, Title, ActionIcon } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag, InfoCircle } from 'iconoir-react';
 
 import classes from '~/features/editor/styles/EditorDrawer.module.css';
@@ -77,15 +77,17 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             <ArrowLeftTag width={18} height={18} />
           </ActionIcon>
         </Flex>
-        <Flex>
+        <Flex direction={{ base: 'column', md: 'row' }}>
           <Flex
-            direction="column"
+            direction={{ base: 'row', md: 'column' }}
             component="section"
+            className={classes['sidebar-controls']}
+            pos="sticky"
+            top={0}
             justify="space-between"
             p="md"
-            style={{ borderRight: '1px solid var(--mantine-color-default-border)' }}
           >
-            <Flex direction="column" gap="md">
+            <Flex direction={{ base: 'row', md: 'column' }} gap="md">
               {editSections.map((section) => {
                 if (section.id !== 'info') {
                   return (
@@ -110,35 +112,9 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px - 55px)" px="sm">
               {editSections[openSectionIndex].content()}
             </ScrollArea>
-            <Box hiddenFrom="md">{editSections[openSectionIndex].content()}</Box>
-            <Stack
-              hiddenFrom="md"
-              m="lg"
-              h="100%"
-              className={classes['sidebar-help']}
-              pb={72}
-              maw={600}
-              px="md"
-              mx="auto"
-            >
-              <Text size="sm" ta="center">
-                Your editor state (except uploaded background images) will persist across sessions meaning your progress
-                will be saved.
-              </Text>
-              <Text size="sm" ta="center">
-                Run your downloaded cover through an image compressor, you are then set to publish! If you have any
-                suggestions for the app, share them with me{' '}
-                <a
-                  href="https://x.com/Kieran6dev"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={classes['sidebar-help--name-link']}
-                >
-                  @Kieran6dev.
-                </a>{' '}
-                If you like the app, take a second to star in on GitHub, thanks!
-              </Text>
-            </Stack>
+            <Box p="md" hiddenFrom="md">
+              {editSections[openSectionIndex].content()}
+            </Box>
             <Flex
               justify={{ base: 'space-between', md: 'flex-end' }}
               align="center"
