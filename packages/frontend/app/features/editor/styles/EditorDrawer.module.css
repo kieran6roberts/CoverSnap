@@ -5,7 +5,7 @@
 
   @media (min-width: em(992px)) {
     height: calc(100vh - 69px);
-    width: 400px;
+    width: 425px;
     border-right: 1px solid var(--mantine-color-default-border);
   }
 
