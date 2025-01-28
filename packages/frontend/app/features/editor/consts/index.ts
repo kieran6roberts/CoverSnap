@@ -1,11 +1,11 @@
 import { LAYOUT_TEMPLATES, BACKGROUND_TEMPLATES } from './templates';
 
-export const PRIMARY_TEXT_LENGTH = 100;
-export const SECONDARY_TEXT_LENGTH = 80;
+export const PRIMARY_TEXT_LENGTH = 120;
+export const SECONDARY_TEXT_LENGTH = 150;
 export const PRIMARY_TEXT_FONT_SIZE_MIN = 10;
-export const PRIMARY_TEXT_FONT_SIZE_MAX = 60;
+export const PRIMARY_TEXT_FONT_SIZE_MAX = 90;
 export const SECONDARY_TEXT_FONT_SIZE_MIN = 6;
-export const SECONDARY_TEXT_FONT_SIZE_MAX = 40;
+export const SECONDARY_TEXT_FONT_SIZE_MAX = 80;
 
 export const fonts = [
   'Arial',
