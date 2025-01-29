@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-type OpenSection = 'templates' | 'text' | 'background' | 'info';
+export type OpenSection = 'templates' | 'text' | 'background' | 'info';
 
 interface EditorUIState {
   isDrawerOpen: boolean;

@@ -1,44 +1,40 @@
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon, createPolymorphicComponent, Tooltip } from '@mantine/core';
 import type { ActionIconProps } from '@mantine/core';
 
-export function DrawerControl({
-  children,
-  color,
-  onClick,
-  isActive,
-  label,
-  ...props
-}: ActionIconProps & {
+interface DrawerControlProps extends ActionIconProps {
   children: React.ReactNode;
-  color: string;
-  onClick: () => void;
+  value: string;
   label: string;
   isActive: boolean;
-}) {
-  return (
-    <Tooltip
-      onClick={onClick}
-      aria-label={label}
-      label={label}
-      position="right"
-      color="dark"
-      offset={4}
-      events={{ hover: true, focus: true, touch: false }}
-    >
-      <ActionIcon
-        variant="filled"
-        color={color}
-        radius="xl"
-        size="xl"
-        style={{
-          border: isActive ? '2px solid var(--mantine-color-default-color)' : '1px solid var(--mantine-color-body)'
-        }}
-        onClick={onClick}
-        aria-label={label}
-        {...props}
-      >
-        {children}
-      </ActionIcon>
-    </Tooltip>
-  );
 }
+
+export const DrawerControl = createPolymorphicComponent<'button', DrawerControlProps>(
+  ({ children, isActive, label, value, ...props }: DrawerControlProps) => {
+    return (
+      <Tooltip
+        aria-label={label}
+        label={label}
+        position="right"
+        color="dark"
+        offset={4}
+        events={{ hover: true, focus: true, touch: false }}
+      >
+        <ActionIcon
+          variant="filled"
+          value={value}
+          radius="xl"
+          size="xl"
+          opacity={isActive ? 1 : 0.9}
+          style={{
+            border: isActive ? '3px solid var(--mantine-color-default-color)' : 'transparent',
+            justifyContent: 'center'
+          }}
+          aria-label={label}
+          {...props}
+        >
+          {children}
+        </ActionIcon>
+      </Tooltip>
+    );
+  }
+);

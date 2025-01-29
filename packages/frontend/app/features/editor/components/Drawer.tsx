@@ -1,5 +1,5 @@
-import { Text, Flex, Button, Box, ScrollArea, LoadingOverlay, Title, ActionIcon } from '@mantine/core';
-import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag, InfoCircle } from 'iconoir-react';
+import { Flex, Box, ScrollArea, Title, ActionIcon, Tabs } from '@mantine/core';
+import { Text as IconText, MediaImage, AlignBottomBox, ArrowLeftTag, InfoCircle } from 'iconoir-react';
 import { useRef, useEffect } from 'react';
 import { useViewportSize } from '@mantine/hooks';
 
@@ -11,38 +11,40 @@ import { useEditor } from '~/shared/stores/EditorContext';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
+import type { OpenSection } from '~/shared/stores/EditorUIStore';
 import { DrawerControl } from '~/features/editor/components/DrawerControl';
 import { InfoSection } from '~/features/editor/components/InfoSection';
 import { DRAWER_SECTIONS } from '~/features/editor/consts';
+import { DrawerFooter } from '~/features/editor/components/DrawerFooter';
 
 const editSections = [
   {
     id: DRAWER_SECTIONS.templates,
     title: 'Templates',
-    color: 'grape.6',
+    color: 'grape.5',
     content: () => <TemplateSettings />,
     icon: <AlignBottomBox width={24} height={24} />
   },
   {
     id: DRAWER_SECTIONS.text,
     title: 'Text',
-    color: 'green.6',
+    color: 'green.5',
     content: () => <TextSettings />,
     icon: <IconText width={24} height={24} />
   },
   {
     id: DRAWER_SECTIONS.background,
     title: 'Background',
-    color: 'yellow.6',
+    color: 'yellow.5',
     content: () => <BackgroundSettings />,
     icon: <MediaImage width={24} height={24} />
   },
   {
     id: DRAWER_SECTIONS.info,
     title: 'Info',
-    color: 'gray',
+    color: 'var(--mantine-color-body)',
     content: () => <InfoSection />,
-    icon: <InfoCircle width={24} height={24} />
+    icon: <InfoCircle width={24} height={24} color="var(--mantine-color-text)" />
   }
 ] as const;
 
@@ -50,7 +52,6 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
   const { setDrawerOpen, openSection, setOpenSection } = useEditorUIStore();
   const { resetEditor, cover } = useEditor();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const mobileSectionRef = useRef<HTMLDivElement>(null);
   const { width } = useViewportSize();
 
   useEffect(() => {
@@ -58,8 +59,6 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
 
     if (!isMobile && scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: 0, behavior: 'instant' });
-    } else if (isMobile && mobileSectionRef.current) {
-      mobileSectionRef.current.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
   }, [openSection]);
 
@@ -93,97 +92,73 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             <ArrowLeftTag width={18} height={18} />
           </ActionIcon>
         </Flex>
-        <Flex direction={{ base: 'column', md: 'row' }}>
+        <Tabs
+          visibleFrom="md"
+          variant="none"
+          orientation="vertical"
+          value={openSection}
+          onChange={(value) => setOpenSection(value as OpenSection)}
+        >
+          <Tabs.List component="section" className={classes['sidebar-controls']} p="sm">
+            {editSections.map((section) => {
+              const isActive = section.id === openSection;
+
+              return (
+                <DrawerControl
+                  key={section.id}
+                  value={section.id}
+                  isActive={isActive}
+                  color={section.color}
+                  label={section.title}
+                  component={Tabs.Tab}
+                  mt={section.id === DRAWER_SECTIONS.info ? 'auto' : '0'}
+                  mb={section.id !== DRAWER_SECTIONS.info ? '16' : '0'}
+                >
+                  {section.icon}
+                </DrawerControl>
+              );
+            })}
+          </Tabs.List>
+
+          <ScrollArea flex={1} viewportRef={scrollAreaRef} h="calc(100vh - 69px - 60px - 55px)" px="sm">
+            <Tabs.Panel value={openSection}>{editSections[openSectionIndex].content()}</Tabs.Panel>
+          </ScrollArea>
+        </Tabs>
+        <Flex direction="column" hiddenFrom="md" variant="none">
           <Flex
-            direction={{ base: 'row', md: 'column' }}
+            direction="row"
             component="section"
             className={classes['sidebar-controls']}
             pos="sticky"
             top={0}
-            justify="space-between"
+            gap="md"
             p="md"
           >
-            <Flex direction={{ base: 'row', md: 'column' }} gap="md">
-              {editSections.map((section) => {
-                const isActive = section.id === openSection;
+            {editSections.map((section) => {
+              const isActive = section.id === openSection;
 
-                if (section.id !== DRAWER_SECTIONS.info) {
-                  return (
-                    <DrawerControl
-                      key={section.id}
-                      isActive={isActive}
-                      color={section.color}
-                      label={section.title}
-                      onClick={() => setOpenSection(section.id)}
-                    >
-                      {section.icon}
-                    </DrawerControl>
-                  );
-                }
-              })}
-            </Flex>
-            <DrawerControl
-              color="gray.1"
-              isActive={openSection === DRAWER_SECTIONS.info}
-              label="Info"
-              onClick={() => setOpenSection(DRAWER_SECTIONS.info)}
-            >
-              <InfoCircle width={24} height={24} />
-            </DrawerControl>
+              return (
+                <DrawerControl
+                  key={section.id}
+                  value={section.id}
+                  isActive={isActive}
+                  color={section.color}
+                  label={section.title}
+                  component="button"
+                  onClick={() => setOpenSection(section.id)}
+                  ml={section.id === DRAWER_SECTIONS.info ? 'auto' : '0'}
+                >
+                  {section.icon}
+                </DrawerControl>
+              );
+            })}
           </Flex>
 
           <Box flex={1}>
-            <ScrollArea viewportRef={scrollAreaRef} visibleFrom="md" h="calc(100vh - 69px - 60px - 55px)" px="sm">
-              {editSections[openSectionIndex].content()}
-            </ScrollArea>
-            <Box
-              p="md"
-              hiddenFrom="md"
-              ref={mobileSectionRef}
-              style={{
-                scrollMarginTop: '70px'
-              }}
-            >
-              {editSections[openSectionIndex].content()}
-            </Box>
-            <Flex
-              justify={{ base: 'space-between', md: 'flex-end' }}
-              align="center"
-              bg="var(--mantine-color-body)"
-              pos={{ base: 'fixed', md: 'sticky' }}
-              className={classes['sidebar-footer']}
-              bottom={0}
-              right={0}
-              left={0}
-              p="md"
-            >
-              <Text component="span" size="xs" fw={500} visibleFrom="md">
-                Built by{' '}
-                <a
-                  className={classes['sidebar-footer--name-link']}
-                  href="https://www.linkedin.com/in/kieran6roberts/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span>Kieran Roberts</span>
-                </a>
-              </Text>
-              <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="sm">
-                Reset all
-              </Button>
-              <Button
-                className="plausible-event-name=Download+Image"
-                hiddenFrom="md"
-                onClick={downloadImage}
-                size="sm"
-                rightSection={<Download width={16} height={16} />}
-              >
-                <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-                Download image
-              </Button>
-            </Flex>
+            <Box p="md">{editSections[openSectionIndex].content()}</Box>
           </Box>
         </Flex>
+        <DrawerFooter resetEditor={resetEditor} downloadImage={downloadImage} isLoading={isLoading} />
       </Box>
       {isSuccessModalOpen && <DownloadSuccessModal close={closeSuccessModal} />}
     </>
