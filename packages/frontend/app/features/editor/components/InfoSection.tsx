@@ -12,6 +12,8 @@ export function InfoSection() {
         radius="md"
         alt={`Welcome to ${SITE_NAME} cover`}
         w="100%"
+        maw={500}
+        mx="auto"
         style={{ aspectRatio: 2.38 }}
         bg="var(--mantine-color-dark-9)"
       />

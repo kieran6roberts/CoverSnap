@@ -1,4 +1,4 @@
-import { ActionIcon, createPolymorphicComponent, Tooltip } from '@mantine/core';
+import { ActionIcon, createPolymorphicComponent, Tooltip, Indicator } from '@mantine/core';
 import type { ActionIconProps } from '@mantine/core';
 
 interface DrawerControlProps extends ActionIconProps {
@@ -19,21 +19,22 @@ export const DrawerControl = createPolymorphicComponent<'button', DrawerControlP
         offset={4}
         events={{ hover: true, focus: true, touch: false }}
       >
-        <ActionIcon
-          variant="filled"
-          value={value}
-          radius="xl"
-          size="xl"
-          opacity={isActive ? 1 : 0.9}
-          style={{
-            border: isActive ? '2px solid var(--mantine-color-default-color)' : 'transparent',
-            justifyContent: 'center'
-          }}
-          aria-label={label}
-          {...props}
-        >
-          {children}
-        </ActionIcon>
+        <Indicator disabled={!isActive} offset={7} color="grape.5" withBorder>
+          <ActionIcon
+            variant={isActive ? 'filled' : 'light'}
+            value={value}
+            radius="xl"
+            size="xl"
+            style={{
+              border: isActive ? '2px solid var(--mantine-color-default-color)' : 'transparent',
+              justifyContent: 'center'
+            }}
+            aria-label={label}
+            {...props}
+          >
+            {children}
+          </ActionIcon>
+        </Indicator>
       </Tooltip>
     );
   }

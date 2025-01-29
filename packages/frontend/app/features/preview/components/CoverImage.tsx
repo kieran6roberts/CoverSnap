@@ -7,7 +7,7 @@ import classes from '~/features/preview/styles/CoverImage.module.css';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { ImagePreview } from '~/features/preview/components/ImagePreview';
-import { updateCSSVariables } from '~/shared/utils/styles';
+import { updateCSSVariables, getAspectRatioData } from '~/shared/utils/styles';
 import { CoverImageControls } from '~/features/preview/components/CoverImageControls';
 import { CoverImageSize } from '~/features/preview/components/CoverImageSize';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
@@ -31,11 +31,7 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
 
   const onAspectRatioChange = (value: string | null) => {
     if (!value) return;
-    const id = value.split(':')[0];
-    const aspectRatio = value.split(':')[1];
-    const size = value.split(':')[2];
-    const width = size.split('x')[0];
-    const height = size.split('x')[1];
+    const { id, aspectRatio, width, height } = getAspectRatioData(value);
 
     updateCSSVariables({ '--cover-aspect-ratio': `${aspectRatio}` });
     updateCover({ id, width: Number(width), height: Number(height), aspectRatio: Number(aspectRatio) });
