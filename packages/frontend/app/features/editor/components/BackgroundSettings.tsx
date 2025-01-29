@@ -74,7 +74,7 @@ export function BackgroundSettings() {
   };
 
   return (
-    <Stack gap="xl">
+    <Stack gap="xl" pb={{ base: 90, md: 16 }} mt={12}>
       <Fieldset legend="Colors">
         <ColorInput
           format="rgba"

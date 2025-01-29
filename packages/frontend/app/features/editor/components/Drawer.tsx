@@ -1,115 +1,73 @@
-import {
-  Text,
-  Accordion,
-  Flex,
-  Button,
-  Box,
-  ScrollArea,
-  LoadingOverlay,
-  Skeleton,
-  Title,
-  ThemeIcon,
-  ActionIcon,
-  Image,
-  Stack
-} from '@mantine/core';
-import { Text as IconText, MediaImage, AlignBottomBox, Download, ArrowLeftTag, QuestionMark } from 'iconoir-react';
+import { Flex, Box, ScrollArea, Title, ActionIcon, Tabs } from '@mantine/core';
+import { Text as IconText, MediaImage, AlignBottomBox, ArrowLeftTag, InfoCircle } from 'iconoir-react';
+import { useRef, useEffect } from 'react';
+import { useViewportSize } from '@mantine/hooks';
 
 import classes from '~/features/editor/styles/EditorDrawer.module.css';
 import { TextSettings } from '~/features/editor/components/TextSettings';
 import { BackgroundSettings } from '~/features/editor/components/BackgroundSettings';
 import { TemplateSettings } from '~/features/editor/components/TemplateSettings';
-import { useEditor, EditorHydration } from '~/shared/stores/EditorContext';
+import { useEditor } from '~/shared/stores/EditorContext';
 import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
-import welcomeImage from '~/images/welcome.webp';
-import { SITE_NAME } from '~/config/consts';
+import type { OpenSection } from '~/shared/stores/EditorUIStore';
+import { DrawerControl } from '~/features/editor/components/DrawerControl';
+import { InfoSection } from '~/features/editor/components/InfoSection';
+import { DRAWER_SECTIONS } from '~/features/editor/consts';
+import { DrawerFooter } from '~/features/editor/components/DrawerFooter';
+
 const editSections = [
   {
-    title: 'Template',
+    id: DRAWER_SECTIONS.templates,
+    title: 'Templates',
+    color: 'grape.5',
     content: () => <TemplateSettings />,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-grape-8)">
-        <AlignBottomBox width={24} height={24} color="var(--mantine-color-grape-8)" />
-      </ThemeIcon>
-    )
+    icon: <AlignBottomBox width={24} height={24} />
   },
   {
+    id: DRAWER_SECTIONS.text,
     title: 'Text',
+    color: 'green.5',
     content: () => <TextSettings />,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-teal-8)">
-        <IconText width={24} height={24} color="var(--mantine-color-teal-8)" />
-      </ThemeIcon>
-    )
+    icon: <IconText width={24} height={24} />
   },
   {
+    id: DRAWER_SECTIONS.background,
     title: 'Background',
+    color: 'yellow.5',
     content: () => <BackgroundSettings />,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-yellow-8)">
-        <MediaImage width={24} height={24} color="var(--mantine-color-yellow-8)" />
-      </ThemeIcon>
-    )
+    icon: <MediaImage width={24} height={24} />
   },
   {
-    title: 'More coming soon',
-    content: () => null,
-    icon: (
-      <ThemeIcon size="lg" radius="md" variant="light" color="var(--mantine-color-pink-8)">
-        <QuestionMark width={24} height={24} color="var(--mantine-color-pink-8)" />
-      </ThemeIcon>
-    ),
-    isDisabled: true
+    id: DRAWER_SECTIONS.info,
+    title: 'Info',
+    color: 'var(--mantine-color-body)',
+    content: () => <InfoSection />,
+    icon: <InfoCircle width={24} height={24} color="var(--mantine-color-text)" />
   }
-];
+] as const;
 
 export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
-  const { setDrawerOpen, openSections, setOpenSections } = useEditorUIStore();
+  const { setDrawerOpen, openSection, setOpenSection } = useEditorUIStore();
   const { resetEditor, cover } = useEditor();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { width } = useViewportSize();
+
+  useEffect(() => {
+    const isMobile = width < 992;
+
+    if (!isMobile && scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [openSection]);
 
   const { isLoading, downloadImage, isSuccessModalOpen, closeSuccessModal } = useImageDownload({
     imageRef: imageNodeRef,
     cover
   });
 
-  const items = editSections.map((item) => {
-    return (
-      <EditorHydration
-        key={item.title}
-        skeleton={
-          <Flex h={53} w="100%" justify="space-between" align="center" p="md">
-            <Flex gap="sm" align="center">
-              <Skeleton radius="md" height={34} width={34} animate />
-              <Skeleton radius="md" height={16} width={125} animate />
-            </Flex>
-            <Skeleton radius="md" height={16} circle width={16} animate />
-          </Flex>
-        }
-      >
-        <Accordion.Item key={item.title} value={item.title}>
-          <Accordion.Control
-            aria-label={`Toggle ${item.title.toLowerCase()} editing`}
-            icon={item.icon}
-            className={classes.accordionControl}
-            disabled={!!item?.isDisabled}
-          >
-            <Flex gap="xs" align="center">
-              <Text size="md" fw={500} className={classes['accordionControl-name']}>
-                {item.title}
-              </Text>
-            </Flex>
-          </Accordion.Control>
-          <Accordion.Panel px="sm">
-            <Box pb={48} pt={24}>
-              {item.content()}
-            </Box>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </EditorHydration>
-    );
-  });
+  const openSectionIndex = editSections.findIndex((section) => section.id === openSection);
 
   return (
     <>
@@ -134,111 +92,73 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             <ArrowLeftTag width={18} height={18} />
           </ActionIcon>
         </Flex>
-        <ScrollArea visibleFrom="md" h="calc(100vh - 69px - 60px - 55px)">
-          <Accordion
-            value={openSections}
-            onChange={setOpenSections}
-            transitionDuration={0}
-            radius="md"
-            multiple
-            variant="default"
-          >
-            {items}
-          </Accordion>
-          <Stack m="lg" h="100%" className={classes['sidebar-help']}>
-            <Image
-              src={welcomeImage}
-              radius="md"
-              alt={`Welcome to ${SITE_NAME} cover`}
-              w="100%"
-              style={{ aspectRatio: 2.38 }}
-              bg="var(--mantine-color-dark-9)"
-            />
-            <Text size="sm" ta="center">
-              Your editor state (except uploaded background images) will persist across sessions meaning your progress
-              will be saved.
-            </Text>
-            <Text size="sm" ta="center">
-              Run your downloaded cover through an image compressor, you are then set to publish! If you have any
-              suggestions for the app, share them with me{' '}
-              <a
-                href="https://x.com/Kieran6dev"
-                target="_blank"
-                rel="noreferrer"
-                className={classes['sidebar-help--name-link']}
-              >
-                @Kieran6dev.
-              </a>{' '}
-              If you like the app, take a second to star in on GitHub, thanks!
-            </Text>
-          </Stack>
-        </ScrollArea>
-        <Accordion
-          value={openSections}
-          onChange={setOpenSections}
-          hiddenFrom="md"
-          radius="md"
-          multiple
-          variant="default"
-          pb={24}
+        <Tabs
+          visibleFrom="md"
+          variant="none"
+          orientation="vertical"
+          value={openSection}
+          onChange={(value) => setOpenSection(value as OpenSection)}
         >
-          {items}
-        </Accordion>
-        <Stack hiddenFrom="md" m="lg" h="100%" className={classes['sidebar-help']} pb={72} maw={600} px="md" mx="auto">
-          <Text size="sm" ta="center">
-            Your editor state (except uploaded background images) will persist across sessions meaning your progress
-            will be saved.
-          </Text>
-          <Text size="sm" ta="center">
-            Run your downloaded cover through an image compressor, you are then set to publish! If you have any
-            suggestions for the app, share them with me{' '}
-            <a
-              href="https://x.com/Kieran6dev"
-              target="_blank"
-              rel="noreferrer"
-              className={classes['sidebar-help--name-link']}
-            >
-              @Kieran6dev.
-            </a>{' '}
-            If you like the app, take a second to star in on GitHub, thanks!
-          </Text>
-        </Stack>
-        <Flex
-          justify={{ base: 'space-between', md: 'flex-end' }}
-          align="center"
-          bg="var(--mantine-color-body)"
-          pos={{ base: 'fixed', md: 'sticky' }}
-          className={classes['sidebar-footer']}
-          bottom={0}
-          right={0}
-          left={0}
-          p="md"
-        >
-          <Text component="span" size="xs" fw={500} visibleFrom="md">
-            Built by{' '}
-            <a
-              className={classes['sidebar-footer--name-link']}
-              href="https://www.linkedin.com/in/kieran6roberts/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span>Kieran Roberts</span>
-            </a>
-          </Text>
-          <Button hiddenFrom="md" onClick={resetEditor} variant="outline" size="sm">
-            Reset all
-          </Button>
-          <Button
-            className="plausible-event-name=Download+Image"
-            hiddenFrom="md"
-            onClick={downloadImage}
-            size="sm"
-            rightSection={<Download width={16} height={16} />}
+          <Tabs.List component="section" className={classes['sidebar-controls']} p="sm">
+            {editSections.map((section) => {
+              const isActive = section.id === openSection;
+
+              return (
+                <DrawerControl
+                  key={section.id}
+                  value={section.id}
+                  isActive={isActive}
+                  color={section.color}
+                  label={section.title}
+                  component={Tabs.Tab}
+                  mt={section.id === DRAWER_SECTIONS.info ? 'auto' : '0'}
+                  mb={section.id !== DRAWER_SECTIONS.info ? '16' : '0'}
+                >
+                  {section.icon}
+                </DrawerControl>
+              );
+            })}
+          </Tabs.List>
+
+          <ScrollArea flex={1} viewportRef={scrollAreaRef} h="calc(100vh - 69px - 60px - 55px)" px="sm">
+            <Tabs.Panel value={openSection}>{editSections[openSectionIndex].content()}</Tabs.Panel>
+          </ScrollArea>
+        </Tabs>
+        <Flex direction="column" hiddenFrom="md" variant="none">
+          <Flex
+            direction="row"
+            component="section"
+            className={classes['sidebar-controls']}
+            pos="sticky"
+            top={0}
+            gap="md"
+            p="md"
           >
-            <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-            Download image
-          </Button>
+            {editSections.map((section) => {
+              const isActive = section.id === openSection;
+
+              return (
+                <DrawerControl
+                  key={section.id}
+                  value={section.id}
+                  isActive={isActive}
+                  color={section.color}
+                  label={section.title}
+                  component="button"
+                  onClick={() => setOpenSection(section.id)}
+                  ml={section.id === DRAWER_SECTIONS.info ? 'auto' : '0'}
+                >
+                  {section.icon}
+                </DrawerControl>
+              );
+            })}
+          </Flex>
+
+          <Box flex={1} p="md">
+            {editSections[openSectionIndex].content()}
+          </Box>
         </Flex>
+        <DrawerFooter resetEditor={resetEditor} downloadImage={downloadImage} isLoading={isLoading} />
       </Box>
       {isSuccessModalOpen && <DownloadSuccessModal close={closeSuccessModal} />}
     </>
