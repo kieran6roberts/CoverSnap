@@ -17,7 +17,8 @@ export async function getBlobFromDomNode(
       border: '0',
       borderRadius: '0',
       transform: 'scale(1)',
-      transformOrigin: 'top left'
+      transformOrigin: 'top left',
+      boxShadow: 'none'
     }
   });
 
