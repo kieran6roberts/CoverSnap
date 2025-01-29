@@ -5,6 +5,7 @@ export function DrawerControl({
   children,
   color,
   onClick,
+  isActive,
   label,
   ...props
 }: ActionIconProps & {
@@ -12,15 +13,26 @@ export function DrawerControl({
   color: string;
   onClick: () => void;
   label: string;
+  isActive: boolean;
 }) {
   return (
-    <Tooltip label={label} position="right">
+    <Tooltip
+      onClick={onClick}
+      aria-label={label}
+      label={label}
+      position="right"
+      color="dark"
+      offset={4}
+      events={{ hover: true, focus: true, touch: false }}
+    >
       <ActionIcon
         variant="filled"
         color={color}
-        radius="md"
-        size="lg"
-        style={{ borderBottom: '1px solid var(--mantine-color-default-border)' }}
+        radius="xl"
+        size="xl"
+        style={{
+          border: isActive ? '2px solid var(--mantine-color-default-color)' : '1px solid var(--mantine-color-body)'
+        }}
         onClick={onClick}
         aria-label={label}
         {...props}
