@@ -22,6 +22,7 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
     <EditorHydration skeleton={<Skeleton radius={12} className={classes.coverSkeleton} animate />}>
       <Skeleton visible={isResettingImage} maw="max-content" radius={12} animate>
         <Box
+          className={classes.innerCover}
           component="div"
           ref={imageNodeRef}
           style={{
@@ -33,7 +34,6 @@ export function ImagePreview({ imageNodeRef }: { imageNodeRef: React.RefObject<H
             flexDirection: 'var(--cover-flex-direction)' as React.CSSProperties['flexDirection'],
             gap: '1rem',
             overflow: 'hidden',
-            width: 'min(calc(90vw - 360px), 900px)',
             padding: '3rem',
             minWidth: '320px',
             aspectRatio: cover.aspectRatio,

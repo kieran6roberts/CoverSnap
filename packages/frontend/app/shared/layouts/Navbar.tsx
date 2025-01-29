@@ -14,8 +14,6 @@ export function Navbar() {
       component="header"
       w="100%"
       px="lg"
-      pos="sticky"
-      top={0}
       style={{ borderBottom: '1px solid var(--mantine-color-default-border)', zIndex: 50 }}
       className={classes.navbar}
     >

@@ -113,3 +113,10 @@ export const IMAGE_DOWNLOAD_SIZES = {
     aspectRatio: 2
   }
 };
+
+export const DRAWER_SECTIONS = {
+  templates: 'templates',
+  text: 'text',
+  background: 'background',
+  info: 'info'
+} as const;

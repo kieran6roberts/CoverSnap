@@ -65,3 +65,11 @@
   z-index: 99;
   padding: 2rem;
 }
+
+.innerCover {
+  width: 100%;
+
+  @media (min-width: em(992px)) {
+    width: min(calc(90vw - 360px), 900px);
+  }
+}
