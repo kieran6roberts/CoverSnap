@@ -154,8 +154,8 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
             })}
           </Flex>
 
-          <Box flex={1}>
-            <Box p="md">{editSections[openSectionIndex].content()}</Box>
+          <Box flex={1} p="md">
+            {editSections[openSectionIndex].content()}
           </Box>
         </Flex>
         <DrawerFooter resetEditor={resetEditor} downloadImage={downloadImage} isLoading={isLoading} />

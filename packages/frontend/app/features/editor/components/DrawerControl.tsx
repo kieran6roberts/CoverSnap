@@ -26,7 +26,7 @@ export const DrawerControl = createPolymorphicComponent<'button', DrawerControlP
           size="xl"
           opacity={isActive ? 1 : 0.9}
           style={{
-            border: isActive ? '3px solid var(--mantine-color-default-color)' : 'transparent',
+            border: isActive ? '2px solid var(--mantine-color-default-color)' : 'transparent',
             justifyContent: 'center'
           }}
           aria-label={label}
