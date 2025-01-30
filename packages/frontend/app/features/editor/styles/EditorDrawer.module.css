@@ -23,7 +23,7 @@
   }
 
   &-controls {
-    background-color: var(--mantine-primary-color-0);
+    background-color: white;
     z-index: 50;
     border-bottom: 1px solid var(--mantine-color-default-border);
 

@@ -48,6 +48,14 @@
   --clip-path-window-1: circle(1.5% at 5% 10%);
   --clip-path-window-2: circle(1.5% at 9% 10%);
   --clip-path-window-3: circle(1.5% at 13% 10%);
+
+  /* Tetris */
+  --clip-path-tetris-1: polygon(0 0, 20% 0, 20% 33%, 40% 33%, 40% 66%, 60% 66%, 60% 100%, 0 100%);
+  --clip-path-tetris-2: polygon(100% 0, 80% 0, 80% 33%, 60% 33%, 60% 66%, 40% 66%, 40% 100%, 100% 100%);
+
+  /* Ribbons */
+  --clip-path-ribbons-1: polygon(0 35%, 100% 0, 100% 30%, 0 65%);
+  --clip-path-ribbons-2: polygon(0 70%, 100% 35%, 100% 65%, 0 100%);
 }
 
 .previewPaper {
@@ -159,11 +167,28 @@
 }
 
 /* Background templates */
-
 .backgroundTemplate-previewSection {
-  background-color: var(--mantine-color-dark-7);
+  &--1 {
+    background-color: var(--mantine-color-dark-7);
 
-  [data-mantine-color-scheme='dark'] & {
-    background-color: var(--mantine-color-gray-2);
+    [data-mantine-color-scheme='dark'] & {
+      background-color: var(--mantine-color-gray-2);
+    }
+  }
+
+  &--2 {
+    background-color: var(--mantine-color-dark-4);
+
+    [data-mantine-color-scheme='dark'] & {
+      background-color: var(--mantine-color-gray-5);
+    }
+  }
+
+  &--3 {
+    background-color: var(--mantine-color-dark-2);
+
+    [data-mantine-color-scheme='dark'] & {
+      background-color: var(--mantine-color-gray-7);
+    }
   }
 }

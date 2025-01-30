@@ -20,6 +20,7 @@ import { useEditor } from '~/shared/stores/EditorContext';
 import { updateCSSVariables } from '~/shared/utils/styles';
 import classes from '~/features/editor/styles/BackgroundSection.module.css';
 import { decimalToPercentage } from '~/features/editor/utils';
+import { BACKGROUND_TEMPLATES } from '../consts/templates';
 
 export function BackgroundSettings() {
   const {
@@ -28,8 +29,14 @@ export function BackgroundSettings() {
     updateBackground
   } = useEditor();
 
-  // TODO: Put these in consts
-  const is3DotTemplate = template.backgroundId === 'window';
+  const getTemplateNumPaths = (templateId: string) => {
+    const template = BACKGROUND_TEMPLATES.find((t) => t.id === templateId);
+    return template?.sections?.length ?? 0;
+  };
+
+  const isMin3BackgroundTemplate = getTemplateNumPaths(template.backgroundId) >= 2;
+  const isMin4BackgroundTemplate = getTemplateNumPaths(template.backgroundId) >= 3;
+
   const isSolidTemplate = template.backgroundId === 'solid';
 
   const onBackgroundImageChange = (file: File | null) => {
@@ -95,7 +102,7 @@ export function BackgroundSettings() {
           />
         ) : null}
 
-        {is3DotTemplate ? (
+        {isMin3BackgroundTemplate ? (
           <>
             <ColorInput
               format="rgba"
@@ -105,14 +112,16 @@ export function BackgroundSettings() {
               onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color3: value } })}
               disabled={!!backgroundImage}
             />
-            <ColorInput
-              format="rgba"
-              label="Background color 4"
-              description="Accepts RGBA"
-              value={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
-              onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color4: value } })}
-              disabled={!!backgroundImage}
-            />
+            {isMin4BackgroundTemplate ? (
+              <ColorInput
+                format="rgba"
+                label="Background color 4"
+                description="Accepts RGBA"
+                value={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
+                onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color4: value } })}
+                disabled={!!backgroundImage}
+              />
+            ) : null}
           </>
         ) : null}
       </Fieldset>
@@ -216,7 +225,9 @@ export function BackgroundSettings() {
                       : 'var(--mantine-color-dimmed)'
                   }
                   style={{
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden'
                   }}
                 >
                   {key}
