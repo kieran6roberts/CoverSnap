@@ -1,4 +1,4 @@
-import { Flex, Box, ScrollArea, Title, ActionIcon, Tabs } from '@mantine/core';
+import { Flex, Box, ScrollArea, Title, ActionIcon, Tabs, Stack } from '@mantine/core';
 import { Text as IconText, MediaImage, AlignBottomBox, ArrowLeftTag, InfoCircle } from 'iconoir-react';
 import { useRef, useEffect } from 'react';
 import { useViewportSize } from '@mantine/hooks';
@@ -26,21 +26,21 @@ const editSections = [
   {
     id: DRAWER_SECTIONS.text,
     title: 'Text',
-    color: 'pink',
+    color: 'lime',
     content: () => <TextSettings />,
     icon: <IconText width={24} height={24} />
   },
   {
     id: DRAWER_SECTIONS.background,
     title: 'Background',
-    color: 'violet',
+    color: 'orange',
     content: () => <BackgroundSettings />,
     icon: <MediaImage width={24} height={24} />
   },
   {
     id: DRAWER_SECTIONS.info,
     title: 'Info',
-    color: 'var(--mantine-color-body)',
+    color: 'gray.4',
     content: () => <InfoSection />,
     icon: <InfoCircle width={24} height={24} color="var(--mantine-color-text)" />
   }
@@ -91,24 +91,25 @@ export function Drawer({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDiv
         value={openSection}
         onChange={(value) => setOpenSection(value as OpenSection)}
       >
-        <Tabs.List component="section" className={classes['sidebar-controls']} p="sm">
-          {editSections.map((section) => {
-            const isActive = section.id === openSection;
+        <Tabs.List component="section" className={classes['sidebar-controls']} px={8} py={16}>
+          <Stack>
+            {editSections.map((section) => {
+              const isActive = section.id === openSection;
 
-            return (
-              <DrawerControl
-                key={section.id}
-                value={section.id}
-                isActive={isActive}
-                color={section.color}
-                label={section.title}
-                component={Tabs.Tab}
-                mb={16}
-              >
-                {section.icon}
-              </DrawerControl>
-            );
-          })}
+              return (
+                <DrawerControl
+                  key={section.id}
+                  value={section.id}
+                  isActive={isActive}
+                  color={section.color}
+                  label={section.title}
+                  component={Tabs.Tab}
+                >
+                  {section.icon}
+                </DrawerControl>
+              );
+            })}
+          </Stack>
         </Tabs.List>
 
         <ScrollArea flex={1} viewportRef={scrollAreaRef} h="calc(100vh - 69px - 60px - 55px)" px="sm">

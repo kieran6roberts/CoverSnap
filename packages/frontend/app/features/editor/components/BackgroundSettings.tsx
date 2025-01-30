@@ -225,7 +225,9 @@ export function BackgroundSettings() {
                       : 'var(--mantine-color-dimmed)'
                   }
                   style={{
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden'
                   }}
                 >
                   {key}
