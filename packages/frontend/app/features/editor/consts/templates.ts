@@ -337,5 +337,33 @@ export const BACKGROUND_TEMPLATES = [
         backgroundColor: 'var(--cover-background-color-2)'
       }
     ]
+  },
+  {
+    id: 'tetris',
+    name: 'Tetris',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-tetris-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      },
+      {
+        clipPath: 'var(--clip-path-tetris-2)',
+        backgroundColor: 'var(--cover-background-color-3)'
+      }
+    ]
+  },
+  {
+    id: 'ribbons',
+    name: 'Ribbons',
+    sections: [
+      {
+        clipPath: 'var(--clip-path-ribbons-1)',
+        backgroundColor: 'var(--cover-background-color-2)'
+      },
+      {
+        clipPath: 'var(--clip-path-ribbons-2)',
+        backgroundColor: 'var(--cover-background-color-3)'
+      }
+    ]
   }
 ];

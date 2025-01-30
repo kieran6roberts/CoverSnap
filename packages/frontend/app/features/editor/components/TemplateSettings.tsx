@@ -25,7 +25,7 @@ export function TemplateSettings() {
                 <div className={classes['previewPaper-content']}>
                   {t.sections?.map((section, index) => (
                     <div
-                      className={classes['backgroundTemplate-previewSection']}
+                      className={classes[`backgroundTemplate-previewSection--${index + 1}`]}
                       key={index}
                       style={{
                         position: 'absolute',
