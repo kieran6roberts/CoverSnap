@@ -70,8 +70,8 @@ export const DEFAULT_EDITOR_STATE = {
     colors: {
       color1: 'rgba(255, 255, 255, 1)',
       color2: 'rgba(230, 227, 227, 1)',
-      color3: 'rgba(230, 227, 227, 1)',
-      color4: 'rgba(230, 227, 227, 1)'
+      color3: 'rgba(205, 203, 203, 1)',
+      color4: 'rgba(176, 171, 171, 1)'
     },
     pattern: DEFAULT_PATTERN
   },
