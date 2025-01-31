@@ -43,6 +43,13 @@ jobs:
           wait-on: 'http://localhost:5173'
           browser: chrome
           record: false
+      - name: Archive test screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 1
   type-check:
     runs-on: ubuntu-latest
     steps:
