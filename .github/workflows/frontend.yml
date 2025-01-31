@@ -38,15 +38,17 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: packages/frontend
-          start: pnpm dev
+          build: pnpm build
+          start: pnpm preview
           env: configFile=ci
-          wait-on: 'http://localhost:5173'
+          wait-on: 'http://localhost:4173'
           browser: chrome
           record: false
       - name: Archive test screenshots
         uses: actions/upload-artifact@v4
         if: failure()
         with:
+          working-directory: packages/frontend
           name: cypress-screenshots
           path: cypress/screenshots
           retention-days: 1
