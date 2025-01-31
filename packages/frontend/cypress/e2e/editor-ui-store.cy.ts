@@ -11,15 +11,13 @@ context('Editor UI Store', () => {
     cy.findByRole('button', { name: 'Start editing' }).realClick();
 
     cy.findByRole('complementary').should('be.visible');
-    cy.findByRole('button', { name: /Toggle template editing/i })
+    cy.findByRole('tab', { name: /Templates/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
-    cy.findByRole('button', { name: /Toggle text editing/i })
+      .and('have.attr', 'aria-selected', 'true');
+    cy.findByRole('tab', { name: /Text/i }).should('exist').and('have.attr', 'aria-selected', 'false');
+    cy.findByRole('tab', { name: /Background/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
-    cy.findByRole('button', { name: /Toggle background editing/i })
-      .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
+      .and('have.attr', 'aria-selected', 'false');
 
     cy.log('Close drawer');
 
@@ -37,57 +35,47 @@ context('Editor UI Store', () => {
     cy.findByRole('button', { name: /open sidebar/i })
       .should('exist')
       .realClick();
-    cy.findByRole('button', { name: /Toggle template editing/i })
+    cy.findByRole('tab', { name: /Templates/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
-    cy.findByRole('button', { name: /Toggle text editing/i })
+      .and('have.attr', 'aria-selected', 'true');
+    cy.findByRole('tab', { name: /Text/i }).should('exist').and('have.attr', 'aria-selected', 'false');
+    cy.findByRole('tab', { name: /Background/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
-    cy.findByRole('button', { name: /Toggle background editing/i })
-      .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
+      .and('have.attr', 'aria-selected', 'false');
 
-    cy.findByRole('button', { name: /Toggle template editing/i })
-      .should('exist')
-      .realClick();
-    cy.findByRole('button', { name: /Toggle text editing/i })
-      .should('exist')
-      .realClick();
+    cy.log('Open Text section');
+    cy.findByRole('tab', { name: /Text/i }).should('exist').realClick();
 
-    cy.log('Reload. Drawer should be closed, Template and text sections should be open');
+    cy.log('Reload. Drawer should be closed, Text section should be open');
 
     cy.reload();
 
     cy.findByRole('heading', { name: 'Hey 👋' }).should('not.exist');
     cy.findByRole('complementary').should('exist');
 
-    cy.findByRole('button', { name: /Toggle template editing/i })
+    cy.findByRole('tab', { name: /Templates/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
-    cy.findByRole('button', { name: /Toggle text editing/i })
+      .and('have.attr', 'aria-selected', 'false');
+    cy.findByRole('tab', { name: /Text/i }).should('exist').and('have.attr', 'aria-selected', 'true');
+    cy.findByRole('tab', { name: /Background/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
+      .and('have.attr', 'aria-selected', 'false');
+    cy.findByRole('tab', { name: /Background/i })
+      .should('exist')
+      .realClick();
 
-    cy.findByRole('button', { name: /Toggle background editing/i })
+    cy.findByRole('tab', { name: /Background/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'false');
-
-    cy.findByRole('button', { name: /Toggle background editing/i }).realClick();
-
-    cy.findByRole('button', { name: /Toggle background editing/i })
-      .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
+      .and('have.attr', 'aria-selected', 'true');
 
     cy.reload();
 
-    cy.findByRole('button', { name: /Toggle background editing/i })
+    cy.findByRole('tab', { name: /Background/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
-    cy.findByRole('button', { name: /Toggle template editing/i })
+      .and('have.attr', 'aria-selected', 'true');
+    cy.findByRole('tab', { name: /Templates/i })
       .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
-    cy.findByRole('button', { name: /Toggle text editing/i })
-      .should('exist')
-      .and('have.attr', 'aria-expanded', 'true');
+      .and('have.attr', 'aria-selected', 'false');
+    cy.findByRole('tab', { name: /Text/i }).should('exist').and('have.attr', 'aria-selected', 'false');
   });
 });
