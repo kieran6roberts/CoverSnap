@@ -13,7 +13,7 @@
   "license": "MIT",
   "scripts": {
     "build": "react-router build",
-    "preview": "pnpm build && pnpm start",
+    "preview": "pnpm build && vite preview",
     "dev": "react-router dev",
     "lint": "eslint .",
     "prettier:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",

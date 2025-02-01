@@ -5,6 +5,7 @@ on:
     types: [opened, reopened, synchronize, ready_for_review]
     branches:
       - production
+      - development
     paths:
       - 'packages/frontend/**'
 
@@ -17,31 +18,40 @@ env:
   PNPM_VERSION: 9.0.6
 
 jobs:
-  # e2e:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Setup pnpm
-  #       uses: pnpm/action-setup@v3
-  #       with:
-  #         version: ${{ env.PNPM_VERSION }}
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #     - name: Install dependencies
-  #       run: pnpm i
-  #       working-directory: .
-  #     - name: Cypress run
-  #       uses: cypress-io/github-action@v6
-  #       with:
-  #         working-directory: packages/frontend
-  #         start: pnpm dev
-  #         env: configFile=ci
-  #         wait-on: 'http://localhost:5173'
-  #         browser: chrome
-  #         record: false
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: pnpm i
+        working-directory: .
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: packages/frontend
+          build: pnpm build
+          start: pnpm preview
+          env: configFile=ci
+          wait-on: 'http://localhost:4173'
+          browser: chrome
+          record: false
+      - name: Archive test screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          working-directory: packages/frontend
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 1
   type-check:
     runs-on: ubuntu-latest
     steps:
