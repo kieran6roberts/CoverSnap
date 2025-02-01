@@ -26,7 +26,11 @@ export const TemplatePreview = ({
         {templateName}
       </Text>
 
-      <UnstyledButton aria-label={`Toggle ${templateName} template`} onClick={onTemplateUpdate}>
+      <UnstyledButton
+        aria-label={`Toggle ${templateName} template`}
+        data-selected={!!isSelected}
+        onClick={onTemplateUpdate}
+      >
         <Paper radius="md" className={classes.previewPaper}>
           {children}
           {isSelected && (

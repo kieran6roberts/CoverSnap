@@ -66,7 +66,7 @@ type EditorActions = {
 
 const defaultState: EditorState = DEFAULT_EDITOR_STATE;
 
-const indexDBStorage: StateStorage = {
+export const indexDBStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
     return (await get(name)) ?? null;
   },
@@ -259,6 +259,9 @@ export const useEditor = create(
             template: {
               layoutId: LAYOUT_TEMPLATES[0].id,
               backgroundId: BACKGROUND_TEMPLATES[0].id
+            },
+            background: {
+              ...DEFAULT_EDITOR_STATE.background
             }
           });
         }, 500);

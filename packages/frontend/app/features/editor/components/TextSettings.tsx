@@ -26,7 +26,8 @@ export function TextSettings() {
       fontSize: secondaryTextFontSize
     },
     updatePrimaryText,
-    updateSecondaryText
+    updateSecondaryText,
+    isResettingImage
   } = useEditor();
   const hasPrimaryText = primaryText.length > 0;
   const hasSecondaryText = secondaryText.length > 0;
@@ -50,9 +51,10 @@ export function TextSettings() {
         />
 
         <ColorInput
+          key={`color-${isResettingImage}`}
           format="rgba"
           description="Accepts RGBA"
-          value={primaryTextColor}
+          defaultValue={primaryTextColor}
           label="Color"
           onChangeEnd={(value) => updatePrimaryText({ color: value })}
         />
@@ -60,7 +62,7 @@ export function TextSettings() {
         <Select
           aria-label="Content font"
           label="Font"
-          placeholder="Pick value"
+          placeholder="Pick primary font style"
           data={fonts}
           value={primaryTextFont}
           onChange={(value) => updatePrimaryText({ font: value ?? undefined })}
@@ -72,6 +74,7 @@ export function TextSettings() {
           max={PRIMARY_TEXT_FONT_SIZE_MAX}
           min={PRIMARY_TEXT_FONT_SIZE_MIN}
           value={primaryTextFontSize}
+          aria-label="Primary font size"
           onChange={(value) => updatePrimaryText({ fontSize: value })}
           label="Font size (px)"
           size="md"
@@ -83,7 +86,7 @@ export function TextSettings() {
         <TextInput
           value={secondaryText}
           onChange={(e) => updateSecondaryText({ content: e.target.value })}
-          placeholder="Let's dive into the world of..."
+          placeholder="by Kieran Roberts"
           label="Content"
           description={`Maximum ${SECONDARY_TEXT_LENGTH} characters`}
           error={secondaryText.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null}
@@ -106,7 +109,7 @@ export function TextSettings() {
         <Select
           aria-label="Content font"
           label="Font"
-          placeholder="Pick value"
+          placeholder="Pick secondary font style"
           data={fonts}
           value={secondaryTextFont}
           onChange={(value) => updateSecondaryText({ font: value ?? undefined })}
@@ -118,6 +121,7 @@ export function TextSettings() {
           value={secondaryTextFontSize}
           onChange={(value) => updateSecondaryText({ fontSize: value })}
           suffix="px"
+          aria-label="Secondary font size"
           max={SECONDARY_TEXT_FONT_SIZE_MAX}
           min={SECONDARY_TEXT_FONT_SIZE_MIN}
           label="Font size (px)"

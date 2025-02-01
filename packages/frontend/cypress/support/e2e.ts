@@ -4,7 +4,7 @@ import 'cypress-real-events';
 import './commands';
 
 // slow down each command by the default amount which is 1 second
-slowCypressDown(1000, false);
+slowCypressDown(250, false);
 
 Cypress.on('uncaught:exception', (err) => {
   if (

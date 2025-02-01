@@ -26,7 +26,8 @@ export function BackgroundSettings() {
   const {
     template,
     background: { image: backgroundImage, colors: backgroundColors, pattern: backgroundPattern },
-    updateBackground
+    updateBackground,
+    isResettingImage
   } = useEditor();
 
   const getTemplateNumPaths = (templateId: string) => {
@@ -84,19 +85,21 @@ export function BackgroundSettings() {
     <Stack gap="xl" pb={{ base: 90, md: 16 }} mt={12}>
       <Fieldset legend="Colors">
         <ColorInput
+          key={`color1-${isResettingImage}`}
           format="rgba"
           label="Background color 1"
           description="Accepts RGBA"
-          value={backgroundColors?.color1 ?? 'rgba(255, 255, 255, 1)'}
+          defaultValue={backgroundColors?.color1 ?? 'rgba(255, 255, 255, 1)'}
           onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value } })}
         />
 
         {!isSolidTemplate ? (
           <ColorInput
+            key={`color2-${isResettingImage}`}
             format="rgba"
             label="Background color 2"
             description="Accepts RGBA"
-            value={backgroundColors?.color2 ?? 'rgba(255, 255, 255, 1)'}
+            defaultValue={backgroundColors?.color2 ?? 'rgba(255, 255, 255, 1)'}
             onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value } })}
             disabled={!!backgroundImage}
           />
@@ -105,19 +108,21 @@ export function BackgroundSettings() {
         {isMin3BackgroundTemplate ? (
           <>
             <ColorInput
+              key={`color3-${isResettingImage}`}
               format="rgba"
               label="Background color 3"
               description="Accepts RGBA"
-              value={backgroundColors?.color3 ?? 'rgba(255, 255, 255, 1)'}
+              defaultValue={backgroundColors?.color3 ?? 'rgba(255, 255, 255, 1)'}
               onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color3: value } })}
               disabled={!!backgroundImage}
             />
             {isMin4BackgroundTemplate ? (
               <ColorInput
+                key={`color4-${isResettingImage}`}
                 format="rgba"
                 label="Background color 4"
                 description="Accepts RGBA"
-                value={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
+                defaultValue={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
                 onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color4: value } })}
                 disabled={!!backgroundImage}
               />
@@ -234,7 +239,8 @@ export function BackgroundSettings() {
                 </Text>
 
                 <UnstyledButton
-                  aria-label={`Select ${key} background pattern`}
+                  aria-label={`Toggle ${key} background pattern`}
+                  data-selected={!!isSelected}
                   onClick={() => onPatternChange(key)}
                   style={{ cursor: !backgroundImage ? 'pointer' : 'not-allowed' }}
                 >

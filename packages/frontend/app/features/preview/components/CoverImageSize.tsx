@@ -16,7 +16,7 @@ export function CoverImageSize({
       value={defaultImageSize}
       data={Object.values(IMAGE_DOWNLOAD_SIZES).map((size) => ({
         value: size.value,
-        label: `${size.width}x${size.height} ${size.label} `
+        label: `${size.width}x${size.height} ${size.label}`
       }))}
       onChange={(value) => onAspectRatioChange(value)}
       clearable={false}
