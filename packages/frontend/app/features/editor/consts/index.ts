@@ -31,6 +31,12 @@ const DEFAULT_PRIMARY_TEXT_FONT = fonts[0];
 const DEFAULT_SECONDARY_TEXT_FONT = fonts[0];
 const DEFAULT_PRIMARY_TEXT_FONT_SIZE = 40;
 const DEFAULT_SECONDARY_TEXT_FONT_SIZE = 25;
+export const DEFAULT_BG_COLORS = {
+  color1: 'rgba(255, 255, 255, 1)',
+  color2: 'rgba(230, 227, 227, 1)',
+  color3: 'rgba(205, 203, 203, 1)',
+  color4: 'rgba(176, 171, 171, 1)'
+};
 
 const DEFAULT_PATTERN_COLOR = '#8f8888';
 const DEFAULT_PATTERN_OPACITY = 0.1;
@@ -68,10 +74,7 @@ export const DEFAULT_EDITOR_STATE = {
   background: {
     image: null,
     colors: {
-      color1: 'rgba(255, 255, 255, 1)',
-      color2: 'rgba(230, 227, 227, 1)',
-      color3: 'rgba(205, 203, 203, 1)',
-      color4: 'rgba(176, 171, 171, 1)'
+      ...DEFAULT_BG_COLORS
     },
     pattern: DEFAULT_PATTERN
   },
