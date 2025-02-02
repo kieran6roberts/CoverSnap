@@ -7,64 +7,43 @@ import { Check } from 'iconoir-react';
 
 import { updateCSSVariables } from '~/shared/utils/styles';
 import { BACKGROUND_TEMPLATES, LAYOUT_TEMPLATES } from '~/features/editor/consts/templates';
-import { DEFAULT_EDITOR_STATE } from '~/features/editor/consts';
+import {
+  DEFAULT_EDITOR_STATE,
+  CoverSettings,
+  PrimaryTextSettings,
+  SecondaryTextSettings,
+  BackgroundSettings,
+  TemplateSettings
+} from '~/shared/consts';
 import { CSSVariableKey } from '~/shared/types/styles';
 import { PREVIEW_VARIABLE_NAMES } from '~/config/consts/styles';
+import { DeepReadonly } from '~/shared/types';
 
-interface TextState {
-  content: string;
-  color: string;
-  fontSize: number | string;
-  font: string;
-}
-
-interface CoverState {
-  id: string;
-  width: number;
-  height: number;
-  aspectRatio: number;
-}
-
-interface BackgroundState {
-  image: string | null;
-  colors: {
-    color1: string;
-    color2: string;
-    color3: string;
-    color4: string;
-  };
-  pattern: {
-    url: string | null;
-    name: string | null;
-    color: string;
-    opacity: number;
-  };
-}
-
-interface TemplateState {
-  layoutId: string;
-  backgroundId: string;
-}
-
-interface EditorState {
-  template: TemplateState;
-  primaryText: TextState;
-  secondaryText: TextState;
-  background: BackgroundState;
-  cover: CoverState;
-}
+type EditorState = DeepReadonly<{
+  template: TemplateSettings;
+  primaryText: PrimaryTextSettings;
+  secondaryText: SecondaryTextSettings;
+  background: BackgroundSettings;
+  cover: CoverSettings;
+}>;
 
 type EditorActions = {
   setHasHydrated: (state: boolean) => void;
-  updatePrimaryText: (updates: Partial<TextState>) => void;
-  updateSecondaryText: (updates: Partial<TextState>) => void;
-  updateBackground: (updates: Partial<BackgroundState>) => void;
-  updateCover: (updates: CoverState) => void;
-  updateTemplate: (updates: Partial<TemplateState>) => void;
+  updatePrimaryText: (updates: Partial<PrimaryTextSettings>) => void;
+  updateSecondaryText: (updates: Partial<SecondaryTextSettings>) => void;
+  updateBackground: (updates: Partial<EditorState['background']>) => void;
+  updateCover: (updates: CoverSettings) => void;
+  updateTemplate: (updates: Partial<TemplateSettings>) => void;
   resetEditor: () => void;
 };
 
-const defaultState: EditorState = DEFAULT_EDITOR_STATE;
+const defaultState: EditorState = {
+  template: DEFAULT_EDITOR_STATE.template,
+  primaryText: DEFAULT_EDITOR_STATE.primaryText,
+  secondaryText: DEFAULT_EDITOR_STATE.secondaryText,
+  background: DEFAULT_EDITOR_STATE.background,
+  cover: DEFAULT_EDITOR_STATE.cover
+};
 
 export const indexDBStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
@@ -185,15 +164,9 @@ export const useEditor = create(
 
       updateTemplate: (updates) => {
         const state = useEditor.getState();
-        const newState = { ...state };
-
-        if (updates.backgroundId) {
-          newState.template.backgroundId = updates.backgroundId;
-        }
 
         if (updates.layoutId) {
           const layoutTemplate = LAYOUT_TEMPLATES.find((t) => t.id === updates.layoutId);
-          newState.template.layoutId = updates.layoutId;
 
           // Update layout CSS variables
           updateCSSVariables({
@@ -201,7 +174,14 @@ export const useEditor = create(
           });
         }
 
-        set(newState);
+        set({
+          ...state,
+          template: {
+            ...state.template,
+            ...(updates.layoutId ? { layoutId: updates.layoutId } : {}),
+            ...(updates.backgroundId ? { backgroundId: updates.backgroundId } : {})
+          }
+        });
       },
 
       resetEditor: async () => {

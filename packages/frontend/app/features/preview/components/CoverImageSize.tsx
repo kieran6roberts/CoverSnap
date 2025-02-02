@@ -1,6 +1,6 @@
 import { Select } from '@mantine/core';
 
-import { IMAGE_DOWNLOAD_SIZES } from '~/features/editor/consts';
+import { IMAGE_DOWNLOAD_SIZES } from '~/shared/consts';
 
 export function CoverImageSize({
   defaultImageSize,

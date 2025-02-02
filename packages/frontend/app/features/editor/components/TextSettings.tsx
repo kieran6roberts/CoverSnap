@@ -1,15 +1,8 @@
 import { CloseButton, ColorInput, Stack, TextInput, NumberInput, Select, Fieldset } from '@mantine/core';
 
 import { useEditor } from '~/shared/stores/EditorContext';
-import {
-  PRIMARY_TEXT_LENGTH,
-  SECONDARY_TEXT_LENGTH,
-  PRIMARY_TEXT_FONT_SIZE_MIN,
-  PRIMARY_TEXT_FONT_SIZE_MAX,
-  SECONDARY_TEXT_FONT_SIZE_MIN,
-  SECONDARY_TEXT_FONT_SIZE_MAX,
-  fonts
-} from '~/features/editor/consts';
+import { textLimits, fonts, RGBAColor } from '~/shared/consts';
+import type { Fonts, PrimaryFontSize, SecondaryFontSize } from '~/shared/consts';
 
 export function TextSettings() {
   const {
@@ -39,15 +32,19 @@ export function TextSettings() {
           value={primaryText}
           onChange={(e) => updatePrimaryText({ content: e.target.value })}
           placeholder="HTTP Security Headers and how to..."
-          error={primaryText.length > PRIMARY_TEXT_LENGTH ? `Maximum ${PRIMARY_TEXT_LENGTH} characters` : null}
+          error={
+            primaryText.length > textLimits.PRIMARY_TEXT_LENGTH
+              ? `Maximum ${textLimits.PRIMARY_TEXT_LENGTH} characters`
+              : null
+          }
           label="Content"
-          description={`Maximum ${PRIMARY_TEXT_LENGTH} characters`}
+          description={`Maximum ${textLimits.PRIMARY_TEXT_LENGTH} characters`}
           rightSection={
             hasPrimaryText && (
               <CloseButton size="sm" variant="subtle" onClick={() => updatePrimaryText({ content: '' })} />
             )
           }
-          maxLength={PRIMARY_TEXT_LENGTH}
+          maxLength={textLimits.PRIMARY_TEXT_LENGTH}
         />
 
         <ColorInput
@@ -56,7 +53,7 @@ export function TextSettings() {
           description="Accepts RGBA"
           defaultValue={primaryTextColor}
           label="Color"
-          onChangeEnd={(value) => updatePrimaryText({ color: value })}
+          onChangeEnd={(value) => updatePrimaryText({ color: value as RGBAColor })}
         />
 
         <Select
@@ -65,17 +62,17 @@ export function TextSettings() {
           placeholder="Pick primary font style"
           data={fonts}
           value={primaryTextFont}
-          onChange={(value) => updatePrimaryText({ font: value ?? undefined })}
+          onChange={(value) => updatePrimaryText({ font: value as Fonts })}
           allowDeselect={false}
           checkIconPosition="right"
         />
 
         <NumberInput
-          max={PRIMARY_TEXT_FONT_SIZE_MAX}
-          min={PRIMARY_TEXT_FONT_SIZE_MIN}
+          max={textLimits.PRIMARY_TEXT_FONT_SIZE_MAX}
+          min={textLimits.PRIMARY_TEXT_FONT_SIZE_MIN}
           value={primaryTextFontSize}
           aria-label="Primary font size"
-          onChange={(value) => updatePrimaryText({ fontSize: value })}
+          onChange={(value) => updatePrimaryText({ fontSize: value as PrimaryFontSize })}
           label="Font size (px)"
           size="md"
           suffix="px"
@@ -88,14 +85,18 @@ export function TextSettings() {
           onChange={(e) => updateSecondaryText({ content: e.target.value })}
           placeholder="by Kieran Roberts"
           label="Content"
-          description={`Maximum ${SECONDARY_TEXT_LENGTH} characters`}
-          error={secondaryText.length > SECONDARY_TEXT_LENGTH ? `Maximum ${SECONDARY_TEXT_LENGTH} characters` : null}
+          description={`Maximum ${textLimits.SECONDARY_TEXT_LENGTH} characters`}
+          error={
+            secondaryText.length > textLimits.SECONDARY_TEXT_LENGTH
+              ? `Maximum ${textLimits.SECONDARY_TEXT_LENGTH} characters`
+              : null
+          }
           rightSection={
             hasSecondaryText && (
               <CloseButton size="sm" variant="subtle" onClick={() => updateSecondaryText({ content: '' })} />
             )
           }
-          maxLength={SECONDARY_TEXT_LENGTH}
+          maxLength={textLimits.SECONDARY_TEXT_LENGTH}
         />
 
         <ColorInput
@@ -103,7 +104,7 @@ export function TextSettings() {
           label="Color"
           description="Accepts RGBA"
           value={secondaryTextColor}
-          onChangeEnd={(value) => updateSecondaryText({ color: value })}
+          onChangeEnd={(value) => updateSecondaryText({ color: value as RGBAColor })}
         />
 
         <Select
@@ -112,18 +113,18 @@ export function TextSettings() {
           placeholder="Pick secondary font style"
           data={fonts}
           value={secondaryTextFont}
-          onChange={(value) => updateSecondaryText({ font: value ?? undefined })}
+          onChange={(value) => updateSecondaryText({ font: value as Fonts })}
           allowDeselect={false}
           checkIconPosition="right"
         />
 
         <NumberInput
           value={secondaryTextFontSize}
-          onChange={(value) => updateSecondaryText({ fontSize: value })}
+          onChange={(value) => updateSecondaryText({ fontSize: value as SecondaryFontSize })}
           suffix="px"
           aria-label="Secondary font size"
-          max={SECONDARY_TEXT_FONT_SIZE_MAX}
-          min={SECONDARY_TEXT_FONT_SIZE_MIN}
+          max={textLimits.SECONDARY_TEXT_FONT_SIZE_MAX}
+          min={textLimits.SECONDARY_TEXT_FONT_SIZE_MIN}
           label="Font size (px)"
           size="md"
           allowDecimal={false}

@@ -9,7 +9,7 @@ import { useImageDownload } from '~/shared/hooks/useImageDownload';
 import { DownloadSuccessModal } from '~/shared/components/DownloadSuccessModal';
 import { CoverImageSize } from '~/features/preview/components/CoverImageSize';
 import { getAspectRatioData, updateCSSVariables } from '~/shared/utils/styles';
-
+import type { DownloadSizeAspectRatios, DownloadSizeWidths, DownloadSizeHeights } from '~/shared/consts';
 interface DrawerFooterProps {
   resetEditor: () => void;
   imageNodeRef: React.RefObject<HTMLDivElement | null>;
@@ -30,7 +30,9 @@ export function DrawerFooter({ resetEditor, imageNodeRef }: DrawerFooterProps) {
     close();
   };
 
-  const onAspectRatioChange = (value: string | null) => {
+  const onAspectRatioChange = (
+    value: `${string}:${DownloadSizeAspectRatios}:${DownloadSizeWidths}x${DownloadSizeHeights}` | null
+  ) => {
     if (!value) return;
     const { id, aspectRatio, width, height } = getAspectRatioData(value);
 
