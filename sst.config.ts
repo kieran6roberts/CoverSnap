@@ -15,6 +15,11 @@ export default $config({
     };
   },
   async run() {
+    const storage = await import("./infra/storage");
     await import("./infra/web");
+
+    return {
+      imagesBucket: storage.imagesBucket.name,
+    };
   },
 });
