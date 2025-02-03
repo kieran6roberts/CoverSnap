@@ -27,6 +27,7 @@ export const fonts = [
 ] as const;
 
 export type RGBAColor = `rgba(${number}, ${number}, ${number}, ${number})`;
+export type HEXColor = `#${string}`;
 
 export const IMAGE_DOWNLOAD_SIZES = {
   hashnode: {
@@ -101,19 +102,17 @@ export type BackgroundColors = Record<`color${number}`, RGBAColor>;
 type BackgroundPatternSettings = {
   url: string | null;
   name: string | null;
-  color: `#${string}`;
+  color: HEXColor;
   opacity: number;
 };
 
-export type DownloadSizeWidths = (typeof IMAGE_DOWNLOAD_SIZES)[keyof typeof IMAGE_DOWNLOAD_SIZES]['width'];
-export type DownloadSizeHeights = (typeof IMAGE_DOWNLOAD_SIZES)[keyof typeof IMAGE_DOWNLOAD_SIZES]['height'];
-export type DownloadSizeAspectRatios = (typeof IMAGE_DOWNLOAD_SIZES)[keyof typeof IMAGE_DOWNLOAD_SIZES]['aspectRatio'];
+export type DownloadSizeInfo = `${string}:${string}:${string}x${string}`;
 
 export type CoverSettings = {
   id: string;
-  width: DownloadSizeWidths;
-  height: DownloadSizeHeights;
-  aspectRatio: DownloadSizeAspectRatios;
+  width: number;
+  height: number;
+  aspectRatio: number;
 };
 
 export type BackgroundSettings = {

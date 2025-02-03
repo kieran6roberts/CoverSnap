@@ -1,5 +1,5 @@
 import { CSSVariableKey } from '~/shared/types/styles';
-import type { DownloadSizeWidths, DownloadSizeHeights, DownloadSizeAspectRatios } from '~/shared/consts';
+import type { DownloadSizeInfo } from '~/shared/consts';
 
 export const updateCSSVariables = (variables: Partial<Record<CSSVariableKey, string>>) => {
   const root = document.documentElement;
@@ -8,13 +8,13 @@ export const updateCSSVariables = (variables: Partial<Record<CSSVariableKey, str
   });
 };
 
-export const getAspectRatioData = (
-  value: `${string}:${DownloadSizeAspectRatios}:${DownloadSizeWidths}x${DownloadSizeHeights}`
-) => {
-  const id = value.split(':')[0];
-  const aspectRatio = value.split(':')[1];
-  const size = value.split(':')[2];
-  const width = size.split('x')[0];
-  const height = size.split('x')[1];
-  return { id, aspectRatio, width, height };
+export const getAspectRatioData = (value: DownloadSizeInfo) => {
+  const [id, aspectRatio, size] = value.split(':');
+  const [width, height] = size.split('x');
+  return {
+    id,
+    aspectRatio: Number(aspectRatio),
+    width: Number(width),
+    height: Number(height)
+  };
 };
