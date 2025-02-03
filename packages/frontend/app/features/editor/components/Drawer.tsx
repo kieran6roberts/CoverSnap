@@ -12,7 +12,7 @@ import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
 import type { OpenSection } from '~/shared/stores/EditorUIStore';
 import { DrawerControl } from '~/features/editor/components/DrawerControl';
 import { InfoSection } from '~/features/editor/components/InfoSection';
-import { DRAWER_SECTIONS } from '~/features/editor/consts';
+import { DRAWER_SECTIONS } from '~/shared/consts';
 import { DrawerFooter } from '~/features/editor/components/DrawerFooter';
 
 const editSections = [

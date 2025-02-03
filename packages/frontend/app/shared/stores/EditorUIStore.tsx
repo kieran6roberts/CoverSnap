@@ -1,21 +1,23 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-
+import { DeepReadonly } from '~/shared/types';
 export type OpenSection = 'templates' | 'text' | 'background' | 'info';
 
-interface EditorUIState {
+type EditorUIState = DeepReadonly<{
   isDrawerOpen: boolean;
   openSection: OpenSection;
   hasSeenWelcome: boolean;
   isHydrated: boolean;
+}>;
 
+type EditorUIActions = {
   setDrawerOpen: (isOpen: boolean) => void;
   setHasHydrated: (isHydrated: boolean) => void;
   setOpenSection: (section: OpenSection) => void;
   setHasSeenWelcome: (hasSeen: boolean) => void;
-}
+};
 
-export const useEditorUIStore = create<EditorUIState>()(
+export const useEditorUIStore = create<EditorUIState & EditorUIActions>()(
   persist(
     (set) => ({
       isDrawerOpen: true,

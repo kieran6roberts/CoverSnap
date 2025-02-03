@@ -10,7 +10,7 @@ export const CREATE_ROUTE = '/create';
 
 type AVAILABLE_THEMES = Exclude<MantineColorScheme, 'auto'>;
 
-export const SITE_THEMES: Record<AVAILABLE_THEMES, AVAILABLE_THEMES> = {
+export const SITE_THEMES: Readonly<Record<AVAILABLE_THEMES, AVAILABLE_THEMES>> = {
   light: 'light',
   dark: 'dark'
 };

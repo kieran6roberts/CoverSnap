@@ -21,6 +21,7 @@ import { updateCSSVariables } from '~/shared/utils/styles';
 import classes from '~/features/editor/styles/BackgroundSection.module.css';
 import { decimalToPercentage } from '~/features/editor/utils';
 import { BACKGROUND_TEMPLATES } from '../consts/templates';
+import { RGBAColor, HEXColor } from '~/shared/consts';
 
 export function BackgroundSettings() {
   const {
@@ -90,7 +91,7 @@ export function BackgroundSettings() {
           label="Background color 1"
           description="Accepts RGBA"
           defaultValue={backgroundColors?.color1 ?? 'rgba(255, 255, 255, 1)'}
-          onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value } })}
+          onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color1: value as RGBAColor } })}
         />
 
         {!isSolidTemplate ? (
@@ -100,7 +101,7 @@ export function BackgroundSettings() {
             label="Background color 2"
             description="Accepts RGBA"
             defaultValue={backgroundColors?.color2 ?? 'rgba(255, 255, 255, 1)'}
-            onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value } })}
+            onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color2: value as RGBAColor } })}
             disabled={!!backgroundImage}
           />
         ) : null}
@@ -113,7 +114,7 @@ export function BackgroundSettings() {
               label="Background color 3"
               description="Accepts RGBA"
               defaultValue={backgroundColors?.color3 ?? 'rgba(255, 255, 255, 1)'}
-              onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color3: value } })}
+              onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color3: value as RGBAColor } })}
               disabled={!!backgroundImage}
             />
             {isMin4BackgroundTemplate ? (
@@ -123,7 +124,9 @@ export function BackgroundSettings() {
                 label="Background color 4"
                 description="Accepts RGBA"
                 defaultValue={backgroundColors?.color4 ?? 'rgba(255, 255, 255, 1)'}
-                onChangeEnd={(value) => updateBackground({ colors: { ...backgroundColors, color4: value } })}
+                onChangeEnd={(value) =>
+                  updateBackground({ colors: { ...backgroundColors, color4: value as RGBAColor } })
+                }
                 disabled={!!backgroundImage}
               />
             ) : null}
@@ -189,7 +192,7 @@ export function BackgroundSettings() {
                 url: backgroundPattern.name
                   ? (patterns as any)[backgroundPattern.name](color, backgroundPattern.opacity)
                   : null,
-                color
+                color: color as HEXColor
               }
             })
           }

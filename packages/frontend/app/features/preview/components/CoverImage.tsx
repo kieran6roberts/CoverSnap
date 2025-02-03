@@ -11,7 +11,7 @@ import { updateCSSVariables, getAspectRatioData } from '~/shared/utils/styles';
 import { CoverImageControls } from '~/features/preview/components/CoverImageControls';
 import { CoverImageSize } from '~/features/preview/components/CoverImageSize';
 import { useEditorUIStore } from '~/shared/stores/EditorUIStore';
-
+import type { DownloadSizeInfo } from '~/shared/consts';
 const Confetti = lazy(() => import('~/features/preview/components/Confetti'));
 
 export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTMLDivElement | null> }) {
@@ -29,12 +29,12 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
     resetEditor();
   };
 
-  const onAspectRatioChange = (value: string | null) => {
+  const onAspectRatioChange = (value: DownloadSizeInfo | null) => {
     if (!value) return;
     const { id, aspectRatio, width, height } = getAspectRatioData(value);
 
     updateCSSVariables({ '--cover-aspect-ratio': `${aspectRatio}` });
-    updateCover({ id, width: Number(width), height: Number(height), aspectRatio: Number(aspectRatio) });
+    updateCover({ id, width, height, aspectRatio });
   };
 
   return (
@@ -55,7 +55,10 @@ export function CoverImage({ imageNodeRef }: { imageNodeRef: React.RefObject<HTM
             <ArrowRightTag width={18} height={18} />
           </ActionIcon>
         ) : null}
-        <CoverImageSize defaultImageSize={defaultImageSize} onAspectRatioChange={onAspectRatioChange} />
+        <CoverImageSize
+          defaultImageSize={defaultImageSize}
+          onAspectRatioChange={(value) => onAspectRatioChange(value as DownloadSizeInfo | null)}
+        />
         <ImagePreview imageNodeRef={imageNodeRef} />
 
         <CoverImageControls
